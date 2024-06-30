@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1089802403669",
+    "project_id": "digimazdoor",
+    "storage_bucket": "digimazdoor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089802403669:android:86bc2e2b27093f6472b9dc",
+        "android_client_info": {
+          "package_name": "com.fahad999.mazdoorfe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089802403669-4gjm3vsi46nc97qdjllqhm9krlu49m19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fahad999.mazdoorfe",
+            "certificate_hash": "52580ffaa0467a99294c3700409f3dcaa0160f4f"
+          }
+        },
+        {
+          "client_id": "1089802403669-dn7qavakj2lht589nrc6ubsteoci73sh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fahad999.mazdoorfe",
+            "certificate_hash": "7e996360b3cd73253d430275e7a7d7cafc6e0244"
+          }
+        },
+        {
+          "client_id": "1089802403669-9gvlsn8sejkuvo5m0217l9uoscefkajc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeLwIRuh5cIJTyjN_rIp4_fUwiW8e-8oY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089802403669-9gvlsn8sejkuvo5m0217l9uoscefkajc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
