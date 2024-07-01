@@ -7,7 +7,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const Card = () => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.card}>
         <View style={styles.cardContent}>
           <View style={styles.infoSection}>
@@ -40,12 +40,12 @@ const Card = () => {
               <Zocial name="call" size={20} color={colors.baseColor} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.whatsappButton}>
-              <FontAwesome5 name="whatsapp" size={20} color="#075e54" />
+              <FontAwesome5 name="whatsapp" size={20} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
