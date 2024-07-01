@@ -1,131 +1,67 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import electrician from "../../assets/assets/electrician.png";
-import plumber from "../../assets/assets/plumber.png";
-import carpenter from "../../assets/assets/carpenter.png";
-import painter from "../../assets/assets/paint-roller.png";
-import chef from "../../assets/assets/chef.png";
-import mechanicCar from "../../assets/assets/mechanicCar.png";
-import truck from "../../assets/assets/truck.png";
-import ac from "../../assets/assets/ac.png";
+import { StyleSheet } from "react-native";
 import { moderateScale } from "react-native-size-matters";
-
-const categories = [
-  {
-    image: electrician,
-    label: "Electrician",
-    backgroundColor: "rgb(237, 247, 237)",
-  },
-  { image: plumber, label: "Plumber", backgroundColor: "rgb(249, 220, 220)" },
-  { image: carpenter, label: "Carpenter", backgroundColor: "#fff4e5" },
-  { image: painter, label: "Painter", backgroundColor: "rgb(229, 246, 253)" },
-  { image: chef, label: "Cook", backgroundColor: "rgb(229, 246, 253)" },
-  {
-    image: mechanicCar,
-    label: "Mechanic",
-    backgroundColor: "rgb(229, 246, 253)",
-  },
-  {
-    image: ac,
-    label: "AC Repair",
-    backgroundColor: "rgb(229, 246, 253)",
-  },
-  {
-    image: truck,
-    label: "Auto",
-    backgroundColor: "rgb(229, 246, 253)",
-  },
-  // Add more categories if needed
-];
-
-const CategoryItem = ({ imageSource, label, backgroundColor }) => (
-  <TouchableOpacity style={styles.categoryItem}>
-    <View style={[styles.categoryIconContainer, { backgroundColor }]}>
-      <Image source={imageSource} style={styles.categoryIcon} />
-    </View>
-    <Text style={styles.categoryLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
-const Category = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Categories</Text>
-        <TouchableOpacity style={styles.seeMoreButton}>
-          <Text style={styles.seeMoreText}>See All</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.categoryContainer}>
-        {categories.map((category, index) => (
-          <CategoryItem
-            key={index}
-            imageSource={category.image}
-            label={category.label}
-            backgroundColor={category.backgroundColor}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
+import colors from "../../constants/colors";
 
 const styles = StyleSheet.create({
-  container: {
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: colors.primary,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    width: "100%",
+    height: "90%",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    overflow: "hidden",
+  },
+  scrollViewContent: {
+    padding: 30,
+  },
+  picture: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: moderateScale(20),
+    marginTop: 20,
+    marginBottom: 40,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "90%",
+  pictureImage: {
+    height: 80,
+    width: 80,
+    borderRadius: 50,
+    elevation: 5,
   },
-  headerTitle: {
-    fontSize: moderateScale(16),
+  headerContainer: {
+    marginBottom: 0,
+  },
+  headerText: {
+    fontSize: 22,
     fontWeight: "600",
-    color: "#505050",
+    color: colors.baseColor,
   },
-  seeMoreButton: {
-    backgroundColor: "#673de71a",
-    paddingVertical: moderateScale(5),
-    paddingHorizontal: moderateScale(10),
-    borderRadius: moderateScale(50),
+  subHeaderText: {
+    marginTop: 5,
+    fontSize: 14,
+    fontWeight: "300",
+    color: "gray",
   },
-  seeMoreText: {
-    fontSize: moderateScale(12),
-    fontWeight: "600",
-    color: "#673de7",
-  },
-  categoryContainer: {
-    marginTop: moderateScale(10),
-    width: "98%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
-  categoryItem: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "22%", // Adjust the width as needed to fit four items per row
-    marginVertical: moderateScale(10),
-  },
-  categoryIconContainer: {
+  googleButton: {
+    width: "100%",
+    backgroundColor: colors.primary,
     paddingVertical: moderateScale(12),
-    paddingHorizontal: moderateScale(12),
-    borderRadius: moderateScale(50),
+    elevation: 5,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
-  categoryIcon: {
-    height: moderateScale(30),
-    width: moderateScale(30),
-  },
-  categoryLabel: {
-    marginTop: moderateScale(5),
-    color: "#505050",
-    fontSize: moderateScale(11),
-    fontWeight: "500",
-    textAlign: "center", // Center the text
+  buttonText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: moderateScale(14),
   },
 });
 
-export default Category;
+export default styles;

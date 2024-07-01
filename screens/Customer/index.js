@@ -54,7 +54,8 @@ const Customer = ({ signOut }) => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5, // Optional: for Android shadow effect
-            borderTopWidth: 0, // Remove top border
+            // borderTopWidth: 1, // Remove top border
+            borderTopColor: "gray",
             borderTopColor: "transparent", // Ensure the top border is transparent
           },
         })}

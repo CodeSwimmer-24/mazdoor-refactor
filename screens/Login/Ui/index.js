@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 // import Logo from "../../../assets/logo/logo.png";
 import { moderateScale } from "react-native-size-matters";
 import { FontAwesome } from "@expo/vector-icons";
