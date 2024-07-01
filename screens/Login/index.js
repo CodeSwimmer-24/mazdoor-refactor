@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import LoginUi from "./Ui";
 import { hostUrl } from "../../services";
 import RegisterForm from "../Register";
-import Home from "../Customer";
+import Customer from "../Customer";
 import { useAuthStore } from "../../zustand/authStore";
 
 const Login = () => {
@@ -177,7 +177,7 @@ const Login = () => {
   if (authStore.isNewUser) {
     return <RegisterForm signOut={signOut} />;
   } else {
-    return <Home signOut={signOut} />;
+    return <Customer signOut={signOut} />;
   }
 };
 

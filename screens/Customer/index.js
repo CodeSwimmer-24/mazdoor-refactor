@@ -1,44 +1,26 @@
-import React from "react";
-import { View, Text, Button, StyleSheet, Image } from "react-native";
-import { useAuthStore } from "../../zustand/authStore";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "../Customer/Home";
+import Booking from "./Booking";
+import Like from "./Like";
+import Profile from "./Profile";
 
-const Home = ({ signOut }) => {
-  const { email, role, name, picture, isNewUser } = useAuthStore((state) => ({
-    email: state.email,
-    role: state.role,
-    name: state.name,
-    picture: state.picture,
-    isNewUser: state.isNewUser,
-  }));
-
-  return (
-    <View
-      style={{
-        marginTop: 50,
-      }}
-    >
-      <View style={styles.container}>
-        <Text style={styles.label}>Email: {email}</Text>
-        <Text style={styles.label}>Role: {role}</Text>
-        <Text style={styles.label}>Name: {name}</Text>
-
-        <Text style={styles.label}>New User: {isNewUser ? "Yes" : "No"}</Text>
-      </View>
-      <Button onPress={signOut} title="Logout" />
-    </View>
-  );
+// Higher order component, to pass in the props to a component
+const passProp = (Component, signOut) => {
+  return () => <Component signOut={signOut} />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 8,
-  },
-});
+const Tab = createBottomTabNavigator();
 
-export default Home;
+const Customer = ({ signOut }) => {
+  return <NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={passProp(Home, signOut)} />
+      <Tab.Screen name="Booking" component={Booking} />
+      <Tab.Screen name="Like" component={Like} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
+  </NavigationContainer>;
+};
+
+export default Customer;
