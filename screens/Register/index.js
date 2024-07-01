@@ -18,10 +18,11 @@ import colors from "../../constants/colors";
 import styles from "./styles";
 
 const RegisterForm = () => {
-  const { email, role, picture } = useAuthStore((state) => ({
+  const { email, role, picture, setIsNewUser } = useAuthStore((state) => ({
     email: state.email,
     role: state.role,
     picture: state.picture,
+    setIsNewUser: state.setIsNewUser
   }));
 
   const initialFormData = {
@@ -72,7 +73,7 @@ const RegisterForm = () => {
 
     try {
       const response = await fetch(
-        `${serviceAddress}/mazdoor/v1/updateProfile`,
+        `${hostUrl}/mazdoor/v1/updateProfile`,
         {
           method: "PUT",
           headers: {
@@ -85,6 +86,7 @@ const RegisterForm = () => {
       if (response.ok) {
         const result = await response.json();
         Alert.alert("Success", "Registration successful");
+        setIsNewUser(false);
         setFormData(initialFormData); // Reset form data to initial values
       } else {
         Alert.alert("Error", "Registration failed");

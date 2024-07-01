@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
+import colors from "../../constants/colors";
 import styles from "./styles";
 
 const DropdownTextInput = ({
