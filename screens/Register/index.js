@@ -16,13 +16,14 @@ import CustomTextInput from "../../components/TextInput";
 import DropdownTextInput from "../../components/DropdownTextInput";
 import colors from "../../constants/colors";
 import styles from "./styles";
+import user from "../../assets/user.png";
 
 const RegisterForm = () => {
   const { email, role, picture, setIsNewUser } = useAuthStore((state) => ({
     email: state.email,
     role: state.role,
     picture: state.picture,
-    setIsNewUser: state.setIsNewUser
+    setIsNewUser: state.setIsNewUser,
   }));
 
   const initialFormData = {
@@ -72,16 +73,13 @@ const RegisterForm = () => {
     };
 
     try {
-      const response = await fetch(
-        `${hostUrl}/mazdoor/v1/updateProfile`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(apiData),
-        }
-      );
+      const response = await fetch(`${hostUrl}/mazdoor/v1/updateProfile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apiData),
+      });
 
       if (response.ok) {
         const result = await response.json();
@@ -112,12 +110,7 @@ const RegisterForm = () => {
               </Text>
             </View>
             <View style={styles.picture}>
-              <Image
-                source={{
-                  uri: picture,
-                }}
-                style={styles.pictureImage}
-              />
+              <Image source={user} style={styles.pictureImage} />
             </View>
             <CustomTextInput
               iconName="mark-email-read"
@@ -172,6 +165,5 @@ const RegisterForm = () => {
     </Modal>
   );
 };
-
 
 export default RegisterForm;

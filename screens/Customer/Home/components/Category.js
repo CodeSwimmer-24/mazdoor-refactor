@@ -1,14 +1,13 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import electrician from "../../assets/assets/electrician.png";
-import plumber from "../../assets/assets/plumber.png";
-import carpenter from "../../assets/assets/carpenter.png";
-import painter from "../../assets/assets/paint-roller.png";
-import chef from "../../assets/assets/chef.png";
-import mechanicCar from "../../assets/assets/mechanicCar.png";
-import truck from "../../assets/assets/truck.png";
-import ac from "../../assets/assets/ac.png";
-import { moderateScale } from "react-native-size-matters";
+import electrician from "../../../../assets/assets/electrician.png";
+import plumber from "../../../../assets/assets/plumber.png";
+import carpenter from "../../../../assets/assets/carpenter.png";
+import painter from "../../../../assets/assets/paint-roller.png";
+import chef from "../../../../assets/assets/chef.png";
+import mechanicCar from "../../../../assets/assets/mechanicCar.png";
+import truck from "../../../../assets/assets/truck.png";
+import ac from "../../../../assets/assets/ac.png";
 
 const categories = [
   {
@@ -27,7 +26,7 @@ const categories = [
   },
   {
     image: ac,
-    label: "AC Repair",
+    label: "AC Reapir",
     backgroundColor: "rgb(229, 246, 253)",
   },
   {
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: moderateScale(20),
+    marginTop: 20,
   },
   header: {
     flexDirection: "row",
@@ -82,23 +81,23 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   headerTitle: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
     fontWeight: "600",
     color: "#505050",
   },
   seeMoreButton: {
     backgroundColor: "#673de71a",
-    paddingVertical: moderateScale(5),
-    paddingHorizontal: moderateScale(10),
-    borderRadius: moderateScale(50),
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 50,
   },
   seeMoreText: {
-    fontSize: moderateScale(12),
+    fontSize: 12,
     fontWeight: "600",
     color: "#673de7",
   },
   categoryContainer: {
-    marginTop: moderateScale(10),
+    marginTop: 0,
     width: "98%",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -108,21 +107,21 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     width: "22%", // Adjust the width as needed to fit four items per row
-    marginVertical: moderateScale(10),
+    marginVertical: 10,
   },
   categoryIconContainer: {
-    paddingVertical: moderateScale(12),
-    paddingHorizontal: moderateScale(12),
-    borderRadius: moderateScale(50),
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 50,
   },
   categoryIcon: {
-    height: moderateScale(30),
-    width: moderateScale(30),
+    height: 32,
+    width: 32,
   },
   categoryLabel: {
-    marginTop: moderateScale(5),
+    marginTop: 5,
     color: "#505050",
-    fontSize: moderateScale(11),
+    fontSize: 11,
     fontWeight: "500",
     textAlign: "center", // Center the text
   },

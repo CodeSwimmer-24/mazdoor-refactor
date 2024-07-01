@@ -1,6 +1,19 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  ScrollView,
+  StatusBar,
+} from "react-native";
 import { useAuthStore } from "../../../zustand/authStore";
+import colors from "../../../constants/colors";
+import Header from "./components/Header";
+import Banner from "./components/Banner";
+import Category from "./components/Category";
+import TopRated from "./components/TopRated";
 
 const Home = ({ signOut }) => {
   const { email, role, name, picture, isNewUser } = useAuthStore((state) => ({
@@ -12,28 +25,23 @@ const Home = ({ signOut }) => {
   }));
 
   return (
-    <View
-      style={{
-        marginTop: 50,
-      }}
-    >
-      <View style={styles.container}>
-        <Text style={styles.label}>Email: {email}</Text>
-        <Text style={styles.label}>Role: {role}</Text>
-        <Text style={styles.label}>Name: {name}</Text>
-
-        <Text style={styles.label}>New User: {isNewUser ? "Yes" : "No"}</Text>
-      </View>
-      <Button onPress={signOut} title="Logout" />
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#f9f9f9" />
+      <Header name={name} />
+      <ScrollView>
+        <Banner />
+        <Category />
+        <TopRated />
+      </ScrollView>
+      {/* <Button onPress={signOut} title="Logout" /> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
+    height: "100%",
+    backgroundColor: colors.white,
   },
   label: {
     fontSize: 18,
