@@ -60,6 +60,7 @@ const TopRated = () => {
       <View style={styles.itemContainer}>
         {topRatedData.map((item) => (
           <ServiceCard
+            key={item.id}
             id={item.id}
             name={item.name}
             category={item.category}

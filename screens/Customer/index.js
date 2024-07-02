@@ -10,7 +10,7 @@ import Profile from "./Profile";
 import colors from "../../constants/colors";
 
 // Higher order component, to pass in the props to a component
-const passProp = (Component, signOut) => {
+const passSignOutProp = (Component, signOut) => {
   return (props) => <Component {...props} signOut={signOut} />;
 };
 
@@ -63,7 +63,7 @@ const Customer = ({ signOut }) => {
         <Tab.Screen
           name="Home"
           options={{ headerShown: false }}
-          component={passProp(Home, signOut)}
+          component={passSignOutProp(Home, signOut)}
         />
         <Tab.Screen
           name="Booking"
@@ -85,4 +85,5 @@ const Customer = ({ signOut }) => {
   );
 };
 
+export { passSignOutProp };
 export default Customer;

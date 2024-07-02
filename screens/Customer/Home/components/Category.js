@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+
 import electrician from "../../../../assets/assets/electrician.png";
 import plumber from "../../../../assets/assets/plumber.png";
 import carpenter from "../../../../assets/assets/carpenter.png";
@@ -60,8 +61,13 @@ const categories = [
   },
 ];
 
-const CategoryItem = ({ imageSource, label, backgroundColor }) => (
-  <TouchableOpacity style={styles.categoryItem}>
+const CategoryItem = ({ imageSource, label, backgroundColor, navigation }) => (
+  <TouchableOpacity
+    style={styles.categoryItem}
+    onPress={() => navigation.push("CategoryDetail", {
+      label
+    })}
+  >
     <View style={[styles.categoryIconContainer, { backgroundColor }]}>
       <Image source={imageSource} style={styles.categoryIcon} />
     </View>
@@ -69,7 +75,7 @@ const CategoryItem = ({ imageSource, label, backgroundColor }) => (
   </TouchableOpacity>
 );
 
-const Category = () => {
+const Category = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -85,6 +91,7 @@ const Category = () => {
             imageSource={category.image}
             label={category.label}
             backgroundColor={category.backgroundColor}
+            navigation={navigation}
           />
         ))}
       </View>
