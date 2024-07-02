@@ -87,6 +87,11 @@ const CategoryDetail = ({ route, navigation }) => {
                   rating={item.rating}
                   location={item.short_description}
                   price="200"
+                  onPress={() =>
+                    navigation.push("ServiceDetail", {
+                      emailId: item.emailId,
+                    })
+                  }
                 />
               </View>
             ))

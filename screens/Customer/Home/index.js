@@ -17,6 +17,7 @@ import Banner from "./components/Banner";
 import Category from "./components/Category";
 import TopRated from "./components/TopRated";
 import CategoryDetail from "./components/CategoryDetail";
+import ServiceDetail from "./ServiceDetail/ServiceDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,11 @@ const Home = ({ signOut }) => {
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ServiceDetail"
+        component={ServiceDetail}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
