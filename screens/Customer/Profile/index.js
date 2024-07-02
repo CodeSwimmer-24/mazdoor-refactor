@@ -10,7 +10,7 @@ const Profile = () => {
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Header />
         <Body />
         <Footer />
@@ -21,8 +21,8 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#ffff",
-    height: "100%",
   },
   headerContainer: {
     paddingHorizontal: 28,
@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "500",
     color: "#505050",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 70,
   },
 });
 
