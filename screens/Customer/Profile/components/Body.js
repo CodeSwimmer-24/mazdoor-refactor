@@ -1,11 +1,21 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import React, { useState } from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import Account from "../Models/Account";
 
 const Body = () => {
-  const renderRow = (title, subtitle, icon) => (
-    <TouchableOpacity style={styles.row}>
+  const [accountModalVisible, setAccountModalVisible] = useState(false);
+  const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
+  const [notificationsModalVisible, setNotificationsModalVisible] =
+    useState(false);
+  const [subscriptionModalVisible, setSubscriptionModalVisible] =
+    useState(false);
+  const [technicalSupportModalVisible, setTechnicalSupportModalVisible] =
+    useState(false);
+
+  const renderRow = (title, subtitle, icon, stateSetter) => (
+    <TouchableOpacity onPress={() => stateSetter(true)} style={styles.row}>
       <View style={styles.rowLeft}>
         <View style={styles.iconWrapper}>
           <Feather name={icon} size={20} color={colors.primary} />
@@ -22,16 +32,41 @@ const Body = () => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        {renderRow("My Account", "View your account details", "user")}
-        {renderRow("Edit Account", "Edit your account details", "edit")}
-        {renderRow("Notifications", "View your notifications", "bell")}
-        {renderRow("Subscription", "View Subscription plan", "dollar-sign")}
         {renderRow(
-          "Techinical Support",
+          "My Account",
+          "View your account details",
+          "user",
+          setAccountModalVisible
+        )}
+        {renderRow(
+          "Edit Account",
+          "Edit your account details",
+          "edit",
+          setEditAccountModalVisible
+        )}
+        {renderRow(
+          "Notifications",
+          "View your notifications",
+          "bell",
+          setNotificationsModalVisible
+        )}
+        {renderRow(
+          "Subscription",
+          "View Subscription plan",
+          "dollar-sign",
+          setSubscriptionModalVisible
+        )}
+        {renderRow(
+          "Technical Support",
           "We are here to help you out",
-          "headphones"
+          "headphones",
+          setTechnicalSupportModalVisible
         )}
       </View>
+      <Account
+        accountModalVisible={accountModalVisible}
+        setAccountModalVisible={setAccountModalVisible}
+      />
     </View>
   );
 };
@@ -78,6 +113,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     fontWeight: "300",
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  closeText: {
+    marginTop: 20,
+    color: colors.primary,
   },
 });
 
