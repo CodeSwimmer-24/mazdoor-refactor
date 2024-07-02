@@ -73,7 +73,7 @@ const Booking = () => {
 const styles = StyleSheet.create({
   header: {
     height: 140,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.baseColor,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     flexDirection: "row",

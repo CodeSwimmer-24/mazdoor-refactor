@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
@@ -8,25 +8,25 @@ const Footer = () => {
     <View style={styles.container}>
       <View style={styles.footer}>
         <View style={styles.footerItem}>
-          <View style={styles.iconWrapper}>
+          <TouchableOpacity style={styles.iconWrapper}>
             <MaterialCommunityIcons
               name="share"
               size={24}
               color={colors.primary}
             />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.text}>App Share</Text>
         </View>
         <View style={styles.footerItem}>
-          <View style={styles.iconWrapper}>
+          <TouchableOpacity style={styles.iconWrapper}>
             <Entypo name="message" size={20} color={colors.primary} />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.text}>Feedback</Text>
         </View>
         <View style={styles.footerItem}>
-          <View style={styles.iconWrapper}>
-            <AntDesign name="logout" size={20} color={colors.danger} />
-          </View>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <AntDesign name="logout" size={20} color="rgb(244, 67, 54)" />
+          </TouchableOpacity>
           <Text style={[styles.text, styles.logoutText]}>Log Out</Text>
         </View>
       </View>

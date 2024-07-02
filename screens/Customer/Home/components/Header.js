@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { SimpleLineIcons, Octicons } from "@expo/vector-icons";
@@ -6,7 +6,6 @@ import colors from "../../../../constants/colors";
 
 const Header = ({ name }) => {
   const profileName = name;
-  const initials = profileName.slice(0, 2).toUpperCase();
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -14,9 +13,12 @@ const Header = ({ name }) => {
         <View style={styles.headerContent}>
           <View style={styles.headerTopRow}>
             <View style={styles.profileInfo}>
-              <View style={styles.profilePicture}>
-                <Text style={styles.profileInitials}>{initials}</Text>
-              </View>
+              <Image
+                source={{
+                  uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
+                }}
+                style={styles.profileIcon}
+              />
               <View>
                 <Text style={styles.welcomeText}>Hey, Welcome 👋</Text>
                 <Text style={styles.userName}>{name}</Text>
@@ -78,6 +80,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 50,
+  },
+  profileIcon: {
+    height: 45,
+    width: 45,
+    borderRadius: 50,
+    marginRight: 10,
+    borderWidth: 4,
+    borderColor: "white",
   },
   seeMoreText: {
     fontSize: 12,
