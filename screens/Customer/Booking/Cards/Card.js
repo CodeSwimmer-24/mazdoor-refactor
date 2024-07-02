@@ -37,10 +37,10 @@ const Card = () => {
           </View>
           <View style={styles.actions}>
             <TouchableOpacity style={styles.callButton}>
-              <Zocial name="call" size={20} color={colors.baseColor} />
+              <Zocial name="call" size={20} color={colors.primary} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.whatsappButton}>
-              <FontAwesome5 name="whatsapp" size={20} color={colors.primary} />
+              <FontAwesome5 name="whatsapp" size={20} color="#075e54" />
             </TouchableOpacity>
           </View>
         </View>

@@ -1,0 +1,72 @@
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
+import colors from "../../../../constants/colors";
+
+const Footer = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.footer}>
+        <View style={styles.footerItem}>
+          <View style={styles.iconWrapper}>
+            <MaterialCommunityIcons
+              name="share"
+              size={24}
+              color={colors.primary}
+            />
+          </View>
+          <Text style={styles.text}>App Share</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <View style={styles.iconWrapper}>
+            <Entypo name="message" size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.text}>Feedback</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <View style={styles.iconWrapper}>
+            <AntDesign name="logout" size={20} color={colors.danger} />
+          </View>
+          <Text style={[styles.text, styles.logoutText]}>Log Out</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  footer: {
+    backgroundColor: "#f9f9f9",
+    width: "90%",
+    elevation: 1,
+    marginBottom: 10,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+  },
+  footerItem: {
+    alignItems: "center",
+  },
+  iconWrapper: {
+    backgroundColor: "#673de71a",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  text: {
+    marginTop: 2,
+    fontSize: 12,
+    color: "#505050",
+  },
+  logoutText: {
+    color: "rgb(244, 67, 54)",
+  },
+});
+
+export default Footer;

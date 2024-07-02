@@ -13,28 +13,51 @@ const categories = [
   {
     image: electrician,
     label: "Electrician",
+    value: "",
     backgroundColor: "rgb(237, 247, 237)",
   },
-  { image: plumber, label: "Plumber", backgroundColor: "rgb(249, 220, 220)" },
-  { image: carpenter, label: "Carpenter", backgroundColor: "#fff4e5" },
-  { image: painter, label: "Painter", backgroundColor: "rgb(229, 246, 253)" },
-  { image: chef, label: "Cook", backgroundColor: "rgb(229, 246, 253)" },
+  {
+    image: plumber,
+    value: "Plumber",
+    label: "Plumber",
+    backgroundColor: "rgb(249, 220, 220)",
+  },
+  {
+    image: carpenter,
+    value: "Carpenter",
+    label: "Carpenter",
+    backgroundColor: "#fff4e5",
+  },
+  {
+    image: painter,
+    value: "",
+    label: "Painter",
+    backgroundColor: "rgb(229, 246, 253)",
+  },
+  {
+    image: chef,
+    value: "",
+    label: "Cook",
+    backgroundColor: "rgb(229, 246, 253)",
+  },
   {
     image: mechanicCar,
     label: "Mechanic",
+    value: "",
     backgroundColor: "rgb(229, 246, 253)",
   },
   {
     image: ac,
     label: "AC Reapir",
+    value: "",
     backgroundColor: "rgb(229, 246, 253)",
   },
   {
     image: truck,
     label: "Auto",
+    value: "",
     backgroundColor: "rgb(229, 246, 253)",
   },
-  // Add more categories if needed
 ];
 
 const CategoryItem = ({ imageSource, label, backgroundColor }) => (
