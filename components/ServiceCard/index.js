@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 18,
     color: colors.baseColor,
   },
   basePriceText: {
