@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 
 const Account = ({
@@ -45,43 +45,29 @@ const Account = ({
                 <Text style={styles.profileName}>{name}</Text>
                 <Text style={styles.profileEmail}>{email}</Text>
               </View>
-              <View style={styles.detailsSection}>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="phone"
-                    size={24}
-                    color="#673de78a"
-                  />
+              <View style={styles.detailsContainer}>
+                <View style={styles.detailBox}>
+                  <Ionicons name="call-outline" size={20} color="gray" />
                   <Text style={styles.detailText}>+91 {contact}</Text>
                 </View>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="office-building"
-                    size={24}
-                    color="#673de78a"
-                  />
-                  <Text style={styles.detailText}>{buildingAddress}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="map"
-                    size={24}
-                    color="#673de78a"
-                  />
-                  <Text style={styles.detailText}>{locality}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <Entypo name="location" size={24} color="#673de78a" />
-                  <Text style={styles.detailText}>Token No 6</Text>
+                <View style={styles.detailBox2}>
+                  <View style={styles.detailRow}>
+                    <MaterialIcons name="location-pin" size={24} color="gray" />
+                    <Text style={styles.detailText}>{buildingAddress}</Text>
+                  </View>
+                  <View style={styles.detailRow}>
+                    <Ionicons name="map-outline" size={20} color="gray" />
+                    <Text style={styles.detailText}>
+                      {locality} Okkhala, Delhi
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
           </ScrollView>
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity
-              onPress={() => {
-                setAccountModalVisible(false);
-              }}
+              onPress={() => setAccountModalVisible(false)}
               style={styles.closeButton}
             >
               <Text style={styles.closeButtonText}>Close</Text>
@@ -136,19 +122,38 @@ const styles = StyleSheet.create({
     color: "gray",
     fontWeight: "300",
   },
-  detailsSection: {
-    marginTop: 30,
+  detailsContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  detailBox: {
+    width: "95%",
+    backgroundColor: "#f9f9f9",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 7,
+    elevation: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
   },
   detailRow: {
     flexDirection: "row",
     alignItems: "center",
+    padding: 5,
+  },
+  detailBox2: {
+    width: "95%",
+    backgroundColor: "#f9f9f9",
+    paddingVertical: 10,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    borderRadius: 7,
+    elevation: 1,
+    marginBottom: 20,
   },
   detailText: {
-    paddingLeft: 5,
-    fontSize: 14,
-    color: "#505050",
+    marginLeft: 5,
+    color: "gray",
   },
   closeButtonContainer: {
     alignItems: "center",

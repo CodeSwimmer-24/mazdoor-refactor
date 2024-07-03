@@ -4,6 +4,7 @@ import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Account from "../Models/Account";
 import EditProfile from "../Models/EditProfile";
+import Subscription from "../Models/Subscription/Subscription";
 
 const Body = ({ buildingAddress, locality, name, email, contact }) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
@@ -81,6 +82,12 @@ const Body = ({ buildingAddress, locality, name, email, contact }) => {
         name={name}
         email={email}
         contact={contact}
+      />
+      <Subscription
+        subscriptionModalVisible={subscriptionModalVisible}
+        setSubscriptionModalVisible={setSubscriptionModalVisible}
+        name={name}
+        email={email}
       />
     </View>
   );
