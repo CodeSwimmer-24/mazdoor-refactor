@@ -3,16 +3,32 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
+import { useAuthStore } from "../../../zustand/authStore";
 
 const Profile = () => {
+  const { name, email, contact, buildingAddress, locality } = useAuthStore(
+    (state) => ({
+      name: state.name,
+      email: state.email,
+      contact: state.contact,
+      buildingAddress: state.buildingAddress,
+      locality: state.locality,
+    })
+  );
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Header />
-        <Body />
+        <Header name={name} email={email} contact={contact} />
+        <Body
+          name={name}
+          email={email}
+          contact={contact}
+          buildingAddress={buildingAddress}
+          locality={locality}
+        />
         <Footer />
       </ScrollView>
     </View>

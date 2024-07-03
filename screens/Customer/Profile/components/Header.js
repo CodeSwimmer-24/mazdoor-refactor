@@ -3,7 +3,7 @@ import React from "react";
 import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 
-const Header = () => {
+const Header = ({ name, email, contact }) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -15,9 +15,9 @@ const Header = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.nameText}>Fahad Mahmood</Text>
-            <Text style={styles.emailText}>fahadmamood1200@gmail.com</Text>
-            <Text style={styles.emailText}>+91 7272977850</Text>
+            <Text style={styles.nameText}>{name}</Text>
+            <Text style={styles.emailText}>{email}</Text>
+            <Text style={styles.emailText}>+91 {contact}</Text>
           </View>
         </View>
         <TouchableOpacity>
