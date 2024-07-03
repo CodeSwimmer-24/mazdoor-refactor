@@ -8,18 +8,18 @@ import styles from "./styles";
 
 const LoginUi = ({ onLoginButtonPress }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [displayName, setDisplayName] = useState("");
+  // const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
 
   return (
     <View style={styles.container}>
       {/* <Image source={Logo} style={styles.logo} /> */}
 
-      <TextInput
+      {/* <TextInput
         value={displayName}
         placeholder="Name"
         onChangeText={(text) => setDisplayName(text)}
-      />
+      /> */}
 
       <TextInput
         value={email}
@@ -30,7 +30,7 @@ const LoginUi = ({ onLoginButtonPress }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={() => onLoginButtonPress(displayName, email)}
+          onPress={() => onLoginButtonPress("", email)}
         >
           <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
           <Text style={styles.buttonText}>Continue with Google</Text>

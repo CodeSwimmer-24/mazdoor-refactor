@@ -19,12 +19,11 @@ import styles from "./styles";
 import user from "../../assets/user.png";
 
 const RegisterForm = () => {
-  const { email, role, picture, setIsNewUser } = useAuthStore((state) => ({
-    email: state.email,
-    role: state.role,
-    picture: state.picture,
-    setIsNewUser: state.setIsNewUser,
-  }));
+  const {
+    email, role, picture,
+    setName, setContact, setBuildingAddress,
+    setLocality, setIsNewUser
+  } = useAuthStore();
 
   const initialFormData = {
     name: "",
@@ -84,8 +83,12 @@ const RegisterForm = () => {
       if (response.ok) {
         const result = await response.json();
         Alert.alert("Success", "Registration successful");
-        setIsNewUser(false);
+        setName(formData.name);
+        setContact(formData.contact);
+        setBuildingAddress(formData.buildingAddress);
+        setLocality(formData.locality);
         setFormData(initialFormData); // Reset form data to initial values
+        setIsNewUser(false);
       } else {
         Alert.alert("Error", "Registration failed");
       }

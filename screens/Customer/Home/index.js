@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "../../../zustand/authStore";
-import { passSignOutProp } from "..";
+import { passSignOutProp } from "../../../helpers";
 import colors from "../../../constants/colors";
 import Header from "./components/Header";
 import Banner from "./components/Banner";
@@ -39,7 +39,7 @@ const HomeMain = ({ signOut, navigation }) => {
         <Category navigation={navigation} />
         <TopRated />
       </ScrollView>
-      {/* <Button onPress={signOut} title="Logout" /> */}
+      <Button onPress={signOut} title="Logout" />
     </View>
   );
 };
