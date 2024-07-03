@@ -8,9 +8,11 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SubscriptionUi from "./SubscriptionUi";
 import colors from "../../../../../constants/colors";
+import axios from "axios";
+import { hostUrl } from "../../../../../services";
 
 const benefits = [
   "Access to all service providers",
@@ -24,7 +26,28 @@ const Subscription = ({
   setSubscriptionModalVisible,
   name,
 }) => {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+  const [selectedPlan, setSelectedPlan] = useState("Monthly");
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await axios.get(
+          `${hostUrl}/mazdoor/v1/getAllSubscription/true`
+        );
+        const subscriptionData = response.data.map((item) => ({
+          subscriptionId: item.subscriptionId,
+          subscriptionDuration: item.subscriptionDuration,
+          price: item.price,
+        }));
+        setSubscriptions(subscriptionData);
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      }
+    };
+
+    fetchSubscriptions();
+  }, []);
 
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
@@ -46,9 +69,9 @@ const Subscription = ({
             <SubscriptionUi
               name={name}
               selectedPlan={selectedPlan}
-              setSelectedPlan={selectedPlan}
               handlePlanSelect={handlePlanSelect}
               benefits={benefits}
+              subscriptions={subscriptions}
               setSubscriptionModalVisible={setSubscriptionModalVisible}
             />
           </ScrollView>

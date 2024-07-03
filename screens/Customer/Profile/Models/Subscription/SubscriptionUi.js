@@ -8,6 +8,7 @@ const SubscriptionUi = ({
   selectedPlan,
   handlePlanSelect,
   benefits,
+  subscriptions,
   setSubscriptionModalVisible,
 }) => {
   return (
@@ -36,72 +37,50 @@ const SubscriptionUi = ({
           Monthly or yearly? It's your call
         </Text>
         <View style={styles.cardsContainer}>
-          <TouchableOpacity
-            style={[
-              styles.planCard,
-              selectedPlan === "monthly"
-                ? styles.selectedCard
-                : styles.nonSelectedCard,
-            ]}
-            onPress={() => handlePlanSelect("monthly")}
-          >
-            <View style={styles.cardInnerContainer}>
-              <View>
-                <Text style={styles.cardTitle}>Monthly</Text>
-                <Text style={styles.cardPrice}>
-                  ₹ 29.00 <Text style={styles.cardPriceFrequency}>/month</Text>
-                </Text>
-              </View>
-              <View
+          {Array.isArray(subscriptions) && subscriptions.length > 0 ? (
+            subscriptions.map((subscription) => (
+              <TouchableOpacity
+                key={subscription.subscriptionId}
                 style={[
-                  styles.radioButton,
-                  selectedPlan === "monthly"
-                    ? styles.radioButtonSelectedBorder
-                    : styles.radioButtonUnselectedBorder,
+                  styles.planCard,
+                  selectedPlan === subscription.subscriptionDuration
+                    ? styles.selectedCard
+                    : styles.nonSelectedCard,
                 ]}
+                onPress={() =>
+                  handlePlanSelect(subscription.subscriptionDuration)
+                }
               >
-                {selectedPlan === "monthly" && (
-                  <View style={styles.radioButtonSelected} />
-                )}
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.planCard,
-              selectedPlan === "yearly"
-                ? styles.selectedCard
-                : styles.nonSelectedCard,
-            ]}
-            onPress={() => handlePlanSelect("yearly")}
-          >
-            <View style={styles.cardInnerContainer}>
-              <View>
-                <View style={styles.yearlyHeader}>
-                  <Text style={styles.cardTitle}>Yearly</Text>
-                  <View style={styles.saveBadge}>
-                    <Text style={styles.saveBadgeText}>Save 10%</Text>
+                <View style={styles.cardInnerContainer}>
+                  <View>
+                    <Text style={styles.cardTitle}>
+                      {subscription.subscriptionDuration}
+                    </Text>
+                    <Text style={styles.cardPrice}>
+                      ₹ {subscription.price}{" "}
+                      <Text style={styles.cardPriceFrequency}>
+                        /{subscription.subscriptionDuration}
+                      </Text>
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedPlan === subscription.subscriptionDuration
+                        ? styles.radioButtonSelectedBorder
+                        : styles.radioButtonUnselectedBorder,
+                    ]}
+                  >
+                    {selectedPlan === subscription.subscriptionDuration && (
+                      <View style={styles.radioButtonSelected} />
+                    )}
                   </View>
                 </View>
-                <Text style={styles.cardPrice}>
-                  ₹ 299.00{" "}
-                  <Text style={styles.cardPriceFrequency}>/yearly</Text>
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.radioButton,
-                  selectedPlan === "yearly"
-                    ? styles.radioButtonSelectedBorder
-                    : styles.radioButtonUnselectedBorder,
-                ]}
-              >
-                {selectedPlan === "yearly" && (
-                  <View style={styles.radioButtonSelected} />
-                )}
-              </View>
-            </View>
-          </TouchableOpacity>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text>Loading subscriptions...</Text>
+          )}
         </View>
         <View style={{ marginTop: 20 }}>
           {benefits.map((benefit, index) => (
