@@ -40,18 +40,18 @@ const CategoryDetail = ({ route, navigation }) => {
     fetchServiceProviders();
   }, []);
 
-  //   useEffect(() => {
-  //     const parent = navigation.getParent();
-  //     if (isFocused) {
-  //       parent?.setOptions({
-  //         tabBarStyle: { display: "none" },
-  //       });
-  //     } else {
-  //       parent?.setOptions({
-  //         tabBarStyle: { display: "flex" },
-  //       });
-  //     }
-  //   }, [isFocused, navigation]);
+  useEffect(() => {
+    const parent = navigation.getParent();
+    if (isFocused) {
+      parent?.setOptions({
+        tabBarStyle: { display: "none" },
+      });
+    } else {
+      parent?.setOptions({
+        tabBarStyle: { display: "flex" },
+      });
+    }
+  }, [isFocused, navigation]);
 
   if (loading) {
     return (

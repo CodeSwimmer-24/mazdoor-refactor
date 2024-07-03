@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import React from "react";
 import {
   View,
@@ -18,6 +19,8 @@ import Category from "./components/Category";
 import TopRated from "./components/TopRated";
 import CategoryDetail from "./components/CategoryDetail";
 import ServiceDetail from "./ServiceDetail/ServiceDetail";
+import { useIsFocused } from "@react-navigation/native";
+import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +35,21 @@ const HomeMain = ({ signOut, navigation }) => {
       buildingAddress: state.buildingAddress,
       locality: state.locality,
     }));
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    const parent = navigation.getParent();
+    if (isFocused) {
+      parent?.setOptions({
+        tabBarStyle: { display: "flex" },
+        ...getTabBarOptions(),
+      });
+    } else {
+      parent?.setOptions({
+        tabBarStyle: { display: "flex" },
+      });
+    }
+  }, [isFocused, navigation]);
 
   return (
     <View style={styles.container}>
