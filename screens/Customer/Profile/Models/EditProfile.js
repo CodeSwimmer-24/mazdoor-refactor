@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import CustomTextInput from "../../../../components/TextInput";
 import DropdownTextInput from "../../../../components/DropdownTextInput";
@@ -80,7 +80,6 @@ const EditProfile = ({
       if (response.status === 200) {
         Alert.alert("Success", "Profile updated successfully");
 
-        // Update Zustand state
         setEmail(formData.email);
         setName(formData.name);
         setContact(formData.contact);
@@ -93,7 +92,6 @@ const EditProfile = ({
       }
     } catch (error) {
       if (error.response) {
-        // Server responded with a status other than 200 range
         console.error("Error response:", error.response);
         Alert.alert(
           "Error",
@@ -102,14 +100,12 @@ const EditProfile = ({
           }`
         );
       } else if (error.request) {
-        // Request was made but no response received
         console.error("Error request:", error.request);
         Alert.alert(
           "Error",
           "No response from server. Please try again later."
         );
       } else {
-        // Something else caused an error
         console.error("Error message:", error.message);
         Alert.alert("Error", `An error occurred: ${error.message}`);
       }
