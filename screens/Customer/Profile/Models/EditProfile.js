@@ -7,12 +7,17 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import CustomTextInput from "../../../../components/TextInput";
 import DropdownTextInput from "../../../../components/DropdownTextInput";
+import axios from "axios";
+import { hostUrl } from "../../../../services";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const EditProfile = ({
   editAccountModalVisible,
@@ -23,12 +28,96 @@ const EditProfile = ({
   email,
   contact,
 }) => {
+  const [formData, setFormData] = useState({
+    buildingAddress,
+    locality,
+    name,
+    email,
+    contact,
+  });
+
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (name, value) => {
     setFormData({
       ...formData,
       [name]: value,
     });
   };
+
+  const { setEmail, setName, setContact, setBuildingAddress, setLocality } =
+    useAuthStore();
+
+  const handleSubmit = async () => {
+    const payload = {
+      address: {
+        area: "",
+        buildingAddress: formData.buildingAddress,
+        city: "",
+        exactLocation: "",
+        locality: formData.locality,
+        region: "",
+      },
+      contactNo: formData.contact,
+      emailId: email,
+      name: formData.name,
+      role: "customer",
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        `${hostUrl}/mazdoor/v1/updateProfile`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        Alert.alert("Success", "Profile updated successfully");
+
+        // Update Zustand state
+        setEmail(formData.email);
+        setName(formData.name);
+        setContact(formData.contact);
+        setBuildingAddress(formData.buildingAddress);
+        setLocality(formData.locality);
+
+        setEditAccountModalVisible(false);
+      } else {
+        Alert.alert("Error", "Failed to update profile");
+      }
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        console.error("Error response:", error.response);
+        Alert.alert(
+          "Error",
+          `Failed to update profile: ${
+            error.response.data.message || error.response.status
+          }`
+        );
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("Error request:", error.request);
+        Alert.alert(
+          "Error",
+          "No response from server. Please try again later."
+        );
+      } else {
+        // Something else caused an error
+        console.error("Error message:", error.message);
+        Alert.alert("Error", `An error occurred: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal
       visible={editAccountModalVisible}
@@ -41,6 +130,18 @@ const EditProfile = ({
           onPress={() => setEditAccountModalVisible(false)}
         />
         <View style={styles.modalContent}>
+          <View>
+            <View style={styles.crossContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  setEditAccountModalVisible(false);
+                }}
+                style={styles.cross}
+              >
+                <Entypo name="cross" size={22} color="#f44336" />
+              </TouchableOpacity>
+            </View>
+          </View>
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
@@ -52,42 +153,34 @@ const EditProfile = ({
                 />
               </View>
             </View>
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  width: "95%",
-                }}
-              >
+            <View style={{ alignItems: "center" }}>
+              <View style={{ width: "95%" }}>
                 <CustomTextInput
                   iconName="person-outline"
                   iconType="Ionicons"
                   placeholder="Edit Name"
-                  value={name}
+                  value={formData.name}
                   onChangeText={(text) => handleChange("name", text)}
                 />
                 <CustomTextInput
                   iconName="call-outline"
                   iconType="Ionicons"
                   placeholder="Edit Contact No."
-                  value={contact}
+                  value={formData.contact}
                   onChangeText={(text) => handleChange("contact", text)}
                 />
                 <CustomTextInput
                   iconName="location-outline"
                   iconType="Ionicons"
                   placeholder="Building Address"
-                  value={buildingAddress}
+                  value={formData.buildingAddress}
                   onChangeText={(text) => handleChange("buildingAddress", text)}
                 />
                 <DropdownTextInput
                   iconName="map"
                   iconType="Ionicons"
-                  placeholder="Building Address"
-                  value={locality}
+                  placeholder="Locality"
+                  value={formData.locality}
                   onChangeText={(text) => handleChange("locality", text)}
                 />
               </View>
@@ -95,12 +188,15 @@ const EditProfile = ({
           </ScrollView>
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity
-              onPress={() => {
-                setEditAccountModalVisible(false);
-              }}
+              onPress={handleSubmit}
               style={styles.closeButton}
+              disabled={loading}
             >
-              <Text style={styles.closeButtonText}>SUBMIT</Text>
+              {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text style={styles.closeButtonText}>SUBMIT</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -129,6 +225,17 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
+  },
+  crossContainer: {
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  cross: {
+    backgroundColor: "#f443361a",
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 50,
   },
   scrollContent: {
     paddingBottom: 20,
