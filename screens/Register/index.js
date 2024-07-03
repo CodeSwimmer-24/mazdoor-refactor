@@ -20,9 +20,14 @@ import user from "../../assets/user.png";
 
 const RegisterForm = () => {
   const {
-    email, role, picture,
-    setName, setContact, setBuildingAddress,
-    setLocality, setIsNewUser
+    email,
+    role,
+    picture,
+    setName,
+    setContact,
+    setBuildingAddress,
+    setLocality,
+    setIsNewUser,
   } = useAuthStore();
 
   const initialFormData = {

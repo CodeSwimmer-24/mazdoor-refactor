@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 16,
-    color: colors.baseColor,
+    fontSize: 14,
+    color: "#505050",
   },
 });
 
