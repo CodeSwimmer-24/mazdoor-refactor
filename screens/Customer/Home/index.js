@@ -22,24 +22,31 @@ import ServiceDetail from "./ServiceDetail/ServiceDetail";
 const Stack = createNativeStackNavigator();
 
 const HomeMain = ({ signOut, navigation }) => {
-  const { email, role, name, picture, isNewUser } = useAuthStore((state) => ({
-    email: state.email,
-    role: state.role,
-    name: state.name,
-    picture: state.picture,
-    isNewUser: state.isNewUser,
-  }));
+  const { email, role, name, picture, isNewUser, buildingAddress, locality } =
+    useAuthStore((state) => ({
+      email: state.email,
+      role: state.role,
+      name: state.name,
+      picture: state.picture,
+      isNewUser: state.isNewUser,
+      buildingAddress: state.buildingAddress,
+      locality: state.locality,
+    }));
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#f9f9f9" />
-      <Header name={name} />
+      <Header
+        name={name}
+        buildingAddress={buildingAddress}
+        locality={locality}
+      />
       <ScrollView>
         <Banner />
         <Category navigation={navigation} />
         <TopRated />
       </ScrollView>
-      <Button onPress={signOut} title="Logout" />
+      {/* <Button onPress={signOut} title="Logout" /> */}
     </View>
   );
 };

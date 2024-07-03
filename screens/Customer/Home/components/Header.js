@@ -4,8 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { SimpleLineIcons, Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 
-const Header = ({ name }) => {
-  const profileName = name;
+const Header = ({ name, locality, buildingAddress }) => {
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -31,7 +30,10 @@ const Header = ({ name }) => {
           <View style={styles.locationContainer}>
             <View style={styles.locationContent}>
               <SimpleLineIcons name="location-pin" size={22} color="gray" />
-              <Text style={styles.locationText}>Current Location Text</Text>
+              <Text style={styles.locationText}>
+                {buildingAddress ? buildingAddress : "CurrenetLocation"},
+                {locality ? locality : "Area"}
+              </Text>
             </View>
           </View>
         </View>

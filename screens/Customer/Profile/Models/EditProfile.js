@@ -11,26 +11,34 @@ import {
 import React from "react";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import CustomTextInput from "../../../../components/TextInput";
+import DropdownTextInput from "../../../../components/DropdownTextInput";
 
-const Account = ({
-  accountModalVisible,
-  setAccountModalVisible,
+const EditProfile = ({
+  editAccountModalVisible,
+  setEditAccountModalVisible,
   buildingAddress,
   locality,
   name,
   email,
   contact,
 }) => {
+  const handleChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   return (
     <Modal
-      visible={accountModalVisible}
+      visible={editAccountModalVisible}
       transparent={true}
       animationType="slide"
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity
           style={styles.modalOverlay}
-          onPress={() => setAccountModalVisible(false)}
+          onPress={() => setEditAccountModalVisible(false)}
         />
         <View style={styles.modalContent}>
           <ScrollView>
@@ -42,49 +50,57 @@ const Account = ({
                   }}
                   style={styles.profileImage}
                 />
-                <Text style={styles.profileName}>{name}</Text>
-                <Text style={styles.profileEmail}>{email}</Text>
               </View>
-              <View style={styles.detailsSection}>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="phone"
-                    size={24}
-                    color="#673de78a"
-                  />
-                  <Text style={styles.detailText}>+91 {contact}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="office-building"
-                    size={24}
-                    color="#673de78a"
-                  />
-                  <Text style={styles.detailText}>{buildingAddress}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <MaterialCommunityIcons
-                    name="map"
-                    size={24}
-                    color="#673de78a"
-                  />
-                  <Text style={styles.detailText}>{locality}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <Entypo name="location" size={24} color="#673de78a" />
-                  <Text style={styles.detailText}>Token No 6</Text>
-                </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  width: "95%",
+                }}
+              >
+                <CustomTextInput
+                  iconName="person-outline"
+                  iconType="Ionicons"
+                  placeholder="Edit Name"
+                  value={name}
+                  onChangeText={(text) => handleChange("name", text)}
+                />
+                <CustomTextInput
+                  iconName="call-outline"
+                  iconType="Ionicons"
+                  placeholder="Edit Contact No."
+                  value={contact}
+                  onChangeText={(text) => handleChange("contact", text)}
+                />
+                <CustomTextInput
+                  iconName="location-outline"
+                  iconType="Ionicons"
+                  placeholder="Building Address"
+                  value={buildingAddress}
+                  onChangeText={(text) => handleChange("buildingAddress", text)}
+                />
+                <DropdownTextInput
+                  iconName="map"
+                  iconType="Ionicons"
+                  placeholder="Building Address"
+                  value={locality}
+                  onChangeText={(text) => handleChange("locality", text)}
+                />
               </View>
             </View>
           </ScrollView>
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity
               onPress={() => {
-                setAccountModalVisible(false);
+                setEditAccountModalVisible(false);
               }}
               style={styles.closeButton}
             >
-              <Text style={styles.closeButtonText}>Close</Text>
+              <Text style={styles.closeButtonText}>SUBMIT</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -105,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.55,
+    height: height * 0.7,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -168,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Account;
+export default EditProfile;
