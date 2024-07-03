@@ -3,9 +3,17 @@ import React from "react";
 import colors from "../../constants/colors";
 import { MaterialIcons, Fontisto } from "@expo/vector-icons";
 
-const ServiceCard = ({ id, name, location, category, rating, price }) => {
+const ServiceCard = ({
+  id,
+  name,
+  location,
+  category,
+  rating,
+  price,
+  onPress,
+}) => {
   return (
-    <TouchableOpacity key={id} style={styles.item}>
+    <TouchableOpacity onPress={onPress} key={id} style={styles.item}>
       <View>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.locationContainer}>
@@ -96,7 +104,7 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 18,
     color: colors.baseColor,
   },
   basePriceText: {

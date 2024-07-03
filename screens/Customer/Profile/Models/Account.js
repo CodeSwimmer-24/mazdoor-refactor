@@ -12,7 +12,15 @@ import React from "react";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 
-const Account = ({ accountModalVisible, setAccountModalVisible }) => {
+const Account = ({
+  accountModalVisible,
+  setAccountModalVisible,
+  buildingAddress,
+  locality,
+  name,
+  email,
+  contact,
+}) => {
   return (
     <Modal
       visible={accountModalVisible}
@@ -34,10 +42,8 @@ const Account = ({ accountModalVisible, setAccountModalVisible }) => {
                   }}
                   style={styles.profileImage}
                 />
-                <Text style={styles.profileName}>Fahad Mahmood</Text>
-                <Text style={styles.profileEmail}>
-                  fahadmahmood1200@gmail.com
-                </Text>
+                <Text style={styles.profileName}>{name}</Text>
+                <Text style={styles.profileEmail}>{email}</Text>
               </View>
               <View style={styles.detailsSection}>
                 <View style={styles.detailRow}>
@@ -46,7 +52,7 @@ const Account = ({ accountModalVisible, setAccountModalVisible }) => {
                     size={24}
                     color="#673de78a"
                   />
-                  <Text style={styles.detailText}>+91 7272977850</Text>
+                  <Text style={styles.detailText}>+91 {contact}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <MaterialCommunityIcons
@@ -54,9 +60,7 @@ const Account = ({ accountModalVisible, setAccountModalVisible }) => {
                     size={24}
                     color="#673de78a"
                   />
-                  <Text style={styles.detailText}>
-                    Near old masjid makhdumpur.
-                  </Text>
+                  <Text style={styles.detailText}>{buildingAddress}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <MaterialCommunityIcons
@@ -64,7 +68,7 @@ const Account = ({ accountModalVisible, setAccountModalVisible }) => {
                     size={24}
                     color="#673de78a"
                   />
-                  <Text style={styles.detailText}>Shaheen Bagh</Text>
+                  <Text style={styles.detailText}>{locality}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <Entypo name="location" size={24} color="#673de78a" />
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.6,
+    height: height * 0.55,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

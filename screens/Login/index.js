@@ -54,7 +54,6 @@ const Login = () => {
   //       // Update Zustand store with email, role, and name
   //       authStore.setEmail(email);
   //       authStore.setRole("customer");
-  //       authStore.setName(displayName);
   //       authStore.setPicture(result.additionalUserInfo.profile.picture);
   //       authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
 
@@ -103,7 +102,6 @@ const Login = () => {
       // Update Zustand store with email, role, and name
       authStore.setEmail(email);
       authStore.setRole("customer");
-      authStore.setName(displayName);
       // authStore.setPicture(result.additionalUserInfo.profile.picture);
       authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
 
@@ -129,14 +127,7 @@ const Login = () => {
       setUser(null);
 
       // Reset Zustand store on sign out
-      authStore.setEmail("");
-      authStore.setRole("");
-      authStore.setName("");
-      authStore.setPicture("");
-      authStore.setIsNewUser(false); // Reset isNewUser on sign out
-
-      // Clear persisted state from AsyncStorage
-      // await AsyncStorage.removeItem("@authStore");
+      authStore.reset();
     } catch (error) {
       console.error("Failed to sign out user.", error);
     }

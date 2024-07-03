@@ -3,26 +3,33 @@ import { devtools, persist } from "zustand/middleware";
 import { create } from "zustand";
 
 export const useAuthStore = create(
-  devtools(
-    persist(
-      (set) => ({
-        email: "",
-        role: "",
-        name: "",
-        picture: "",
-        isNewUser: false,
+  // devtools(
+  persist(
+    (set) => ({
+      email: "",
+      role: "",
+      name: "",
+      contact: "",
+      picture: "",
+      buildingAddress: "",
+      locality: "",
+      isNewUser: false,
 
-        // Define actions to update state
-        setEmail: (email) => set({ email }),
-        setRole: (role) => set({ role }),
-        setName: (name) => set({ name }),
-        setPicture: (picture) => set({ picture }),
-        setIsNewUser: (isNewUser) => set({ isNewUser }),
-      }),
-      {
-        name: "auth-storage", // unique name
-        getStorage: () => AsyncStorage, // specify which storage to use
-      }
-    )
+      // Define actions to update state
+      setEmail: (email) => set((state) => ({ ...state, email })),
+      setRole: (role) => set((state) => ({ ...state, role })),
+      setName: (name) => set((state) => ({ ...state, name })),
+      setContact: (contact) => set((state) => ({ ...state, contact })),
+      setPicture: (picture) => set((state) => ({ ...state, picture })),
+      setBuildingAddress: (buildingAddress) =>
+        set((state) => ({ ...state, buildingAddress })),
+      setLocality: (locality) => set((state) => ({ ...state, locality })),
+      setIsNewUser: (isNewUser) => set((state) => ({ ...state, isNewUser })),
+    }),
+    {
+      name: "auth-storage", // unique name
+      getStorage: () => AsyncStorage,
+    }
   )
+  // )
 );

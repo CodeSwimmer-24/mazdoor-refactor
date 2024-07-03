@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Account from "../Models/Account";
+import EditProfile from "../Models/EditProfile";
 
-const Body = () => {
+const Body = ({ buildingAddress, locality, name, email, contact }) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
   const [notificationsModalVisible, setNotificationsModalVisible] =
@@ -66,6 +67,20 @@ const Body = () => {
       <Account
         accountModalVisible={accountModalVisible}
         setAccountModalVisible={setAccountModalVisible}
+        buildingAddress={buildingAddress}
+        locality={locality}
+        name={name}
+        email={email}
+        contact={contact}
+      />
+      <EditProfile
+        editAccountModalVisible={editAccountModalVisible}
+        setEditAccountModalVisible={setEditAccountModalVisible}
+        buildingAddress={buildingAddress}
+        locality={locality}
+        name={name}
+        email={email}
+        contact={contact}
       />
     </View>
   );

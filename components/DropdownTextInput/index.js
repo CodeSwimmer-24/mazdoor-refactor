@@ -97,7 +97,7 @@ const DropdownTextInput = ({
                   <Text
                     style={[
                       styles.itemText,
-                      selected === district && { color: "red" },
+                      selected === district && { color: "gray" },
                     ]}
                   >
                     {district}
@@ -113,6 +113,5 @@ const DropdownTextInput = ({
     </View>
   );
 };
-
 
 export default DropdownTextInput;

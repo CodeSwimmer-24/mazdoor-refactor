@@ -4,15 +4,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
 import { Dimensions } from "react-native";
 import Home from "../Customer/Home";
+import { passSignOutProp } from "../../helpers";
 import Booking from "./Booking";
 import Like from "./Like";
 import Profile from "./Profile";
 import colors from "../../constants/colors";
-
-// Higher order component, to pass in the props to a component
-const passProp = (Component, signOut) => {
-  return (props) => <Component {...props} signOut={signOut} />;
-};
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get("window");
@@ -63,7 +59,7 @@ const Customer = ({ signOut }) => {
         <Tab.Screen
           name="Home"
           options={{ headerShown: false }}
-          component={passProp(Home, signOut)}
+          component={passSignOutProp(Home, signOut)}
         />
         <Tab.Screen
           name="Booking"
