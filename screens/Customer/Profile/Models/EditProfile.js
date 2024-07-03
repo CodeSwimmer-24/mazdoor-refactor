@@ -78,8 +78,6 @@ const EditProfile = ({
       );
 
       if (response.status === 200) {
-        Alert.alert("Success", "Profile updated successfully");
-
         setEmail(formData.email);
         setName(formData.name);
         setContact(formData.contact);
@@ -87,6 +85,7 @@ const EditProfile = ({
         setLocality(formData.locality);
 
         setEditAccountModalVisible(false);
+        Alert.alert("Success", "Profile updated successfully");
       } else {
         Alert.alert("Error", "Failed to update profile");
       }
