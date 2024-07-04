@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,97 +8,161 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import { MaterialIcons, Ionicons, EvilIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import { hostUrl } from "../../../../services";
+import { useAuthStore } from "../../../../zustand/authStore";
+import SuccessAlert from "../../../../constants/SuccessAlert";
 
 const BookingModal = ({
   bookingIsVisible,
   setBookingVisible,
   shortProfile,
+  serviceProvider,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const userEmailId = useAuthStore((state) => state.userEmailId);
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const handleBooking = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${hostUrl}/mazdoor/v1/addBooking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          spEmailId: serviceProvider.emailId,
+          userEmailId: userEmailId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      setAlertVisible(true);
+      setBookingVisible(false);
+    } catch (error) {
+      console.error("Error making booking:", error);
+      Alert.alert("Booking Failed", "There was an error with your booking.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Modal visible={bookingIsVisible} transparent={true} animationType="slide">
-      <View style={styles.modalContainer}>
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          onPress={() => setBookingVisible(false)}
-        />
-        <View style={styles.modalContent}>
-          <ScrollView>
-            <View style={styles.scrollContent}>
-              <View style={styles.profileSection}>
-                <Image
-                  source={{
-                    uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
-                  }}
-                  style={styles.profileImage}
-                />
-                <View style={styles.profileDetails}>
-                  <Text style={styles.greetingText}>Hey there 👋</Text>
-                  <Text style={styles.introText}>
-                    My name is{" "}
-                    <Text style={styles.nameText}>Sharique Ahmed</Text>
-                  </Text>
-                  <Text style={styles.ageGenderText}>
-                    I'm {shortProfile.age} years old {shortProfile.gender}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.detailsContainer}>
-                <View style={styles.detailBox}>
-                  <Ionicons name="call-outline" size={20} color="gray" />
-                  <Text style={styles.detailText}>+91 7272977850</Text>
-                </View>
-                <View style={styles.detailBox2}>
-                  <View style={styles.detailRow}>
-                    <MaterialIcons name="location-pin" size={24} color="gray" />
-                    <Text style={styles.detailText}>
-                      Near old Madjid Makhdumpur
+    <>
+      <Modal
+        visible={bookingIsVisible}
+        transparent={true}
+        animationType="slide"
+      >
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            onPress={() => setBookingVisible(false)}
+          />
+          <View style={styles.modalContent}>
+            <ScrollView>
+              <View style={styles.scrollContent}>
+                <View style={styles.profileSection}>
+                  <Image
+                    source={{
+                      uri: "https://cdn2.vectorstock.com/i/1000x1000/61/86/construction-worker-avatar-profile-colorful-vector-24396186.jpg",
+                    }}
+                    style={styles.profileImage}
+                  />
+                  <View style={styles.profileDetails}>
+                    <Text style={styles.greetingText}>Hey there 👋</Text>
+                    <Text style={styles.introText}>
+                      My name is{" "}
+                      <Text style={styles.nameText}>{shortProfile.name}</Text>
                     </Text>
-                  </View>
-                  <View style={styles.detailRow}>
-                    <Ionicons name="map-outline" size={20} color="gray" />
-                    <Text style={styles.detailText}>
-                      Datla House, Okkhala, Delhi
+                    <Text style={styles.ageGenderText}>
+                      I'm {shortProfile.age} years old {shortProfile.gender}
                     </Text>
                   </View>
                 </View>
+                <View style={styles.detailsContainer}>
+                  <View style={styles.detailBox}>
+                    <Ionicons name="call-outline" size={20} color="gray" />
+                    <Text style={styles.detailText}>
+                      +91 {shortProfile.contactNo}
+                    </Text>
+                  </View>
+                  <View style={styles.detailBox2}>
+                    <View style={styles.detailRow}>
+                      <MaterialIcons
+                        name="location-pin"
+                        size={24}
+                        color="gray"
+                      />
+                      <Text style={styles.detailText}>
+                        {shortProfile.address?.buildingAddress},{" "}
+                        {shortProfile.address?.exactLocation},
+                      </Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="map-outline" size={20} color="gray" />
+                      <Text style={styles.detailText}>
+                        {shortProfile.address?.locality},{" "}
+                        {shortProfile.address?.area},{" "}
+                        {shortProfile.address?.region}, Delhi
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </ScrollView>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => setBookingVisible(false)}
-              style={[styles.button, styles.closeButton]}
-            >
-              <Ionicons
-                style={{ marginRight: 5 }}
-                name="archive-outline"
-                size={22}
-                color={colors.danger}
-              />
-              <Text style={styles.buttonText}>Close</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setBookingVisible(false)}
-              style={[styles.button, styles.confirmButton]}
-            >
-              <Text
-                style={[
-                  styles.buttonText,
-                  {
-                    color: colors.white,
-                  },
-                ]}
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => setBookingVisible(false)}
+                style={[styles.button, styles.closeButton]}
               >
-                Confirm
-              </Text>
-            </TouchableOpacity>
+                <Ionicons
+                  style={{ marginRight: 5 }}
+                  name="archive-outline"
+                  size={22}
+                  color={colors.danger}
+                />
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleBooking}
+                style={[styles.button, styles.confirmButton]}
+                disabled={loading} // Disable the button when loading
+              >
+                {loading ? (
+                  <ActivityIndicator color={colors.white} />
+                ) : (
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      {
+                        color: colors.white,
+                      },
+                    ]}
+                  >
+                    Confirm
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+      <SuccessAlert
+        visible={alertVisible}
+        message="Your booking has been confirmed!"
+        onClose={() => setAlertVisible(false)}
+      />
+    </>
   );
 };
 
@@ -134,6 +198,8 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: "lightgray",
   },
   profileDetails: {
     marginTop: 20,

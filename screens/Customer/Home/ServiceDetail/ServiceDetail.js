@@ -96,6 +96,7 @@ const ServiceDetail = ({ route }) => {
         bookingIsVisible={bookingIsVisible}
         setBookingVisible={setBookingVisible}
         shortProfile={shortProfile}
+        serviceProvider={serviceProvider}
       />
     </View>
   );
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "absolute",
-    bottom: 12,
+    bottom: 20,
     left: 0,
     right: 0,
     alignItems: "center",
