@@ -15,8 +15,8 @@ import { Entypo, AntDesign } from "@expo/vector-icons";
 import ServiceCard from "../../../../components/ServiceCard";
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
-import noData from "../../../../assets/assets/NoBooking.png";
 import { useIsFocused } from "@react-navigation/native";
+import NotFound from "../../../../constants/NotFound";
 
 const CategoryDetail = ({ route, navigation }) => {
   const isFocused = useIsFocused();
@@ -96,13 +96,7 @@ const CategoryDetail = ({ route, navigation }) => {
               </View>
             ))
           ) : (
-            <View style={styles.noDataContainer}>
-              <Image source={noData} style={styles.noDataImage} />
-              <Text style={styles.noDataTitle}>Opps!</Text>
-              <Text style={styles.noDataSubtitle}>
-                No data is available in this location
-              </Text>
-            </View>
+            <NotFound />
           )}
         </ScrollView>
       </View>
@@ -141,28 +135,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginVertical: 5,
     marginHorizontal: 5,
-  },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  noDataImage: {
-    height: 300,
-    width: 300,
-  },
-  noDataTitle: {
-    marginTop: 20,
-    fontSize: 40,
-    fontWeight: "600",
-    color: colors.primary,
-  },
-  noDataSubtitle: {
-    marginTop: 5,
-    fontSize: 18,
-    fontWeight: "300",
-    color: "gray",
   },
 });
 
