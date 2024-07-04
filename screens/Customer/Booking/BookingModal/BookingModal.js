@@ -79,13 +79,9 @@ const BookingModal = ({
                     style={styles.profileImage}
                   />
                   <View style={styles.profileDetails}>
-                    <Text style={styles.greetingText}>Hey there 👋</Text>
-                    <Text style={styles.introText}>
-                      My name is{" "}
-                      <Text style={styles.nameText}>{shortProfile.name}</Text>
-                    </Text>
+                    <Text style={styles.introText}>{shortProfile.name}</Text>
                     <Text style={styles.ageGenderText}>
-                      I'm {shortProfile.age} years old {shortProfile.gender}
+                      {shortProfile.age} years old, {shortProfile.gender}ale
                     </Text>
                   </View>
                 </View>
@@ -203,7 +199,7 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
   },
   profileDetails: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: "center",
   },
   greetingText: {
@@ -212,14 +208,15 @@ const styles = StyleSheet.create({
   },
   introText: {
     marginTop: 2,
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: "600",
     color: "#505050",
   },
   nameText: {
     fontWeight: "500",
   },
   ageGenderText: {
-    marginTop: 5,
+    marginTop: 2,
     color: "gray",
   },
   detailsContainer: {

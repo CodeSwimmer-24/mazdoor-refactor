@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   benefitTextContainer: {
     marginLeft: 20,
     borderBottomWidth: 1,
-    paddingBottom: 10,
+    paddingBottom: 5,
     borderBottomColor: "lightgray",
     width: "85%",
   },
