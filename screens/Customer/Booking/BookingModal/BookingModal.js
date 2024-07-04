@@ -160,6 +160,7 @@ const BookingModal = ({
       <SuccessAlert
         visible={alertVisible}
         message="Your booking has been confirmed!"
+        info="Go to Booking page to see details."
         onClose={() => setAlertVisible(false)}
       />
     </>
