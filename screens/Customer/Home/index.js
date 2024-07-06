@@ -1,11 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 import React from "react";
 import {
   View,
-  Text,
-  Button,
   StyleSheet,
-  Image,
   ScrollView,
   StatusBar,
 } from "react-native";
@@ -17,10 +14,11 @@ import Header from "./components/Header";
 import Banner from "./components/Banner";
 import Category from "./components/Category";
 import TopRated from "./components/TopRated";
-import CategoryDetail from "./components/CategoryDetail";
-import ServiceDetail from "./ServiceDetail/ServiceDetail";
-import { useIsFocused } from "@react-navigation/native";
+import CategoryDetail from "./screens/CategoryDetail";
+import ServiceDetail from "./screens/ServiceDetail";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
+import { getFavoriteSPs } from "../../../services";
+import { useCustomerStore } from "../../../zustand/customerStore";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,20 +34,22 @@ const HomeMain = ({ signOut, navigation }) => {
       locality: state.locality,
     }));
 
-  const isFocused = useIsFocused();
+  const { favoriteSps, setFavoriteSps } = useCustomerStore();
+
   useEffect(() => {
     const parent = navigation.getParent();
-    if (isFocused) {
-      parent?.setOptions({
-        tabBarStyle: { display: "flex" },
-        ...getTabBarOptions(),
-      });
-    } else {
-      parent?.setOptions({
-        tabBarStyle: { display: "flex" },
-      });
+    parent?.setOptions({
+      tabBarStyle: { display: "flex" },
+      ...getTabBarOptions(),
+    });
+
+    if (!favoriteSps.length) {
+      console.log("HOME", "Getting fav Sps");
+      getFavoriteSPs(email)
+        .then(sps => setFavoriteSps(sps))
+        .catch(err => console.log(err.response.data));
     }
-  }, [isFocused, navigation]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -70,6 +70,8 @@ const HomeMain = ({ signOut, navigation }) => {
 };
 
 const Home = ({ signOut }) => {
+  const { email } = useAuthStore();
+
   return (
     <Stack.Navigator initialRouteName="HomeMain">
       <Stack.Screen

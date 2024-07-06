@@ -6,20 +6,17 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 import { Entypo, AntDesign } from "@expo/vector-icons";
-import ServiceCard from "../../../../components/ServiceCard";
-import colors from "../../../../constants/colors";
-import { hostUrl } from "../../../../services";
-import { useIsFocused } from "@react-navigation/native";
-import NotFound from "../../../../constants/NotFound";
+import ServiceCard from "../../../../../components/ServiceCard";
+import colors from "../../../../../constants/colors";
+import { hostUrl } from "../../../../../services";
+import NotFound from "../../../../../constants/NotFound";
 
 const CategoryDetail = ({ route, navigation }) => {
-  const isFocused = useIsFocused();
   const { label } = route.params;
   const [serviceProviders, setServiceProviders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,16 +39,10 @@ const CategoryDetail = ({ route, navigation }) => {
 
   useEffect(() => {
     const parent = navigation.getParent();
-    if (isFocused) {
-      parent?.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-    } else {
-      parent?.setOptions({
-        tabBarStyle: { display: "flex" },
-      });
-    }
-  }, [isFocused, navigation]);
+    parent?.setOptions({
+      tabBarStyle: { display: "none" },
+    });
+  }, []);
 
   if (loading) {
     return (

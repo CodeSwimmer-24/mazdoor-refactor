@@ -7,7 +7,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import colors from "../../../../../constants/colors";
+import colors from "../../../../../../constants/colors";
 import { FontAwesome } from "@expo/vector-icons";
 
 const Section = ({ services, feedbackList, shortProfile }) => {
