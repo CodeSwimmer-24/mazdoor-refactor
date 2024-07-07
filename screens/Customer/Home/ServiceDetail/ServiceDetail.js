@@ -47,8 +47,6 @@ const ServiceDetail = ({ route }) => {
     fetchData();
   }, [emailId]);
 
-  console.log(serviceProvider.emailId);
-
   useFocusEffect(
     useCallback(() => {
       const parent = navigation.getParent();

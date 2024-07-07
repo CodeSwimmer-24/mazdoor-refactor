@@ -11,7 +11,7 @@ import {
 import colors from "../colors";
 import done from "../.../../../assets/assets/done.png";
 
-const SuccessAlert = ({ visible, message, onClose }) => {
+const SuccessAlert = ({ visible, message, onClose, info }) => {
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
       <View style={styles.modalOverlay}>
@@ -24,7 +24,7 @@ const SuccessAlert = ({ visible, message, onClose }) => {
             }}
           >
             <Text style={styles.messageText}>{message}</Text>
-            <Text style={styles.info}>Go to Booking page to see details.</Text>
+            <Text style={styles.info}>{info}</Text>
           </View>
           <TouchableOpacity style={styles.okButton} onPress={onClose}>
             <Text style={styles.okButtonText}>Done</Text>

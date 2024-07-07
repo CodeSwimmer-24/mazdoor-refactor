@@ -5,25 +5,33 @@ import colors from "../colors";
 
 const NotFound = () => {
   return (
-    <View style={styles.noDataContainer}>
-      <Image source={noData} style={styles.noDataImage} />
-      <Text style={styles.noDataTitle}>Oops!</Text>
-      <Text style={styles.noDataSubtitle}>
-        No data is available in this location
-      </Text>
+    <View style={styles.container}>
+      <View style={styles.noDataContainer}>
+        <Image source={noData} style={styles.noDataImage} />
+        <Text style={styles.noDataTitle}>Oops!</Text>
+        <Text style={styles.noDataSubtitle}>
+          {" "}
+          Sorry we don't find any record found for this service.
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    flex: 1,
+  },
   noDataContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.white,
+    width: "80%",
   },
   noDataImage: {
-    marginTop: "40%",
+    marginTop: "0%",
     height: 250,
     width: 250,
   },
