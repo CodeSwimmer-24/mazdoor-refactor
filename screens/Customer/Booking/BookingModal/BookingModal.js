@@ -27,6 +27,8 @@ const BookingModal = ({
   const userEmailId = useAuthStore((state) => state.userEmailId);
   const [alertVisible, setAlertVisible] = useState(false);
 
+  console.log(serviceProvider.emailId);
+
   const handleBooking = async () => {
     setLoading(true);
     try {

@@ -1,149 +1,261 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Zocial } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 
-const Card = () => {
+const Card = ({
+  key,
+  name,
+  age,
+  gender,
+  profession,
+  shopName,
+  date,
+  location,
+  status,
+}) => {
+  const getStatusColor = () => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return styles.statusInProgress;
+      case "confirm":
+        return styles.statusCompleted;
+      case "progress":
+        return styles.statusInProgress;
+      case "cancelled":
+        return styles.statusCanclled;
+      default:
+        return styles.statusDefault;
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <View key={key} style={styles.container}>
       <View style={styles.card}>
-        <View style={styles.cardContent}>
-          <View style={styles.infoSection}>
-            <View style={styles.profile}>
-              <Image
-                source={{
-                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR63UM1yuQLSHbj-UHMge8_fMzzanCg2nK45A&s",
-                }}
-                style={styles.profileImage}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <View style={styles.iconContainer}>
+              <MaterialIcons
+                name="electric-bolt"
+                size={20}
+                color="#4782da"
+                style={styles.icon}
               />
-              <View>
-                <Text style={styles.name}>Babban Kalal</Text>
-                <Text style={styles.age}>32 - Male</Text>
-              </View>
-              <View style={styles.jobBadge}>
-                <Text style={styles.jobText}>Plumber</Text>
-              </View>
             </View>
-            <View style={styles.shopInfo}>
-              <Text style={styles.shopName}>Babban Shop</Text>
-              <Text style={styles.dateTime}>26 June - 8:30</Text>
-            </View>
-            <View style={styles.location}>
-              <MaterialIcons name="location-pin" size={24} color="gray" />
-              <Text style={styles.locationText}>Shahenn Bagh, Delhi</Text>
+            <View style={styles.headerTitle}>
+              <Text style={styles.headerText}>{name}</Text>
             </View>
           </View>
-          <View style={styles.actions}>
-            <TouchableOpacity style={styles.callButton}>
-              <Zocial name="call" size={20} color={colors.primary} />
+          <View style={styles.headerRight}>
+            <View style={styles.roleContainer}>
+              <Text style={styles.roleText}>{profession}</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.body}>
+          <View style={styles.bodyLeft}>
+            <Image
+              source={{
+                uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
+              }}
+              style={styles.profileImage}
+            />
+            <View style={styles.bodyTextContainer}>
+              <Text style={styles.bodyTitle}>{shopName}</Text>
+              <Text style={styles.bodySubtitle}>{location}</Text>
+              <Text style={styles.bodySubtitle}>{date}</Text>
+            </View>
+          </View>
+          <View style={styles.bodyRight}>
+            <TouchableOpacity>
+              <MaterialIcons
+                name="call"
+                size={24}
+                color={colors.primary}
+                style={styles.callIcon}
+              />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.whatsappButton}>
-              <FontAwesome5 name="whatsapp" size={20} color="#075e54" />
+            <TouchableOpacity>
+              <FontAwesome5
+                name="whatsapp"
+                size={24}
+                color="#075e54"
+                style={styles.whatsappIcon}
+              />
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.footerLeft}>
+            <Text style={[styles.statusText, getStatusColor()]}>
+              {status.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+          {status.toLowerCase() === "completed" ? (
+            <TouchableOpacity
+              style={[
+                styles.footerRight,
+                {
+                  backgroundColor: "#4782da1a",
+                },
+              ]}
+            >
+              <Entypo name="star" size={16} color="#4782da" />
+              <Text
+                style={[
+                  styles.cancelText,
+                  {
+                    color: "#4782da",
+                  },
+                ]}
+              >
+                Feedback
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.footerRight}>
+              <Entypo name="cross" size={16} color={colors.danger} />
+              <Text style={styles.cancelText}>CANCEL</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
   },
   card: {
     width: "90%",
-    backgroundColor: colors.white,
-    elevation: 5,
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 10,
-  },
-  cardContent: {
     backgroundColor: "white",
+    elevation: 5,
+    borderRadius: 6,
+  },
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
-  infoSection: {
-    backgroundColor: "white",
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  profile: {
+  iconContainer: {
+    backgroundColor: "#4782da2a",
+    width: 28,
+    height: 30,
+    marginTop: -10,
+    borderBottomRightRadius: 20,
+  },
+  icon: {
+    padding: 2,
+  },
+  headerTitle: {
+    paddingTop: 0,
+    paddingLeft: 30,
+  },
+  headerText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#505050",
+  },
+  headerRight: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+  },
+  roleContainer: {
+    backgroundColor: colors.secondary,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 50,
+  },
+  roleText: {
+    fontWeight: "600",
+    fontSize: 12,
+    color: colors.primary,
+  },
+  body: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+    paddingTop: 12,
+  },
+  bodyLeft: {
     flexDirection: "row",
     alignItems: "center",
   },
   profileImage: {
-    height: 40,
-    width: 40,
+    height: 35,
+    width: 35,
     borderRadius: 50,
   },
-  name: {
-    marginLeft: 10,
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#505050",
-  },
-  age: {
-    marginLeft: 10,
-    fontSize: 12,
-    fontWeight: "300",
-    color: colors.baseColor,
-  },
-  jobBadge: {
+  bodyTextContainer: {
     marginLeft: 12,
-    width: "auto",
-    backgroundColor: "#673de72a",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    marginBottom: 10,
   },
-  jobText: {
-    fontSize: 12,
-    color: colors.primary,
+  bodyTitle: {
     fontWeight: "600",
+    fontSize: 16,
   },
-  shopInfo: {
-    paddingTop: 10,
-    paddingHorizontal: 5,
-  },
-  shopName: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: colors.baseColor,
-  },
-  dateTime: {
+  bodySubtitle: {
     fontSize: 12,
-    fontWeight: "300",
-    color: "#505050",
+    marginTop: 2,
+    color: "gray",
   },
-  location: {
-    marginTop: 6,
+  bodyRight: {
     flexDirection: "row",
     alignItems: "center",
   },
-  locationText: {
-    color: "gray",
+  callIcon: {
+    marginRight: 20,
   },
-  actions: {
-    paddingHorizontal: 10,
+  whatsappIcon: {
+    marginRight: 5,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  footerLeft: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  callButton: {
-    backgroundColor: "#673de72a",
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-    borderRadius: 50,
+  statusText: {
+    fontSize: 14,
+    fontWeight: "600",
   },
-  whatsappButton: {
-    marginTop: 10,
-    backgroundColor: "#dcf8c6",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 50,
+  statusInProgress: {
+    color: "orange",
+  },
+  statusCompleted: {
+    color: "green",
+  },
+  statusDefault: {
+    color: "gray",
+  },
+  statusCanclled: {
+    color: colors.danger,
+  },
+  footerRight: {
+    backgroundColor: colors.dangerBackground,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 3,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  cancelText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: colors.danger,
+    marginLeft: 5,
   },
 });
 
