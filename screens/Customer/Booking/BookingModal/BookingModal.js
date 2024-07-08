@@ -11,7 +11,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, FontAwesome6 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
@@ -74,7 +74,7 @@ const BookingModal = ({
                 <View style={styles.profileSection}>
                   <Image
                     source={{
-                      uri: "https://cdn2.vectorstock.com/i/1000x1000/61/86/construction-worker-avatar-profile-colorful-vector-24396186.jpg",
+                      uri: "https://img.freepik.com/premium-photo/smiling-indian-male-construction-worker-standing-construction-site_31965-144506.jpg",
                     }}
                     style={styles.profileImage}
                   />
@@ -87,10 +87,19 @@ const BookingModal = ({
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={styles.detailBox}>
-                    <Ionicons name="call-outline" size={20} color="gray" />
-                    <Text style={styles.detailText}>
-                      +91 {shortProfile.contactNo}
-                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Ionicons name="call-outline" size={20} color="gray" />
+                      <Text style={styles.detailText}>
+                        +91 {shortProfile.contactNo}
+                      </Text>
+                    </View>
+                    <TouchableOpacity>
+                      <FontAwesome6 name="copy" size={18} color="gray" />
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.detailBox2}>
                     <View style={styles.detailRow}>
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.6,
+    height: height * 0.55,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -192,11 +201,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   profileImage: {
-    height: 80,
-    width: 80,
+    height: 85,
+    width: 85,
     borderRadius: 50,
-    borderWidth: 2,
-    borderColor: "lightgray",
   },
   profileDetails: {
     marginTop: 10,
@@ -231,6 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   detailRow: {
