@@ -74,7 +74,7 @@ const BookingModal = ({
                 <View style={styles.profileSection}>
                   <Image
                     source={{
-                      uri: "https://img.freepik.com/premium-photo/smiling-indian-male-construction-worker-standing-construction-site_31965-144506.jpg",
+                      uri: "https://www.pngall.com/wp-content/uploads/8/Worker-PNG-HD-Image.png",
                     }}
                     style={styles.profileImage}
                   />

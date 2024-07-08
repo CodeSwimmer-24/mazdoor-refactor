@@ -24,7 +24,7 @@ const Customer = ({ signOut }) => {
             } else if (route.name === "Booking") {
               iconName = focused ? "calendar" : "calendar-outline";
             } else if (route.name === "Like") {
-              iconName = focused ? "heart" : "heart-outline";
+              iconName = focused ? "bookmark" : "bookmark-outline";
             } else if (route.name === "Profile") {
               iconName = focused ? "person" : "person-outline";
             }

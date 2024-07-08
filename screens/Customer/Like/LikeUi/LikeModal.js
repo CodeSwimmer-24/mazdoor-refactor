@@ -24,7 +24,9 @@ const LikeModal = ({ setIsVisible, isVisible, favId, data }) => {
             <View style={styles.profileSection}>
               <Image
                 style={styles.profileImage}
-                source={{ uri: "https://via.placeholder.com/80" }}
+                source={{
+                  uri: "https://www.pngall.com/wp-content/uploads/8/Worker-PNG-HD-Image.png",
+                }}
               />
               <Text style={styles.profileName}>{data.name}</Text>
               <Text style={styles.profileEmail}>{data.email}</Text>
@@ -48,7 +50,7 @@ const LikeModal = ({ setIsVisible, isVisible, favId, data }) => {
                   },
                 ]}
               >
-                Dislike
+                Remove
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
