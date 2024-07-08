@@ -10,8 +10,19 @@ import {
 } from "react-native";
 import React from "react";
 import colors from "../../../../constants/colors";
+import { deleteFavoriteSp, getFavoriteSPs } from "../../../../services";
 
-const LikeModal = ({ setIsVisible, isVisible, favId, data }) => {
+const LikeModal = ({ setIsVisible, isVisible, email, favId, setFavoriteSps, data, navigation }) => {
+
+  const removeFromFavorite = () => {
+    deleteFavoriteSp(email, favId).then(() => {
+      getFavoriteSPs(email).then(data => {
+        setFavoriteSps(data);
+        setIsVisible(false);
+      });
+    });
+  };
+
   return (
     <Modal visible={isVisible} transparent={true} animationType="slide">
       <View style={styles.modalContainer}>
@@ -40,6 +51,7 @@ const LikeModal = ({ setIsVisible, isVisible, favId, data }) => {
                   backgroundColor: colors.dangerBackground,
                 },
               ]}
+              onPress={removeFromFavorite}
             >
               <Text
                 style={[
@@ -60,6 +72,9 @@ const LikeModal = ({ setIsVisible, isVisible, favId, data }) => {
                   elevation: 5,
                 },
               ]}
+              onPress={() => navigation.navigate("ServiceDetail", {
+                emailId: data.email,
+              })}
             >
               <Text style={styles.closeButtonText}>View More</Text>
             </TouchableOpacity>

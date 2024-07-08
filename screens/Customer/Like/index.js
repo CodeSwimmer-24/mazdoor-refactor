@@ -3,17 +3,19 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import { useAuthStore } from "../../../zustand/authStore";
 import { useCustomerStore } from "../../../zustand/customerStore";
 import ServiceCard from "../../../components/ServiceCard";
-import LikeModal from "./LikeUi/LikeModal";
+import LikeModal from "./components/LikeModal";
 
-const Like = () => {
-  const { favoriteSps } = useCustomerStore();
+const Like = ({ navigation }) => {
+  const { email } = useAuthStore();
+  const { favoriteSps, setFavoriteSps } = useCustomerStore();
+
   const [isVisible, setIsVisible] = useState(false);
   const [favId, setFavID] = useState("");
   const [data, setData] = useState({
@@ -61,7 +63,10 @@ const Like = () => {
           isVisible={isVisible}
           setIsVisible={setIsVisible}
           favId={favId}
+          email={email}
+          setFavoriteSps={setFavoriteSps}
           data={data}
+          navigation={navigation}
         />
       )}
     </SafeAreaView>

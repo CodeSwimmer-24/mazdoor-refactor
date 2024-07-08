@@ -8,3 +8,11 @@ export const getFavoriteSPs = async (email) => {
   if (result.status === 200)
     return result.data;
 };
+
+export const deleteFavoriteSp = async (email, favId) => {
+  try {
+    const result = await axios.delete(`${hostUrl}/mazdoor/v1/deleteFavoriteSP/${email}/${favId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
