@@ -14,7 +14,7 @@ const categories = [
   {
     image: electrician,
     label: "Electrician",
-    value: "",
+    value: "Electrician",
     backgroundColor: "rgb(237, 247, 237)",
   },
   {
@@ -31,7 +31,7 @@ const categories = [
   },
   {
     image: painter,
-    value: "",
+    value: "Painter",
     label: "Painter",
     backgroundColor: "rgb(229, 246, 253)",
   },
@@ -44,18 +44,18 @@ const categories = [
   {
     image: mechanicCar,
     label: "Mechanic",
-    value: "",
+    value: "Mechanic",
     backgroundColor: "rgb(229, 246, 253)",
   },
   {
     image: ac,
     label: "AC Reapir",
-    value: "",
+    value: "Electronics Technician",
     backgroundColor: "rgb(229, 246, 253)",
   },
   {
     image: truck,
-    label: "Auto",
+    label: "Room Shifting",
     value: "",
     backgroundColor: "rgb(229, 246, 253)",
   },
@@ -64,9 +64,11 @@ const categories = [
 const CategoryItem = ({ imageSource, label, backgroundColor, navigation }) => (
   <TouchableOpacity
     style={styles.categoryItem}
-    onPress={() => navigation.push("CategoryDetail", {
-      label
-    })}
+    onPress={() =>
+      navigation.push("CategoryDetail", {
+        label,
+      })
+    }
   >
     <View style={[styles.categoryIconContainer, { backgroundColor }]}>
       <Image source={imageSource} style={styles.categoryIcon} />
