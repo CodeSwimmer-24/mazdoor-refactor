@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,12 +10,19 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Linking,
 } from "react-native";
-import { MaterialIcons, Ionicons, FontAwesome6 } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  Ionicons,
+  FontAwesome6,
+  FontAwesome,
+} from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
 import SuccessAlert from "../../../../constants/SuccessAlert";
+import Subscription from "../../Profile/Models/Subscription/Subscription";
 
 const BookingModal = ({
   bookingIsVisible,
@@ -24,8 +31,15 @@ const BookingModal = ({
   serviceProvider,
 }) => {
   const [loading, setLoading] = useState(false);
-  const userEmailId = useAuthStore((state) => state.userEmailId);
+  const { name, email } = useAuthStore((state) => ({
+    name: state.name,
+    email: state.email,
+  }));
   const [alertVisible, setAlertVisible] = useState(false);
+  const [subscribe, setSubscribe] = useState(false);
+
+  const [subscriptionModalVisible, setSubscriptionModalVisible] =
+    useState(false);
 
   const handleBooking = async () => {
     setLoading(true);
@@ -37,7 +51,7 @@ const BookingModal = ({
         },
         body: JSON.stringify({
           spEmailId: serviceProvider.emailId,
-          userEmailId: userEmailId,
+          userEmailId: email,
         }),
       });
 
@@ -54,6 +68,44 @@ const BookingModal = ({
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        console.log(result, email);
+        if (result === true) {
+          setSubscribe(true);
+        } else {
+          setSubscribe(false);
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const openWhatsApp = (number) => {
+    Linking.openURL(`whatsapp://send?phone=${number}`).catch((err) =>
+      Alert.alert("Error", "WhatsApp is not installed on your device.")
+    );
+  };
+
+  const makeCall = (number) => {
+    Linking.openURL(`tel:${number}`).catch((err) =>
+      Alert.alert("Error", "Phone dialer is not available on your device.")
+    );
   };
 
   return (
@@ -87,77 +139,158 @@ const BookingModal = ({
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={styles.detailBox}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                      }}
-                    >
+                    <View style={{ flexDirection: "row" }}>
                       <Ionicons name="call-outline" size={20} color="gray" />
-                      <Text style={styles.detailText}>
-                        +91 {shortProfile.contactNo}
-                      </Text>
+                      {subscribe ? (
+                        <Text style={styles.detailText}>
+                          +91 {shortProfile.contactNo}
+                        </Text>
+                      ) : (
+                        <Text style={styles.detailText}>+91 **********</Text>
+                      )}
                     </View>
                     <TouchableOpacity>
                       <FontAwesome6 name="copy" size={18} color="gray" />
                     </TouchableOpacity>
                   </View>
-                  <View style={styles.detailBox2}>
-                    <View style={styles.detailRow}>
-                      <MaterialIcons
-                        name="location-pin"
-                        size={24}
-                        color="gray"
-                      />
-                      <Text style={styles.detailText}>
-                        {shortProfile.address?.buildingAddress},{" "}
-                        {shortProfile.address?.exactLocation},
-                      </Text>
+                  {subscribe && (
+                    <View style={styles.detailBox2}>
+                      <View style={styles.detailRow}>
+                        <MaterialIcons
+                          name="location-pin"
+                          size={24}
+                          color="gray"
+                        />
+                        <Text style={styles.detailText}>
+                          {shortProfile.address?.buildingAddress},{" "}
+                          {shortProfile.address?.exactLocation},
+                        </Text>
+                      </View>
+                      <View style={styles.detailRow}>
+                        <Ionicons name="map-outline" size={20} color="gray" />
+                        <Text style={styles.detailText}>
+                          {shortProfile.address?.locality},{" "}
+                          {shortProfile.address?.area},{" "}
+                          {shortProfile.address?.region}, Delhi
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.detailRow}>
-                      <Ionicons name="map-outline" size={20} color="gray" />
-                      <Text style={styles.detailText}>
-                        {shortProfile.address?.locality},{" "}
-                        {shortProfile.address?.area},{" "}
-                        {shortProfile.address?.region}, Delhi
-                      </Text>
-                    </View>
-                  </View>
+                  )}
                 </View>
               </View>
-            </ScrollView>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => setBookingVisible(false)}
-                style={[styles.button, styles.closeButton]}
-              >
-                <Ionicons
-                  style={{ marginRight: 5 }}
-                  name="archive-outline"
-                  size={22}
-                  color={colors.danger}
-                />
-                <Text style={styles.buttonText}>Close</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleBooking}
-                style={[styles.button, styles.confirmButton]}
-                disabled={loading} // Disable the button when loading
-              >
-                {loading ? (
-                  <ActivityIndicator color={colors.white} />
-                ) : (
-                  <Text
+
+              {subscribe && (
+                <View
+                  style={[
+                    styles.buttonContainer,
+                    {
+                      marginBottom: 20,
+                    },
+                  ]}
+                >
+                  <TouchableOpacity
+                    onPress={() => makeCall(shortProfile.contactNo)}
                     style={[
-                      styles.buttonText,
+                      styles.button,
+                      styles.callButton,
+                      { width: "48%", borderRadius: 50, elevation: 0 },
+                    ]}
+                  >
+                    <Ionicons name="call-outline" size={20} color="#4782da" />
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        { color: "#4782da", fontSize: 14 },
+                      ]}
+                    >
+                      Audio Call
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => openWhatsApp(shortProfile.contactNo)}
+                    style={[
+                      styles.button,
+                      styles.whatsappButton,
+                      { width: "48%", borderRadius: 50, elevation: 0 },
+                    ]}
+                  >
+                    <FontAwesome name="whatsapp" size={20} color="#4caf50" />
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        { color: "#4caf50", fontSize: 14 },
+                      ]}
+                    >
+                      WhatsApp
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {subscribe === false && (
+                <View style={styles.oppsContainer}>
+                  <View
+                    style={[
+                      styles.oppsContainer,
                       {
-                        color: colors.white,
+                        width: "80%",
                       },
                     ]}
                   >
-                    Confirm
-                  </Text>
-                )}
-              </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 39,
+                        fontWeight: "600",
+                        color: colors.baseColor,
+                      }}
+                    >
+                      OPPS!
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        marginTop: 20,
+                        color: "gray",
+                      }}
+                    >
+                      No subscription found, please checout the plans and
+                      subscribe to our services
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+              {subscribe ? (
+                <TouchableOpacity
+                  onPress={handleBooking}
+                  style={[styles.button, styles.confirmButton]}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ActivityIndicator color={colors.white} />
+                  ) : (
+                    <Text style={[styles.buttonText, { color: colors.white }]}>
+                      Confirm Booking
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSubscriptionModalVisible(true);
+                  }}
+                  style={[styles.button, styles.confirmButton]}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ActivityIndicator color={colors.white} />
+                  ) : (
+                    <Text style={[styles.buttonText, { color: colors.white }]}>
+                      Subscribe a plan
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -168,6 +301,13 @@ const BookingModal = ({
         info="Go to Booking page to see details."
         onClose={() => setAlertVisible(false)}
       />
+      {subscriptionModalVisible && (
+        <Subscription
+          subscriptionModalVisible={subscriptionModalVisible}
+          setSubscriptionModalVisible={setSubscriptionModalVisible}
+          name={name}
+        />
+      )}
     </>
   );
 };
@@ -184,7 +324,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.55,
+    height: height * 0.65,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -209,18 +349,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: "center",
   },
-  greetingText: {
-    fontSize: 16,
-    color: "#505050",
-  },
   introText: {
     marginTop: 2,
     fontSize: 20,
     fontWeight: "600",
     color: "#505050",
-  },
-  nameText: {
-    fontWeight: "500",
   },
   ageGenderText: {
     marginTop: 2,
@@ -252,7 +385,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 7,
-    marginBottom: 20,
   },
   detailText: {
     marginLeft: 5,
@@ -265,16 +397,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   button: {
-    width: "49%",
+    width: "100%",
     alignItems: "center",
     paddingVertical: 12,
     borderRadius: 10,
-  },
-  closeButton: {
-    backgroundColor: colors.dangerBackground,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+  },
+  callButton: {
+    backgroundColor: "#4782da1a",
+  },
+  whatsappButton: {
+    backgroundColor: "#4caf501a",
   },
   confirmButton: {
     backgroundColor: colors.primary,
@@ -282,8 +416,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: colors.danger,
-    fontWeight: "600",
+    fontWeight: "400",
+    marginLeft: 8,
+  },
+  oppsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

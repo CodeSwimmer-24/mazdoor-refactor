@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useAuthStore } from "../../../zustand/authStore";
@@ -38,7 +33,7 @@ const Like = ({ navigation }) => {
         <View style={styles.serviceCardsContainer}>
           {favoriteSps.map((sp, index) => (
             <ServiceCard
-              key={index}
+              key={sp.favoriteId}
               id={index}
               onPress={() => {
                 setFavID(sp.favoriteId);
