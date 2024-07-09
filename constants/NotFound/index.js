@@ -3,14 +3,12 @@ import React from "react";
 import noData from "../../assets/assets/NoBooking.png";
 import colors from "../colors";
 
-const NotFound = () => {
+const NotFound = ({ info }) => {
   return (
     <View style={styles.noDataContainer}>
       <Image source={noData} style={styles.noDataImage} />
       <Text style={styles.noDataTitle}>Oops!</Text>
-      <Text style={styles.noDataSubtitle}>
-        No data is available in this location
-      </Text>
+      <Text style={styles.noDataSubtitle}>{info}</Text>
     </View>
   );
 };
@@ -23,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   noDataImage: {
-    marginTop: "40%",
+    marginTop: "0%",
     height: 250,
     width: 250,
   },
