@@ -96,17 +96,34 @@ const Login = () => {
     if (response.ok) {
       const responseData = await response.json();
       console.log("User logged in successfully!", responseData);
-      // setting true for now to bypass
+
       setUser(true);
 
-      // Update Zustand store with email, role, and name
       authStore.setEmail(email);
       authStore.setRole("customer");
-      // authStore.setPicture(result.additionalUserInfo.profile.picture);
-      authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
 
-      // Persist state in AsyncStorage
-      // authStore.persistState();
+      authStore.setIsNewUser(responseData.isNewUser);
+
+      const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
+      const profileResponse = await fetch(profileApiUrl);
+
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        console.log("User profile fetched successfully!", profileData);
+
+        authStore.setName(profileData.name);
+        authStore.setContact(profileData.contactNo);
+        authStore.setBuildingAddress(profileData.address.buildingAddress);
+        authStore.setLocality(profileData.address.locality);
+      } else {
+        console.error(
+          "Failed to fetch user profile via API. Server responded with:",
+          profileResponse.status,
+          profileResponse.statusText
+        );
+        const errorData = await profileResponse.json();
+        console.error("Error details:", errorData);
+      }
     } else {
       console.error(
         "Failed to log in user via API. Server responded with:",

@@ -12,11 +12,18 @@ import React from "react";
 import colors from "../../../../constants/colors";
 import { deleteFavoriteSp, getFavoriteSPs } from "../../../../services";
 
-const LikeModal = ({ setIsVisible, isVisible, email, favId, setFavoriteSps, data, navigation }) => {
-
+const LikeModal = ({
+  setIsVisible,
+  isVisible,
+  email,
+  favId,
+  setFavoriteSps,
+  data,
+  navigation,
+}) => {
   const removeFromFavorite = () => {
     deleteFavoriteSp(email, favId).then(() => {
-      getFavoriteSPs(email).then(data => {
+      getFavoriteSPs(email).then((data) => {
         setFavoriteSps(data);
         setIsVisible(false);
       });
@@ -72,9 +79,11 @@ const LikeModal = ({ setIsVisible, isVisible, email, favId, setFavoriteSps, data
                   elevation: 5,
                 },
               ]}
-              onPress={() => navigation.navigate("ServiceDetail", {
-                emailId: data.email,
-              })}
+              onPress={() =>
+                navigation.navigate("ServiceDetail", {
+                  emailId: data.email,
+                })
+              }
             >
               <Text style={styles.closeButtonText}>View More</Text>
             </TouchableOpacity>
@@ -97,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.35,
+    height: height * 0.4,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
