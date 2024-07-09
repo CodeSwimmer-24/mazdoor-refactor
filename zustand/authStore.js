@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Correct import path
-import { devtools, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import { create } from "zustand";
 
 export const useAuthStore = create(
-  // devtools(
   persist(
     (set) => ({
       email: "",
@@ -31,5 +30,4 @@ export const useAuthStore = create(
       getStorage: () => AsyncStorage,
     }
   )
-  // )
 );

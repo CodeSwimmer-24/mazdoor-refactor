@@ -2,19 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Details from "./components/Details";
 import Section from "./components/Section";
-import colors from "../../../../constants/colors";
+import colors from "../../../../../constants/colors";
 import BannerImage from "./components/Image";
-import { hostUrl } from "../../../../services";
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from "@react-navigation/native";
-import BookingModal from "../../Booking/BookingModal/BookingModal";
+import { hostUrl } from "../../../../../services";
+import BookingModal from "../../../Booking/BookingModal/BookingModal";
 
-const ServiceDetail = ({ route }) => {
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
+const ServiceDetail = ({ route, navigation }) => {
   const { emailId } = route.params;
   const [feedbackList, setFeedbackList] = useState([]);
   const [rating, setRating] = useState(0);
@@ -47,22 +40,13 @@ const ServiceDetail = ({ route }) => {
     fetchData();
   }, [emailId]);
 
-  console.log(serviceProvider.emailId);
+  useEffect(() => {
+    const parent = navigation.getParent();
 
-  useFocusEffect(
-    useCallback(() => {
-      const parent = navigation.getParent();
-      parent?.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-
-      return () => {
-        parent?.setOptions({
-          tabBarStyle: { display: "flex" },
-        });
-      };
-    }, [isFocused, navigation])
-  );
+    parent?.setOptions({
+      tabBarStyle: { display: "none" },
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
