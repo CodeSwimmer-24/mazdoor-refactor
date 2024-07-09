@@ -1,12 +1,18 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import noData from "../../assets/assets/NoBooking.png";
+import nolike from "../../assets/assets/nolike.png";
 import colors from "../colors";
 
-const NotFound = ({ info }) => {
+const NotFound = ({ info, image }) => {
+  console.log(image);
   return (
     <View style={styles.noDataContainer}>
-      <Image source={noData} style={styles.noDataImage} />
+      {image === "nolike" ? (
+        <Image source={nolike} style={styles.noDataImage} />
+      ) : (
+        <Image source={noData} style={styles.noDataImage} />
+      )}
       <Text style={styles.noDataTitle}>Oops!</Text>
       <Text style={styles.noDataSubtitle}>{info}</Text>
     </View>

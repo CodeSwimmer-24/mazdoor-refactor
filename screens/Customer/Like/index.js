@@ -6,6 +6,7 @@ import { useAuthStore } from "../../../zustand/authStore";
 import { useCustomerStore } from "../../../zustand/customerStore";
 import ServiceCard from "../../../components/ServiceCard";
 import LikeModal from "./components/LikeModal";
+import NotFound from "../../../constants/NotFound";
 
 const Like = ({ navigation }) => {
   const { email } = useAuthStore();
@@ -26,31 +27,43 @@ const Like = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#f9f9f9" />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Your Favorite</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>My Favorite</Text>
+        <Text style={styles.subHeaderText}>
+          The list of service provider you Like.
+        </Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.serviceCardsContainer}>
-          {favoriteSps.map((sp, index) => (
-            <ServiceCard
-              key={sp.favoriteId}
-              id={index}
-              onPress={() => {
-                setFavID(sp.favoriteId);
-                setIsVisible(true);
-                setData({
-                  name: sp.serviceProvider.title,
-                  email: sp.serviceProvider.emailId,
-                });
-              }}
-              name={sp.serviceProvider.title}
-              category={sp.serviceProvider.serviceType}
-              rating={sp.serviceProvider.rating}
-              location={wordSlice(sp.serviceProvider.short_description)}
-              price="200"
+        {favoriteSps.length > 0 ? (
+          <View style={styles.serviceCardsContainer}>
+            {favoriteSps.map((sp, index) => (
+              <ServiceCard
+                key={sp.favoriteId}
+                id={index}
+                onPress={() => {
+                  setFavID(sp.favoriteId);
+                  setIsVisible(true);
+                  setData({
+                    name: sp.serviceProvider.title,
+                    email: sp.serviceProvider.emailId,
+                  });
+                }}
+                name={sp.serviceProvider.title}
+                category={sp.serviceProvider.serviceType}
+                rating={sp.serviceProvider.rating}
+                location={wordSlice(sp.serviceProvider.short_description)}
+                price="200"
+              />
+            ))}
+          </View>
+        ) : (
+          <>
+            <NotFound
+              image="nolike"
+              info="You dont have any favorate servuce"
             />
-          ))}
-        </View>
+          </>
+        )}
       </ScrollView>
       {isVisible && (
         <LikeModal
@@ -70,21 +83,26 @@ const Like = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
     backgroundColor: "white",
   },
-  header: {
-    height: 60,
-    width: "100%",
+  headerContainer: {
     backgroundColor: "#f9f9f9",
-    justifyContent: "center",
+    paddingVertical: 16,
+    paddingHorizontal: 10,
   },
   headerText: {
-    marginVertical: 20,
-    marginHorizontal: 20,
-    fontSize: 18,
+    paddingHorizontal: 20,
+    fontSize: 20,
     fontWeight: "600",
     color: "#505050",
+  },
+  subHeaderText: {
+    paddingHorizontal: 20,
+    paddingTop: 5,
+    fontSize: 12,
+    fontWeight: "300",
+    color: "gray",
   },
   scrollViewContent: {
     alignItems: "center",
