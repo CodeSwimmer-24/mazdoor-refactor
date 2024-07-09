@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import colors from "../../constants/colors";
-import { MaterialIcons, Fontisto } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
 
 const ServiceCard = ({
   id,
@@ -17,7 +17,12 @@ const ServiceCard = ({
       <View>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.locationContainer}>
-          <MaterialIcons name="location-pin" size={20} color="#A9A9A9" />
+          <MaterialCommunityIcons
+            name="account-details"
+            size={20}
+            color="#A9A9A9"
+            style={{ marginRight: 5 }}
+          />
           <Text style={styles.locationText}>{location}</Text>
         </View>
         <View style={styles.detailsContainer}>
