@@ -12,6 +12,7 @@ import styles from "./styles";
 
 const DropdownTextInput = ({
   iconName,
+  list,
   iconType,
   placeholder,
   value,
@@ -19,35 +20,12 @@ const DropdownTextInput = ({
 }) => {
   const [selected, setSelected] = useState(value || placeholder);
   const [isClicked, setIsClicked] = useState(false);
-  const [districts, setDistricts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    fetchDistrictData();
-  }, []);
-
-  const fetchDistrictData = async () => {
-    try {
-      const response = await fetch(
-        "https://digimazdoor.tech/mazdoor/v1/getLocationData"
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      const districtNames = Object.keys(data); // Extracting district names
-      setDistricts(districtNames);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching district data:", error);
-      setIsLoading(false);
-    }
-  };
-
-  const handleSelect = (district) => {
-    setSelected(district);
+  const handleSelect = (item) => {
+    setSelected(item);
     setIsClicked(false);
-    onChangeText(district); // Call the parent component's onChangeText handler
+    onChangeText(item); // Call the parent component's onChangeText handler
   };
 
   return (
@@ -88,7 +66,7 @@ const DropdownTextInput = ({
             {isLoading ? (
               <ActivityIndicator size="large" color="blue" />
             ) : (
-              districts.map((district, index) => (
+              list.map((district, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.dropdownItem}
