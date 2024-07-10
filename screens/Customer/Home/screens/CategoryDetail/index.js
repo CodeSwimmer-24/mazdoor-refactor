@@ -15,7 +15,7 @@ import { useIsFocused } from "@react-navigation/native";
 import ServiceCard from "../../../../../components/ServiceCard";
 import colors from "../../../../../constants/colors";
 import { hostUrl } from "../../../../../services";
-import NotFound from "../../../../../constants/NotFound";
+import NotFound from "../../../../../components/NotFound";
 
 const CategoryDetail = ({ route, navigation }) => {
   const { label } = route.params;
