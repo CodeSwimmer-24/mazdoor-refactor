@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import Feedback from "../Feedback/Feedback";
 
 const Card = ({
   key,
@@ -25,7 +26,7 @@ const Card = ({
     switch (status.toLowerCase()) {
       case "pending":
         return styles.statusInProgress;
-      case "confirm":
+      case "completed":
         return styles.statusCompleted;
       case "progress":
         return styles.statusInProgress;
@@ -35,6 +36,8 @@ const Card = ({
         return styles.statusDefault;
     }
   };
+
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleCall = (number) => {
     let phoneNumber = `tel:${number}`;
@@ -112,8 +115,11 @@ const Card = ({
               {status.toUpperCase()}
             </Text>
           </TouchableOpacity>
-          {status.toLowerCase() === "completed" ? (
+          {status.toLowerCase() === "pending" ? (
             <TouchableOpacity
+              onPress={() => {
+                setIsVisible(true);
+              }}
               style={[
                 styles.footerRight,
                 {
@@ -141,6 +147,7 @@ const Card = ({
           )}
         </View>
       </View>
+      <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
     </View>
   );
 };
