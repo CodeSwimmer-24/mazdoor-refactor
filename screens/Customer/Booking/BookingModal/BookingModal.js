@@ -21,8 +21,8 @@ import {
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
-import SuccessAlert from "../../../../constants/SuccessAlert";
 import Subscription from "../../Profile/Models/Subscription/Subscription";
+import SuccessAlert from "../../../../components/SuccessAlert";
 
 const BookingModal = ({
   bookingIsVisible,
@@ -126,7 +126,7 @@ const BookingModal = ({
                 <View style={styles.profileSection}>
                   <Image
                     source={{
-                      uri: "https://www.pngall.com/wp-content/uploads/8/Worker-PNG-HD-Image.png",
+                      uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
                     }}
                     style={styles.profileImage}
                   />

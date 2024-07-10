@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
 import Home from "../Customer/Home";
-import { passSignOutProp } from "../../helpers";
 import Booking from "./Booking";
 import Like from "./Like";
 import Profile from "./Profile";
@@ -11,7 +10,7 @@ import { getTabBarOptions } from "../../constants/tabBarStyles";
 
 const Tab = createBottomTabNavigator();
 
-const Customer = ({ signOut }) => {
+const Customer = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -36,7 +35,7 @@ const Customer = ({ signOut }) => {
         <Tab.Screen
           name="Home"
           options={{ headerShown: false }}
-          component={passSignOutProp(Home, signOut)}
+          component={Home}
         />
         <Tab.Screen
           name="Booking"

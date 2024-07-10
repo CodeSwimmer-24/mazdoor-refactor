@@ -21,7 +21,13 @@ const Profile = () => {
         <Text style={styles.headerText}>Profile</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Header name={name} email={email} contact={contact} />
+        <Header
+          contact={contact}
+          buildingAddress={buildingAddress}
+          locality={locality}
+          name={name}
+          email={email}
+        />
         <Body
           name={name}
           email={email}

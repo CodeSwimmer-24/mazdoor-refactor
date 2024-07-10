@@ -1,9 +1,11 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import EditProfile from "../Models/EditProfile";
 
-const Header = ({ name, email, contact }) => {
+const Header = ({ name, email, contact, locality, buildingAddress }) => {
+  const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -20,10 +22,23 @@ const Header = ({ name, email, contact }) => {
             <Text style={styles.emailText}>+91 {contact}</Text>
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setEditAccountModalVisible(true);
+          }}
+        >
           <Octicons name="pencil" size={24} color="white" />
         </TouchableOpacity>
       </View>
+      <EditProfile
+        editAccountModalVisible={editAccountModalVisible}
+        setEditAccountModalVisible={setEditAccountModalVisible}
+        buildingAddress={buildingAddress}
+        locality={locality}
+        name={name}
+        email={email}
+        contact={contact}
+      />
     </View>
   );
 };

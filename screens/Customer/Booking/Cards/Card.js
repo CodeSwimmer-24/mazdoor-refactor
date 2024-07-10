@@ -1,13 +1,21 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+  Alert,
+} from "react-native";
 import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import Feedback from "../Feedback/Feedback";
 
 const Card = ({
   key,
   name,
-  age,
-  gender,
+  contactNo,
   profession,
   shopName,
   date,
@@ -18,15 +26,31 @@ const Card = ({
     switch (status.toLowerCase()) {
       case "pending":
         return styles.statusInProgress;
-      case "confirm":
+      case "completed":
         return styles.statusCompleted;
       case "progress":
         return styles.statusInProgress;
       case "cancelled":
-        return styles.statusCanclled;
+        return styles.statusCancelled;
       default:
         return styles.statusDefault;
     }
+  };
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleCall = (number) => {
+    let phoneNumber = `tel:${number}`;
+    Linking.openURL(phoneNumber).catch((err) =>
+      Alert.alert("Error", "Failed to make a call")
+    );
+  };
+
+  const handleWhatsApp = (number) => {
+    let url = `whatsapp://send?phone=${number}`;
+    Linking.openURL(url).catch((err) =>
+      Alert.alert("Error", "WhatsApp is not installed on this device")
+    );
   };
 
   return (
@@ -67,7 +91,7 @@ const Card = ({
             </View>
           </View>
           <View style={styles.bodyRight}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleCall(contactNo)}>
               <MaterialIcons
                 name="call"
                 size={24}
@@ -75,7 +99,7 @@ const Card = ({
                 style={styles.callIcon}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleWhatsApp(contactNo)}>
               <FontAwesome5
                 name="whatsapp"
                 size={24}
@@ -91,8 +115,11 @@ const Card = ({
               {status.toUpperCase()}
             </Text>
           </TouchableOpacity>
-          {status.toLowerCase() === "completed" ? (
+          {status.toLowerCase() === "pending" ? (
             <TouchableOpacity
+              onPress={() => {
+                setIsVisible(true);
+              }}
               style={[
                 styles.footerRight,
                 {
@@ -120,6 +147,7 @@ const Card = ({
           )}
         </View>
       </View>
+      <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
     </View>
   );
 };
@@ -240,7 +268,7 @@ const styles = StyleSheet.create({
   statusDefault: {
     color: "gray",
   },
-  statusCanclled: {
+  statusCancelled: {
     color: colors.danger,
   },
   footerRight: {

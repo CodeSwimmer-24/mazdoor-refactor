@@ -43,7 +43,7 @@ const LikeModal = ({
               <Image
                 style={styles.profileImage}
                 source={{
-                  uri: "https://www.pngall.com/wp-content/uploads/8/Worker-PNG-HD-Image.png",
+                  uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
                 }}
               />
               <Text style={styles.profileName}>{data.name}</Text>

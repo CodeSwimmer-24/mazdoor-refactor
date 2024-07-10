@@ -124,7 +124,7 @@ const EditProfile = ({
           style={styles.modalOverlay}
           onPress={() => setEditAccountModalVisible(false)}
         />
-        <View style={styles.modalContent}>
+        <ScrollView style={styles.modalContent}>
           <View>
             <View style={styles.crossContainer}>
               <TouchableOpacity
@@ -194,7 +194,7 @@ const EditProfile = ({
               )}
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.7,
+    height: height * 0.5,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

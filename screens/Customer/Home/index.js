@@ -1,55 +1,32 @@
-import { useCallback, useMemo, useEffect } from "react";
+import { useEffect } from "react";
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-} from "react-native";
+import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "../../../zustand/authStore";
-import { passSignOutProp } from "../../../helpers";
 import colors from "../../../constants/colors";
 import Header from "./components/Header";
 import Banner from "./components/Banner";
 import Category from "./components/Category";
-import TopRated from "./components/TopRated";
+// import TopRated from "./components/TopRated";
 import CategoryDetail from "./screens/CategoryDetail";
 import ServiceDetail from "./screens/ServiceDetail";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
-import { getFavoriteSPs } from "../../../services";
-import { useCustomerStore } from "../../../zustand/customerStore";
+import { useIsFocused } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
-const HomeMain = ({ signOut, navigation }) => {
-  const { email, role, name, picture, isNewUser, buildingAddress, locality } =
-    useAuthStore((state) => ({
-      email: state.email,
-      role: state.role,
-      name: state.name,
-      picture: state.picture,
-      isNewUser: state.isNewUser,
-      buildingAddress: state.buildingAddress,
-      locality: state.locality,
-    }));
-
-  const { favoriteSps, setFavoriteSps } = useCustomerStore();
+const HomeMain = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const { name, buildingAddress, locality } = useAuthStore();
 
   useEffect(() => {
+    console.log("HOME MAIN RERENDERED", ", isFocused", isFocused);
     const parent = navigation.getParent();
     parent?.setOptions({
       tabBarStyle: { display: "flex" },
       ...getTabBarOptions(),
     });
-
-    if (!favoriteSps.length) {
-      console.log("HOME", "Getting fav Sps");
-      getFavoriteSPs(email)
-        .then(sps => setFavoriteSps(sps))
-        .catch(err => console.log(err.response.data));
-    }
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -59,24 +36,22 @@ const HomeMain = ({ signOut, navigation }) => {
         buildingAddress={buildingAddress}
         locality={locality}
       />
+
       <ScrollView>
         <Banner />
         <Category navigation={navigation} />
-        <TopRated />
+        {/* <TopRated /> */}
       </ScrollView>
-      {/* <Button onPress={signOut} title="Logout" /> */}
     </View>
   );
 };
 
-const Home = ({ signOut }) => {
-  const { email } = useAuthStore();
-
+const Home = () => {
   return (
     <Stack.Navigator initialRouteName="HomeMain">
       <Stack.Screen
         name="HomeMain"
-        component={passSignOutProp(HomeMain, signOut)}
+        component={HomeMain}
         options={{ headerShown: false }}
       />
       <Stack.Screen
