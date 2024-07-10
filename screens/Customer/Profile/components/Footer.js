@@ -1,12 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useAuthStore } from "../../../../zustand/authStore";
 import auth from "@react-native-firebase/auth";
+import ShareApp from "../Models/ShareApp/ShareApp";
 
 const Footer = () => {
+  const [shareAppVisible, setShareAppVisible] = useState(false);
+
   const signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
@@ -23,7 +26,12 @@ const Footer = () => {
     <View style={styles.container}>
       <View style={styles.footer}>
         <View style={styles.footerItem}>
-          <TouchableOpacity style={styles.iconWrapper}>
+          <TouchableOpacity
+            onPress={() => {
+              setShareAppVisible(true);
+            }}
+            style={styles.iconWrapper}
+          >
             <MaterialCommunityIcons
               name="share"
               size={24}
@@ -45,6 +53,10 @@ const Footer = () => {
           <Text style={[styles.text, styles.logoutText]}>Log Out</Text>
         </View>
       </View>
+      <ShareApp
+        setShareAppVisible={setShareAppVisible}
+        shareAppVisible={shareAppVisible}
+      />
     </View>
   );
 };
