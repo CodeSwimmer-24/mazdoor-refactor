@@ -8,8 +8,8 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import colors from "../../constants/colors";
 import done from "../.../../../assets/assets/done.png";
+import colors from "../../constants/colors";
 
 const SuccessAlert = ({ visible, message, onClose }) => {
   return (
