@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
-// import Logo from "../../../assets/logo/logo.png";
+import Logo from "../../../assets/assets/logo.png";
 import { moderateScale } from "react-native-size-matters";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
@@ -11,7 +11,7 @@ const LoginUi = ({ onGoogleButtonPress }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Image source={Logo} style={styles.logo} /> */}
+      <Image source={Logo} style={styles.logo} />
 
       {/* <TextInput
         value={displayName}
