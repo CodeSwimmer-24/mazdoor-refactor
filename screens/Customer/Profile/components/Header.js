@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
-import EditProfile from "../Models/EditProfile";
+import EditProfile from "../Modals/EditProfile";
 
 const Header = ({ name, email, contact, locality, buildingAddress }) => {
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);

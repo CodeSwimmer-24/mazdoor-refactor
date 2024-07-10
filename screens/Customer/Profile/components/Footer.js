@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { useAuthStore } from "../../../../zustand/authStore";
-import ShareApp from "../Models/ShareApp/ShareApp";
-import { useCustomerStore } from "../../../../zustand/customerStore";
+import ShareApp from "../Modals/ShareApp";
 import colors from "../../../../constants/colors";
+import { useAuthStore } from "../../../../zustand/authStore";
+import { useCustomerStore } from "../../../../zustand/customerStore";
 
 const Footer = () => {
   const [shareAppVisible, setShareAppVisible] = useState(false);

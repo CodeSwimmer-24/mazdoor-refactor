@@ -2,9 +2,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import React, { useState } from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
-import Account from "../Models/Account";
-import EditProfile from "../Models/EditProfile";
-import Subscription from "../Models/Subscription/Subscription";
+import Account from "../Modals/Account";
+import EditProfile from "../Modals/EditProfile";
+import Subscription from "../Modals/Subscription";
 
 const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);

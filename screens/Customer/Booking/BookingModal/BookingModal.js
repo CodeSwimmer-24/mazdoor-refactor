@@ -21,7 +21,7 @@ import {
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
-import Subscription from "../../Profile/Models/Subscription/Subscription";
+import Subscription from "../../Profile/Modals/Subscription";
 import SuccessAlert from "../../../../components/SuccessAlert";
 
 const BookingModal = ({
