@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import React from "react";
 import auth from "@react-native-firebase/auth";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useAuthStore } from "../../../../zustand/authStore";
-import auth from "@react-native-firebase/auth";
 import ShareApp from "../Models/ShareApp/ShareApp";
+import { useCustomerStore } from "../../../../zustand/customerStore";
+import colors from "../../../../constants/colors";
 
 const Footer = () => {
   const [shareAppVisible, setShareAppVisible] = useState(false);

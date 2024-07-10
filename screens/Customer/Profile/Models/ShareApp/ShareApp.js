@@ -12,8 +12,8 @@ import {
   ToastAndroid,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import colors from "../../../../../constants/colors";
 import { Linking } from "react-native";
+import colors from "../../../../../constants/colors";
 
 const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
   const shareToWhatsApp = async () => {
