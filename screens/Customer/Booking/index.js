@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
 import NotFound from "../../../constants/NotFound";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Booking = () => {
   const [bookings, setBookings] = useState([]);
@@ -22,7 +23,6 @@ const Booking = () => {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noData, setNoData] = useState(true);
-  const [previousBookings, setPreviousBookings] = useState([]);
   const email = useAuthStore((state) => state.email);
 
   const fetchBookings = async () => {
@@ -36,7 +36,6 @@ const Booking = () => {
         setBookings(bookingData.map((item) => item.booking));
         setServiceProviders(bookingData.map((item) => item.serviceProvider));
         setProfiles(bookingData.map((item) => item.myProfile));
-        setPreviousBookings(bookingData.map((item) => item.booking));
       } else {
         setNoData(true);
       }
@@ -47,27 +46,11 @@ const Booking = () => {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getActiveUserBookings?emailId=${email}`
-        );
-        const bookingData = response.data.map((item) => item.booking);
-        if (JSON.stringify(bookingData) !== JSON.stringify(previousBookings)) {
-          fetchBookings();
-        }
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    }, 60000); // Check every 60 seconds
-
-    return () => clearInterval(interval);
-  }, [previousBookings, email]);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [email]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchBookings();
+    }, [email])
+  );
 
   if (loading) {
     return (
@@ -86,7 +69,7 @@ const Booking = () => {
       </View>
       <ScrollView style={styles.scrollView}>
         <View style={styles.bookingsContainer}>
-          {noData &&
+          {!noData &&
             bookings.map((booking, index) => (
               <Card
                 key={booking.bookingId}
@@ -96,6 +79,7 @@ const Booking = () => {
                 profession={serviceProviders[index]?.serviceType || "N/A"}
                 shopName={serviceProviders[index]?.title || "N/A"}
                 date={`${booking.date} - ${booking.time}`}
+                contactNo={profiles[index]?.contactNo || "7272977850"}
                 location={
                   `${profiles[index]?.address?.locality}, ${profiles[index]?.address?.city}` ||
                   "N/A"
@@ -109,7 +93,7 @@ const Booking = () => {
         </View>
         {noData && (
           <>
-            <NotFound info="No current booking found foy you" />
+            <NotFound info="No current booking found for you" />
             <View style={styles.noDataTextContainer}>
               <View style={styles.bookServiceButton}>
                 <Entypo name="plus" size={20} color={colors.primary} />
@@ -161,15 +145,6 @@ const styles = StyleSheet.create({
   },
   bookingsContainer: {
     paddingBottom: 60,
-  },
-  noDataContainer: {
-    alignItems: "center",
-    marginTop: 40,
-    justifyContent: "center",
-  },
-  noDataText: {
-    fontSize: 18,
-    color: "gray",
   },
   noDataTextContainer: {
     alignItems: "center",

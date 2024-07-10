@@ -2,8 +2,23 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useAuthStore } from "../../../../zustand/authStore";
+import auth from "@react-native-firebase/auth";
 
 const Footer = () => {
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await auth().signOut();
+      setUser(null);
+
+      useAuthStore.reset();
+      customerStore.reset();
+    } catch (error) {
+      console.error("Failed to sign out user.", error);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.footer}>
@@ -24,7 +39,7 @@ const Footer = () => {
           <Text style={styles.text}>Feedback</Text>
         </View>
         <View style={styles.footerItem}>
-          <TouchableOpacity style={styles.iconWrapper}>
+          <TouchableOpacity onPress={signOut} style={styles.iconWrapper}>
             <AntDesign name="logout" size={20} color="rgb(244, 67, 54)" />
           </TouchableOpacity>
           <Text style={[styles.text, styles.logoutText]}>Log Out</Text>

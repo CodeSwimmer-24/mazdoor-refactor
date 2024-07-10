@@ -9,6 +9,10 @@ import chef from "../../../../assets/assets/chef.png";
 import mechanicCar from "../../../../assets/assets/mechanicCar.png";
 import truck from "../../../../assets/assets/truck.png";
 import ac from "../../../../assets/assets/ac.png";
+import washing from "../../../../assets/assets/washing.png";
+import welder from "../../../../assets/assets/welder.png";
+import gutter from "../../../../assets/assets/gutter.png";
+import tile from "../../../../assets/assets/tile.png";
 
 const categories = [
   {
@@ -39,25 +43,49 @@ const categories = [
     image: chef,
     value: "",
     label: "Cook",
-    backgroundColor: "rgb(229, 246, 253)",
+    backgroundColor: "#f9f9f6",
   },
   {
     image: mechanicCar,
     label: "Mechanic",
     value: "Mechanic",
-    backgroundColor: "rgb(229, 246, 253)",
+    backgroundColor: "#e3e4ef",
   },
   {
     image: ac,
     label: "AC Reapir",
     value: "Electronics Technician",
-    backgroundColor: "rgb(229, 246, 253)",
+    backgroundColor: "#eff4f9",
   },
   {
     image: truck,
     label: "Room Shifting",
     value: "",
-    backgroundColor: "rgb(229, 246, 253)",
+    backgroundColor: "#fef9e8",
+  },
+  {
+    image: welder,
+    label: "Welder",
+    value: "Welder",
+    backgroundColor: "#cfd7e6",
+  },
+  {
+    image: washing,
+    label: "Laundry",
+    value: "",
+    backgroundColor: "#ede8f2",
+  },
+  {
+    image: gutter,
+    label: "Gutter Cleaner",
+    value: "Gutter Cleaner",
+    backgroundColor: "#fef7e8",
+  },
+  {
+    image: tile,
+    label: "Tile/Marble",
+    value: "Tile/Marble",
+    backgroundColor: "#edf9ed",
   },
 ];
 

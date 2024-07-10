@@ -1,12 +1,6 @@
 import { useEffect } from "react";
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-  Button
-} from "react-native";
+import { View, StyleSheet, ScrollView, StatusBar, Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "../../../zustand/authStore";
 import { passSignOutProp } from "../../../helpers";
@@ -23,35 +17,34 @@ import { useCustomerStore } from "../../../zustand/customerStore";
 
 const Stack = createNativeStackNavigator();
 
-const HomeMain = ({ signOut, navigation }) => {
-  const { email, name, isNewUser, buildingAddress, locality } =
-    useAuthStore((state) => ({
+const HomeMain = ({ navigation }) => {
+  const { email, name, isNewUser, buildingAddress, locality } = useAuthStore(
+    (state) => ({
       email: state.email,
       name: state.name,
       isNewUser: state.isNewUser,
       buildingAddress: state.buildingAddress,
       locality: state.locality,
-    }));
+    })
+  );
 
   const { favoriteSps, setFavoriteSps } = useCustomerStore();
 
   useEffect(() => {
-    console.log("navigation")
+    console.log("navigation");
     const parent = navigation.getParent();
     parent?.setOptions({
       tabBarStyle: { display: "flex" },
       ...getTabBarOptions(),
     });
 
-    if (false) {
-      if (!favoriteSps.length) {
-        console.log("HOME", "Getting fav Sps");
-        getFavoriteSPs(email)
-          .then(sps => setFavoriteSps(sps))
-          .catch(err => console.log(err.response.data));
-      }
+    if (!favoriteSps.length) {
+      console.log("HOME", "Getting fav Sps");
+      getFavoriteSPs(email)
+        .then((sps) => setFavoriteSps(sps))
+        .catch((err) => console.log(err.response.data));
     }
-  }, [isNewUser]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -61,22 +54,22 @@ const HomeMain = ({ signOut, navigation }) => {
         buildingAddress={buildingAddress}
         locality={locality}
       />
-      <Button onPress={signOut} title="Logout" />
+
       <ScrollView>
         <Banner />
         <Category navigation={navigation} />
-        <TopRated />
+        {/* <TopRated /> */}
       </ScrollView>
     </View>
   );
 };
 
-const Home = ({ signOut }) => {
+const Home = () => {
   return (
     <Stack.Navigator initialRouteName="HomeMain">
       <Stack.Screen
         name="HomeMain"
-        component={passSignOutProp(HomeMain, signOut)}
+        component={passSignOutProp(HomeMain)}
         options={{ headerShown: false }}
       />
       <Stack.Screen
