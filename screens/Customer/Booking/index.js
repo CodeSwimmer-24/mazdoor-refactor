@@ -14,7 +14,7 @@ import colors from "../../../constants/colors";
 import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
-import NotFound from "../../../constants/NotFound";
+import NotFound from "../../../components/NotFound";
 import { useFocusEffect } from "@react-navigation/native";
 
 const Booking = () => {

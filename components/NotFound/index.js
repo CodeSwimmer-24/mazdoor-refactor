@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import noData from "../../assets/assets/NoBooking.png";
 import nolike from "../../assets/assets/nolike.png";
-import colors from "../colors";
+import colors from "../../constants/colors";
 
 const NotFound = ({ info, image }) => {
   console.log(image);

@@ -6,7 +6,7 @@ import { useAuthStore } from "../../../zustand/authStore";
 import { useCustomerStore } from "../../../zustand/customerStore";
 import ServiceCard from "../../../components/ServiceCard";
 import LikeModal from "./components/LikeModal";
-import NotFound from "../../../constants/NotFound";
+import NotFound from "../../../components/NotFound";
 
 const Like = ({ navigation }) => {
   const { email } = useAuthStore();
@@ -60,7 +60,7 @@ const Like = ({ navigation }) => {
           <>
             <NotFound
               image="nolike"
-              info="You dont have any favorate servuce"
+              info="You dont have any favorate service"
             />
           </>
         )}
