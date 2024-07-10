@@ -85,7 +85,7 @@ const Booking = () => {
                   "N/A"
                 }
                 imageUrl={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR63UM1yuQLSHbj-UHMge8_fMzzanCg2nK45A&s"
+                  "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg"
                 }
                 status={booking.status}
               />
