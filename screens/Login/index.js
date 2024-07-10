@@ -1,169 +1,127 @@
-import { View, ActivityIndicator } from "react-native";
-// import { GoogleSignin } from "@react-native-google-signin/google-signin";
-// import auth from "@react-native-firebase/auth";
 import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
+import axios from "axios";
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
 import LoginUi from "./Ui";
-import { hostUrl } from "../../services";
 import RegisterForm from "../Register";
 import Customer from "../Customer";
+
+import { hostUrl } from "../../services";
 import { useAuthStore } from "../../zustand/authStore";
+import { useCustomerStore } from "../../zustand/customerStore";
 
 const Login = () => {
-  const [initializing, setInitializing] = useState(false);
-  const [user, setUser] = useState();
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false); // State to manage loading indicator
   const authStore = useAuthStore(); // Initialize Zustand store
+  const customerStore = useCustomerStore();
 
-  // GoogleSignin.configure({
-  //   webClientId:
-  //     "1089802403669-9gvlsn8sejkuvo5m0217l9uoscefkajc.apps.googleusercontent.com",
-  // });
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((user) => {
+      setUser(user);
+      if (initializing) setInitializing(false);
+    });
 
-  // const onGoogleButtonPress = async () => {
-  //   setLoading(true); // Set loading to true when starting login process
-  //   await GoogleSignin.hasPlayServices({
-  //     showPlayServicesUpdateDialog: true,
-  //   });
-  //   const { idToken } = await GoogleSignin.signIn();
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
-  //   try {
-  //     const result = await auth().signInWithCredential(googleCredential);
-  //     const { displayName, email } = result.user;
+  GoogleSignin.configure({
+    webClientId: "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com"
+  });
 
-  //     const apiUrl = `${hostUrl}/mazdoor/v1/login`;
+  const onGoogleButtonPress = async () => {
+    setLoading(true); // Set loading to true when starting login process
 
-  //     const response = await fetch(apiUrl, {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         emailId: email,
-  //         role: "customer",
-  //         name: displayName,
-  //       }),
-  //     });
+    await GoogleSignin.hasPlayServices({
+      showPlayServicesUpdateDialog: true,
+    });
+    const { idToken } = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  //     if (response.ok) {
-  //       const responseData = await response.json();
-  //       console.log("User logged in successfully!", responseData);
-  //       setUser(result.user);
+    try {
+      const result = await auth().signInWithCredential(googleCredential);
+      const { displayName, email } = result.user;
 
-  //       // Update Zustand store with email, role, and name
-  //       authStore.setEmail(email);
-  //       authStore.setRole("customer");
-  //       authStore.setPicture(result.additionalUserInfo.profile.picture);
-  //       authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
+      const apiUrl = `${hostUrl}/mazdoor/v1/login`;
 
-  //       // Persist state in AsyncStorage
-  //       // authStore.persistState();
-  //     } else {
-  //       console.error(
-  //         "Failed to log in user via API. Server responded with:",
-  //         response.status,
-  //         response.statusText
-  //       );
-  //       const errorData = await response.json();
-  //       console.error("Error details:", errorData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to authenticate user with Firebase.", error);
-  //   } finally {
-  //     setLoading(false); // Set loading to false when login process completes (success or failure)
-  //   }
-  // };
-
-  const signIn = async (displayName, email) => {
-    setLoading(true);
-
-    const apiUrl = `${hostUrl}/mazdoor/v1/login`;
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+      const response = await axios.post(apiUrl, {
         emailId: email,
         role: "customer",
         name: displayName,
-      }),
-    });
+      });
 
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log("User logged in successfully!", responseData);
+      if (response.status === 200) {
+        const responseData = response.data;
+        console.log("User logged in successfully!", responseData);
+        console.log(result);
 
-      setUser(true);
+        // Update Zustand store with email, role, and name
+        authStore.setName(displayName);
+        authStore.setEmail(email);
+        authStore.setRole("customer");
+        authStore.setPicture(result.additionalUserInfo.profile.picture);
+        authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
 
-      authStore.setEmail(email);
-      authStore.setRole("customer");
+        if (!responseData.isNewUser) {
+          const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
+          const profileResponse = await fetch(profileApiUrl);
 
-      authStore.setIsNewUser(responseData.isNewUser);
+          if (profileResponse.ok) {
+            const profileData = await profileResponse.json();
+            console.log("User profile fetched successfully!", profileData);
 
-      const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
-      const profileResponse = await fetch(profileApiUrl);
+            authStore.setName(profileData.name);
+            authStore.setContact(profileData.contactNo);
+            authStore.setBuildingAddress(profileData.address.buildingAddress);
+            authStore.setLocality(profileData.address.locality);
+          } else {
+            console.error(
+              "Failed to fetch user profile via API. Server responded with:",
+              profileResponse.status,
+              profileResponse.statusText
+            );
+            const errorData = await profileResponse.json();
+            console.error("Error details:", errorData);
+          }
+        }
 
-      if (profileResponse.ok) {
-        const profileData = await profileResponse.json();
-        console.log("User profile fetched successfully!", profileData);
+        setUser(true);
 
-        authStore.setName(profileData.name);
-        authStore.setContact(profileData.contactNo);
-        authStore.setBuildingAddress(profileData.address.buildingAddress);
-        authStore.setLocality(profileData.address.locality);
       } else {
         console.error(
-          "Failed to fetch user profile via API. Server responded with:",
-          profileResponse.status,
-          profileResponse.statusText
+          "Failed to log in user via API. Server responded with:",
+          response.status,
+          response.statusText
         );
-        const errorData = await profileResponse.json();
+        const errorData = response.data;
         console.error("Error details:", errorData);
       }
-    } else {
-      console.error(
-        "Failed to log in user via API. Server responded with:",
-        response.status,
-        response.statusText
-      );
-      const errorData = await response.json();
-      console.error("Error details:", errorData);
+    } catch (error) {
+      console.error("Failed to authenticate user with Firebase.", error);
+    } finally {
+      setLoading(false); // Set loading to false when login process completes (success or failure)
     }
-
-    setLoading(false); // Set loading to false when login process completes (success or failure)
   };
 
   const signOut = async () => {
     try {
-      // await GoogleSignin.revokeAccess();
-      // await auth().signOut();
+      await GoogleSignin.revokeAccess();
+      await auth().signOut();
       setUser(null);
 
       // Reset Zustand store on sign out
       authStore.reset();
+      customerStore.reset();
     } catch (error) {
       console.error("Failed to sign out user.", error);
     }
   };
 
-  // function onAuthStateChanged(user) {
-  //   setUser(user);
-  //   if (initializing) setInitializing(false);
-  // }
-
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // Cleanup subscription
-  // }, []);
-
-  if (initializing) return null;
-
   if (!user) {
-    return loading ? (
+    return loading || initializing ? (
       <View
         style={{
           height: "100%",
@@ -176,13 +134,9 @@ const Login = () => {
         </View>
       </View>
     ) : (
-      // <LoginUi onGoogleButtonPress={onGoogleButtonPress} />
-      <LoginUi onLoginButtonPress={signIn} />
+      <LoginUi onGoogleButtonPress={onGoogleButtonPress} />
     );
-  }
-
-  // Example conditional rendering based on isNewUser state
-  if (authStore.isNewUser) {
+  } else if (authStore.isNewUser) {
     return <RegisterForm signOut={signOut} />;
   } else {
     return <Customer signOut={signOut} />;

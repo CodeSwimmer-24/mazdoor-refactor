@@ -6,10 +6,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import styles from "./styles";
 
-const LoginUi = ({ onLoginButtonPress }) => {
+const LoginUi = ({ onGoogleButtonPress }) => {
   const [isVisible, setIsVisible] = useState(false);
-  // const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
 
   return (
     <View style={styles.container}>
@@ -21,16 +19,10 @@ const LoginUi = ({ onLoginButtonPress }) => {
         onChangeText={(text) => setDisplayName(text)}
       /> */}
 
-      <TextInput
-        value={email}
-        placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-      />
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={() => onLoginButtonPress("", email)}
+          onPress={onGoogleButtonPress}
         >
           <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
           <Text style={styles.buttonText}>Continue with Google</Text>

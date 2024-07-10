@@ -8,7 +8,11 @@ export const useCustomerStore = create(
       favoriteSps: [],
 
       // Define actions to update state
-      setFavoriteSps: (favoriteSps) => set((state) => ({ ...state, favoriteSps }))
+      setFavoriteSps: (favoriteSps) => set((state) => ({ ...state, favoriteSps })),
+
+      reset: () => set({
+        favoriteSps: []
+      })
     }),
     {
       name: "customer-storage",

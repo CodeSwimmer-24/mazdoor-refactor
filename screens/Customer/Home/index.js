@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useEffect } from "react";
+import { useEffect } from "react";
 import React from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   StatusBar,
+  Button
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "../../../zustand/authStore";
@@ -23,12 +24,10 @@ import { useCustomerStore } from "../../../zustand/customerStore";
 const Stack = createNativeStackNavigator();
 
 const HomeMain = ({ signOut, navigation }) => {
-  const { email, role, name, picture, isNewUser, buildingAddress, locality } =
+  const { email, name, isNewUser, buildingAddress, locality } =
     useAuthStore((state) => ({
       email: state.email,
-      role: state.role,
       name: state.name,
-      picture: state.picture,
       isNewUser: state.isNewUser,
       buildingAddress: state.buildingAddress,
       locality: state.locality,
@@ -37,19 +36,22 @@ const HomeMain = ({ signOut, navigation }) => {
   const { favoriteSps, setFavoriteSps } = useCustomerStore();
 
   useEffect(() => {
+    console.log("navigation")
     const parent = navigation.getParent();
     parent?.setOptions({
       tabBarStyle: { display: "flex" },
       ...getTabBarOptions(),
     });
 
-    if (!favoriteSps.length) {
-      console.log("HOME", "Getting fav Sps");
-      getFavoriteSPs(email)
-        .then(sps => setFavoriteSps(sps))
-        .catch(err => console.log(err.response.data));
+    if (false) {
+      if (!favoriteSps.length) {
+        console.log("HOME", "Getting fav Sps");
+        getFavoriteSPs(email)
+          .then(sps => setFavoriteSps(sps))
+          .catch(err => console.log(err.response.data));
+      }
     }
-  }, []);
+  }, [isNewUser]);
 
   return (
     <View style={styles.container}>
@@ -59,19 +61,17 @@ const HomeMain = ({ signOut, navigation }) => {
         buildingAddress={buildingAddress}
         locality={locality}
       />
+      <Button onPress={signOut} title="Logout" />
       <ScrollView>
         <Banner />
         <Category navigation={navigation} />
         <TopRated />
       </ScrollView>
-      {/* <Button onPress={signOut} title="Logout" /> */}
     </View>
   );
 };
 
 const Home = ({ signOut }) => {
-  const { email } = useAuthStore();
-
   return (
     <Stack.Navigator initialRouteName="HomeMain">
       <Stack.Screen

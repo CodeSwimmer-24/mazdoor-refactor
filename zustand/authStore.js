@@ -24,6 +24,17 @@ export const useAuthStore = create(
         set((state) => ({ ...state, buildingAddress })),
       setLocality: (locality) => set((state) => ({ ...state, locality })),
       setIsNewUser: (isNewUser) => set((state) => ({ ...state, isNewUser })),
+
+      reset: () => set({
+        email: "",
+        role: "",
+        name: "",
+        contact: "",
+        picture: "",
+        buildingAddress: "",
+        locality: "",
+        isNewUser: false 
+      })
     }),
     {
       name: "auth-storage", // unique name
