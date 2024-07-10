@@ -8,7 +8,7 @@ import LoginUi from "./Ui";
 import RegisterForm from "../Register";
 import Customer from "../Customer";
 
-import { hostUrl } from "../../services";
+import { hostUrl, getFavoriteSPs } from "../../services";
 import { useAuthStore } from "../../zustand/authStore";
 import { useCustomerStore } from "../../zustand/customerStore";
 
@@ -19,6 +19,9 @@ const Login = () => {
   const authStore = useAuthStore(); // Initialize Zustand store
   const customerStore = useCustomerStore();
 
+  const { email, startupApisCalled, setStartupApisCalled } = authStore;
+  const { favoriteSps, setFavoriteSps } = customerStore;
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
@@ -27,6 +30,22 @@ const Login = () => {
 
     return subscriber; // unsubscribe on unmount
   }, []);
+
+  useEffect(() => {
+    if (user && email) {
+      if (!favoriteSps.length && !startupApisCalled) {
+        console.log("Getting Favorite Shops");
+
+        getFavoriteSPs(email)
+          .then((sps) => {
+            console.log("Setting the Favorite Shops");
+            setFavoriteSps(sps);
+            setStartupApisCalled(true);
+          })
+          .catch((err) => console.log(err.response.data));
+      }
+    }
+  }, [user, email]);
 
   GoogleSignin.configure({
     webClientId: "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com"
@@ -56,7 +75,6 @@ const Login = () => {
       if (response.status === 200) {
         const responseData = response.data;
         console.log("User logged in successfully!", responseData);
-        console.log(result);
 
         // Update Zustand store with email, role, and name
         authStore.setName(displayName);
@@ -67,11 +85,11 @@ const Login = () => {
 
         if (!responseData.isNewUser) {
           const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
-          const profileResponse = await fetch(profileApiUrl);
+          const profileResponse = await axios.get(profileApiUrl);
 
-          if (profileResponse.ok) {
-            const profileData = await profileResponse.json();
-            console.log("User profile fetched successfully!", profileData);
+          if (profileResponse.status === 200) {
+            const profileData = profileResponse.data;
+            console.log("User profile fetched successfully!");
 
             authStore.setName(profileData.name);
             authStore.setContact(profileData.contactNo);
@@ -106,22 +124,8 @@ const Login = () => {
     }
   };
 
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await auth().signOut();
-      setUser(null);
-
-      // Reset Zustand store on sign out
-      authStore.reset();
-      customerStore.reset();
-    } catch (error) {
-      console.error("Failed to sign out user.", error);
-    }
-  };
-
-  if (!user) {
-    return loading || initializing ? (
+  if (loading || initializing) {
+    return (
       <View
         style={{
           height: "100%",
@@ -133,13 +137,13 @@ const Login = () => {
           <ActivityIndicator size={50} color="#0000ff" />
         </View>
       </View>
-    ) : (
-      <LoginUi onGoogleButtonPress={onGoogleButtonPress} />
     );
+  } else if (!user) {
+    return <LoginUi onGoogleButtonPress={onGoogleButtonPress} />;
   } else if (authStore.isNewUser) {
-    return <RegisterForm signOut={signOut} />;
+    return <RegisterForm />;
   } else {
-    return <Customer signOut={signOut} />;
+    return <Customer />;
   }
 };
 

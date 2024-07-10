@@ -60,7 +60,7 @@ const Like = ({ navigation }) => {
           <>
             <NotFound
               image="nolike"
-              info="You dont have any favorate servuce"
+              info="You dont have any favorate service"
             />
           </>
         )}

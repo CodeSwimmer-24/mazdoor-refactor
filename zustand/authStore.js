@@ -13,6 +13,8 @@ export const useAuthStore = create(
       buildingAddress: "",
       locality: "",
       isNewUser: false,
+      // state to know that whether the apis at login time were called or not
+      startupApisCalled: false,
 
       // Define actions to update state
       setEmail: (email) => set((state) => ({ ...state, email })),
@@ -24,6 +26,7 @@ export const useAuthStore = create(
         set((state) => ({ ...state, buildingAddress })),
       setLocality: (locality) => set((state) => ({ ...state, locality })),
       setIsNewUser: (isNewUser) => set((state) => ({ ...state, isNewUser })),
+      setStartupApisCalled: (called) => set((state) => ({ ...state, startupApisCalled: called })),
 
       reset: () => set({
         email: "",
@@ -33,7 +36,8 @@ export const useAuthStore = create(
         picture: "",
         buildingAddress: "",
         locality: "",
-        isNewUser: false 
+        isNewUser: false,
+        startupApisCalled: false 
       })
     }),
     {

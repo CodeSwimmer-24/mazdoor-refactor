@@ -1,24 +1,29 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import auth from "@react-native-firebase/auth";
 import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
-import colors from "../../../../constants/colors";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useAuthStore } from "../../../../zustand/authStore";
-import auth from "@react-native-firebase/auth";
+import { useCustomerStore } from "../../../../zustand/customerStore";
+import colors from "../../../../constants/colors";
 
 const Footer = () => {
+  const authStore = useAuthStore();
+  const customerStore = useCustomerStore();
+
   const signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
       await auth().signOut();
-      setUser(null);
+      // setUser(null);
 
-      useAuthStore.reset();
+      authStore.reset();
       customerStore.reset();
     } catch (error) {
       console.error("Failed to sign out user.", error);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.footer}>

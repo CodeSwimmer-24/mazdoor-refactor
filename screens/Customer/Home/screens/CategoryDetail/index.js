@@ -40,7 +40,6 @@ const CategoryDetail = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log(isFocused);
     const parent = navigation.getParent();
     parent?.setOptions({
       tabBarStyle: { display: "none" },
