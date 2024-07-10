@@ -6,15 +6,8 @@ import Footer from "./components/Footer";
 import { useAuthStore } from "../../../zustand/authStore";
 
 const Profile = () => {
-  const { name, email, contact, buildingAddress, locality } = useAuthStore(
-    (state) => ({
-      name: state.name,
-      email: state.email,
-      contact: state.contact,
-      buildingAddress: state.buildingAddress,
-      locality: state.locality,
-    })
-  );
+  const { name, email, contact, buildingAddress, locality, exactLocation } = useAuthStore();
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -34,6 +27,7 @@ const Profile = () => {
           contact={contact}
           buildingAddress={buildingAddress}
           locality={locality}
+          exactLocation={exactLocation}
         />
         <Footer />
       </ScrollView>

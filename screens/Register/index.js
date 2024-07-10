@@ -10,10 +10,12 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { useAuthStore } from "../../zustand/authStore";
-import { hostUrl } from "../../services";
 import CustomTextInput from "../../components/TextInput";
 import DropdownTextInput from "../../components/DropdownTextInput";
+
+import { useAuthStore } from "../../zustand/authStore";
+import { useSystemStore } from "../../zustand/systemStore";
+import { hostUrl } from "../../services";
 import colors from "../../constants/colors";
 import styles from "./styles";
 import user from "../../assets/user.png";
@@ -27,8 +29,11 @@ const RegisterForm = () => {
     setContact,
     setBuildingAddress,
     setLocality,
+    setExactLocation,
     setIsNewUser,
   } = useAuthStore();
+
+  const { locations } = useSystemStore();
 
   const initialFormData = {
     name: "",
@@ -65,10 +70,10 @@ const RegisterForm = () => {
     const apiData = {
       address: {
         buildingAddress: formData.buildingAddress,
-        exactLocation: "No no no",
+        exactLocation: formData.exactLocation,
         locality: formData.locality,
-        region: "Ookhala",
-        city: "Delhi",
+        region: "Jharkhand",
+        city: "Jamshedpur",
       },
       contactNo: formData.contact,
       emailId: email,
@@ -92,6 +97,7 @@ const RegisterForm = () => {
         setContact(formData.contact);
         setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
+        setExactLocation(formData.exactLocation);
         setFormData(initialFormData); // Reset form data to initial values
         setIsNewUser(false);
       } else {
@@ -151,11 +157,22 @@ const RegisterForm = () => {
             />
             <DropdownTextInput
               iconName="map"
+              list={Object.keys(locations)}
               iconType="Ionicons"
-              placeholder="Building Address"
+              placeholder="Locality"
               value={formData.locality}
               onChangeText={(text) => handleChange("locality", text)}
             />
+
+            <DropdownTextInput
+              iconName="map"
+              list={locations[formData.locality]}
+              iconType="Ionicons"
+              placeholder="Exact Location"
+              value={formData.exactLocation}
+              onChangeText={(text) => handleChange("exactLocation", text)}
+            />
+
             <TouchableOpacity
               style={styles.googleButton}
               onPress={handleSubmit}

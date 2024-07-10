@@ -18,12 +18,14 @@ import DropdownTextInput from "../../../../components/DropdownTextInput";
 import axios from "axios";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
+import { useSystemStore } from "../../../../zustand/systemStore";
 
 const EditProfile = ({
   editAccountModalVisible,
   setEditAccountModalVisible,
   buildingAddress,
   locality,
+  exactLocation,
   name,
   email,
   contact,
@@ -31,6 +33,7 @@ const EditProfile = ({
   const [formData, setFormData] = useState({
     buildingAddress,
     locality,
+    exactLocation,
     name,
     email,
     contact,
@@ -45,18 +48,18 @@ const EditProfile = ({
     });
   };
 
-  const { setEmail, setName, setContact, setBuildingAddress, setLocality } =
-    useAuthStore();
+  const { setEmail, setName, setContact, setBuildingAddress, setLocality, setExactLocation } = useAuthStore();
+  const { locations } = useSystemStore();
 
   const handleSubmit = async () => {
     const payload = {
       address: {
         area: "",
         buildingAddress: formData.buildingAddress,
-        city: "",
-        exactLocation: "",
+        city: "Jamshedpur",
+        exactLocation: formData.exactLocation,
         locality: formData.locality,
-        region: "",
+        region: "Jharkhand",
       },
       contactNo: formData.contact,
       emailId: email,
@@ -174,9 +177,19 @@ const EditProfile = ({
                 <DropdownTextInput
                   iconName="map"
                   iconType="Ionicons"
+                  list={Object.keys(locations)}
                   placeholder="Locality"
                   value={formData.locality}
                   onChangeText={(text) => handleChange("locality", text)}
+                />
+
+                <DropdownTextInput
+                  iconName="map"
+                  iconType="Ionicons"
+                  list={locations[formData.locality]}
+                  placeholder="Exact Location"
+                  value={formData.exactLocation}
+                  onChangeText={(text) => handleChange("exactLocation", text)}
                 />
               </View>
             </View>
