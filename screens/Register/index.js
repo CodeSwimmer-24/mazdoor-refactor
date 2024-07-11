@@ -124,7 +124,12 @@ const RegisterForm = () => {
               </Text>
             </View>
             <View style={styles.picture}>
-              <Image source={user} style={styles.pictureImage} />
+              <Image
+                source={{
+                  uri: "https://global.discourse-cdn.com/monzo/original/3X/3/a/3aae66f7a0128dc50c915d2687d1abad85de36f3.jpeg",
+                }}
+                style={styles.pictureImage}
+              />
             </View>
             <CustomTextInput
               iconName="mark-email-read"
@@ -181,7 +186,7 @@ const RegisterForm = () => {
               {loading ? (
                 <ActivityIndicator size="small" color="#fff" />
               ) : (
-                <Text style={styles.buttonText}>Register Details</Text>
+                <Text style={styles.buttonText}>Register Now</Text>
               )}
             </TouchableOpacity>
           </ScrollView>

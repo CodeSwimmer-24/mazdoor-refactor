@@ -115,7 +115,7 @@ const Card = ({
               {status.toUpperCase()}
             </Text>
           </TouchableOpacity>
-          {status.toLowerCase() === "pending" ? (
+          {status.toLowerCase() === "completed" ? (
             <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
