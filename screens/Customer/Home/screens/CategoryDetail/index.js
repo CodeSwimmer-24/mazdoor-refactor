@@ -10,12 +10,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
-import { Entypo, AntDesign } from "@expo/vector-icons";
+import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import ServiceCard from "../../../../../components/ServiceCard";
 import colors from "../../../../../constants/colors";
 import { hostUrl } from "../../../../../services";
 import NotFound from "../../../../../components/NotFound";
+import { useAuthStore } from "../../../../../zustand/authStore";
+import Filter from "../../../../../components/Filter";
 
 const CategoryDetail = ({ route, navigation }) => {
   const { label } = route.params;
@@ -23,11 +25,21 @@ const CategoryDetail = ({ route, navigation }) => {
   const [serviceProviders, setServiceProviders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { locality } = useAuthStore();
+
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+  const [filterLocation, setFilterLocation] = useState(locality);
+  const [filterExactLocation, setFilterExactLocation] = useState({
+    locality: locality,
+    exact: "All",
+  });
+
   useEffect(() => {
     const fetchServiceProviders = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllServiceProviders?exactLocation=%20&locality=Shaheen%20Bagh&serviceType=${label}`
+          `${hostUrl}/mazdoor/v1/getAllServiceProviders?exactLocation=${filterExactLocation.exact}&locality=${locality}&serviceType=${label}`
         );
         setServiceProviders(response.data);
         setLoading(false);
@@ -37,7 +49,7 @@ const CategoryDetail = ({ route, navigation }) => {
       }
     };
     fetchServiceProviders();
-  }, []);
+  }, [filterExactLocation, filterLocation]);
 
   useEffect(() => {
     const parent = navigation.getParent();
@@ -63,11 +75,28 @@ const CategoryDetail = ({ route, navigation }) => {
             <Entypo name="chevron-left" size={28} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerText}>{label}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsFilterVisible(true);
+            }}
+          >
             <AntDesign name="filter" size={28} color={colors.white} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
+      <View style={styles.currentLocation}>
+        <Ionicons name="location-sharp" size={24} color="#c8c8c8" />
+        <Text
+          style={{
+            paddingHorizontal: 6,
+            fontSize: 16,
+            color: "#c8c8c8",
+            fontWeight: "500",
+          }}
+        >
+          {`${filterLocation},  ${filterExactLocation.exact}`}
+        </Text>
+      </View>
       <View style={styles.content}>
         <ScrollView style={styles.scrollView}>
           {serviceProviders.length > 0 ? (
@@ -93,6 +122,14 @@ const CategoryDetail = ({ route, navigation }) => {
           )}
         </ScrollView>
       </View>
+      <Filter
+        filterLocation={filterLocation}
+        filterExactLocation={filterExactLocation}
+        setFilterExactLocation={setFilterExactLocation}
+        setFilterLocation={setFilterLocation}
+        isFilterVisible={isFilterVisible}
+        setIsFilterVisible={setIsFilterVisible}
+      />
     </View>
   );
 };
@@ -128,6 +165,12 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginVertical: 5,
     marginHorizontal: 5,
+  },
+  currentLocation: {
+    alignItems: "center",
+    paddingHorizontal: 25,
+    paddingBottom: 10,
+    flexDirection: "row",
   },
 });
 

@@ -66,7 +66,7 @@ const DropdownTextInput = ({
             {isLoading ? (
               <ActivityIndicator size="large" color="blue" />
             ) : (
-              list.map((district, index) => (
+              list?.map((district, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.dropdownItem}
