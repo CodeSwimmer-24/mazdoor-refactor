@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import SubscriptionUi from "./SubscriptionUi";
@@ -49,6 +49,25 @@ const Subscription = ({
     fetchSubscriptions();
   }, []);
 
+  useEffect(() => {
+    const backAction = () => {
+      if (subscriptionModalVisible) {
+        setSubscriptionModalVisible(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [subscriptionModalVisible]);
+
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
   };
@@ -58,6 +77,7 @@ const Subscription = ({
       visible={subscriptionModalVisible}
       transparent={true}
       animationType="slide"
+      onRequestClose={() => setSubscriptionModalVisible(false)} // Ensure modal closes on back button press
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity

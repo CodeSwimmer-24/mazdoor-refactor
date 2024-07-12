@@ -13,7 +13,6 @@ import colors from "../../../../constants/colors";
 import Feedback from "../Feedback/Feedback";
 
 const Card = ({
-  key,
   name,
   contactNo,
   profession,
@@ -21,6 +20,8 @@ const Card = ({
   date,
   location,
   status,
+  navigation,
+  email,
 }) => {
   const getStatusColor = () => {
     switch (status.toLowerCase()) {
@@ -54,7 +55,14 @@ const Card = ({
   };
 
   return (
-    <View key={key} style={styles.container}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("ServiceDetail", {
+          emailId: email,
+        })
+      }
+      style={styles.container}
+    >
       <View style={styles.card}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -148,7 +156,7 @@ const Card = ({
         </View>
       </View>
       <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

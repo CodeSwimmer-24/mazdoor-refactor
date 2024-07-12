@@ -18,7 +18,6 @@ import { useSystemStore } from "../../zustand/systemStore";
 import { hostUrl } from "../../services";
 import colors from "../../constants/colors";
 import styles from "./styles";
-import user from "../../assets/user.png";
 
 const RegisterForm = () => {
   const {
@@ -62,6 +61,12 @@ const RegisterForm = () => {
       !formData.locality
     ) {
       Alert.alert("Error", "Please fill all the fields");
+      return;
+    }
+
+    // Check if the contact number is 10 digits
+    if (formData.contact.length !== 10) {
+      Alert.alert("Error", "Contact number must be 10 digits");
       return;
     }
 

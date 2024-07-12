@@ -17,7 +17,7 @@ import { hostUrl } from "../../../services";
 import NotFound from "../../../components/NotFound";
 import { useFocusEffect } from "@react-navigation/native";
 
-const Booking = () => {
+const Booking = ({ navigation }) => {
   const [bookings, setBookings] = useState([]);
   const [serviceProviders, setServiceProviders] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -74,6 +74,7 @@ const Booking = () => {
               <Card
                 key={booking.bookingId}
                 name={profiles[index]?.name || "Unknown"}
+                email={profiles[index]?.emailId}
                 age={profiles[index]?.age || "N/A"}
                 gender={profiles[index]?.gender === "F" ? "Female" : "Male"}
                 profession={serviceProviders[index]?.serviceType || "N/A"}
@@ -88,6 +89,7 @@ const Booking = () => {
                   "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg"
                 }
                 status={booking.status}
+                navigation={navigation}
               />
             ))}
         </View>

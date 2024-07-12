@@ -8,9 +8,9 @@ import {
   Image,
 } from "react-native";
 import colors from "../../../../../../constants/colors";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-const Section = ({ services, feedbackList, shortProfile }) => {
+const Section = ({ services, feedbackList, shortProfile, serviceProvider }) => {
   const [activeTab, setActiveTab] = useState("services");
 
   const renderScreen = () => {
@@ -21,7 +21,11 @@ const Section = ({ services, feedbackList, shortProfile }) => {
         return <RatingScreen feedbackList={feedbackList} />;
       case "profile":
         return (
-          <ProfileScreen services={services} shortProfile={shortProfile} />
+          <ProfileScreen
+            services={services}
+            shortProfile={shortProfile}
+            serviceProvider={serviceProvider}
+          />
         );
       default:
         return null;
@@ -57,49 +61,55 @@ const Section = ({ services, feedbackList, shortProfile }) => {
 
 const ServicesScreen = ({ services }) => (
   <ScrollView contentContainerStyle={styles.content}>
-    {services?.map((item, index) => {
-      return (
-        <View key={index} style={styles.subContainer}>
-          <View style={{ width: "80%" }}>
-            <Text style={styles.serviceName}>{item.serviceName}</Text>
-            <Text style={styles.serviceDescription}>
-              {item.serviceDescription}
-            </Text>
-            <Text style={styles.workingHours}>{item.workingHours}</Text>
+    {services && services.length > 0 ? (
+      services.map((item, index) => {
+        return (
+          <View key={index} style={styles.subContainer}>
+            <View style={{ width: "80%" }}>
+              <Text style={styles.serviceName}>{item.serviceName}</Text>
+              <Text style={styles.serviceDescription}>
+                {item.serviceDescription}
+              </Text>
+              <Text style={styles.workingHours}>{item.workingHours}</Text>
+            </View>
+            <Text style={styles.price}>₹ {item.price}</Text>
           </View>
-          <Text style={styles.price}>₹ {item.price}</Text>
-        </View>
-      );
-    })}
-
-    {/* Add more service items here if needed */}
+        );
+      })
+    ) : (
+      <Text style={styles.noDataText}>No services found</Text>
+    )}
   </ScrollView>
 );
 
 const RatingScreen = ({ feedbackList }) => (
   <ScrollView contentContainerStyle={styles.content}>
-    {feedbackList?.map((item, index) => (
-      <View key={index} style={styles.subContainer}>
-        <View style={{ width: "80%" }}>
-          <Text style={styles.serviceName}>{item.userName}</Text>
-          <Text style={styles.feedback}>{item.feedback}</Text>
+    {feedbackList && feedbackList.length > 0 ? (
+      feedbackList.map((item, index) => (
+        <View key={index} style={styles.subContainer}>
+          <View style={{ width: "80%" }}>
+            <Text style={styles.serviceName}>{item.userName}</Text>
+            <Text style={styles.feedback}>{item.feedback}</Text>
+          </View>
+          <View style={styles.ratingContainer}>
+            <FontAwesome name="star" size={14} color={colors.primary} />
+            <Text style={styles.ratingText}>{item.rating}</Text>
+          </View>
         </View>
-        <View style={styles.ratingContainer}>
-          <FontAwesome name="star" size={14} color={colors.primary} />
-          <Text style={styles.ratingText}>{item.rating}</Text>
-        </View>
-      </View>
-    ))}
+      ))
+    ) : (
+      <Text style={styles.noDataText}>No ratings found</Text>
+    )}
   </ScrollView>
 );
 
-const ProfileScreen = ({ shortProfile }) => (
+const ProfileScreen = ({ shortProfile, serviceProvider }) => (
   <ScrollView contentContainerStyle={styles.content}>
     <View style={styles.profileContainer}>
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri: "https://cdn3d.iconscout.com/3d/premium/thumb/project-manager-avatar-10107510-8179533.png",
+            uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
           }}
           style={styles.image}
         />
@@ -107,10 +117,24 @@ const ProfileScreen = ({ shortProfile }) => (
       <View style={styles.textContainer}>
         <Text style={styles.nameText}>{shortProfile.name}</Text>
         <Text style={styles.detailsText}>
-          {shortProfile.gender} - {shortProfile.age}
+          Gender - {shortProfile.gender}ale
         </Text>
-        <Text style={styles.contactText}>+91 {shortProfile.contactNo}</Text>
+        <Text style={styles.contactText}>
+          Age - {shortProfile.age} year's old
+        </Text>
       </View>
+    </View>
+    <View style={styles.locationContainer}>
+      <MaterialIcons name="location-pin" size={30} color="#c8c8c8" />
+      <Text style={styles.locationText}>
+        {shortProfile.address.buildingAddress},{" "}
+        {shortProfile.address.exactLocation}, {shortProfile.address.locality},{" "}
+        {shortProfile.address.area} {shortProfile.address.region} Delhi
+      </Text>
+    </View>
+    <View style={styles.profileDesc}>
+      <Text style={styles.aboutMe}>About Me</Text>
+      <Text style={styles.aboutInfo}>{serviceProvider.short_description}</Text>
     </View>
   </ScrollView>
 );
@@ -215,12 +239,11 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderWidth: 2,
     borderColor: "lightgray",
-    padding: 10,
     borderRadius: 100,
   },
   image: {
-    height: 60,
-    width: 60,
+    height: 80,
+    width: 80,
     borderRadius: 100,
   },
   textContainer: {
@@ -230,18 +253,47 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingVertical: 5,
     color: "#505050",
-    marginLeft: 5,
   },
   detailsText: {
     fontSize: 14,
     paddingVertical: 0,
     color: "gray",
-    marginLeft: 5,
   },
   contactText: {
     fontSize: 14,
     paddingVertical: 2,
     color: "gray",
+  },
+  profileDesc: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  aboutMe: {
+    paddingBottom: 10,
+    fontWeight: "600",
+    fontSize: 18,
+    color: "gray",
+  },
+  locationContainer: {
+    width: "80%",
+    paddingTop: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  locationText: {
+    fontSize: 14,
+    color: "gray",
+    marginLeft: 5,
+  },
+  aboutInfo: {
+    fontSize: 14,
+    color: "#505050",
+  },
+  noDataText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
+    marginTop: 20,
   },
 });
 

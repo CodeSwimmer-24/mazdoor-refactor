@@ -1,5 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import colors from "../../../../constants/colors";
 
 const Banner = () => {
@@ -23,35 +27,35 @@ const Banner = () => {
 
 const styles = StyleSheet.create({
   bannerContainer: {
-    marginTop: 20,
+    marginTop: hp("2%"),
     alignItems: "center",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%",
-    marginBottom: 10,
-    marginTop: -5,
+    width: wp("90%"),
+    marginBottom: hp("1.25%"),
+    marginTop: hp("-0.625%"),
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: hp("2%"),
     fontWeight: "600",
     color: "#505050",
   },
   seeMoreButton: {
     backgroundColor: "#673de71a",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: hp("0.625%"),
+    paddingHorizontal: wp("2.5%"),
     borderRadius: 50,
   },
   seeMoreText: {
-    fontSize: 12,
+    fontSize: hp("1.5%"),
     fontWeight: "600",
     color: "#673de7",
   },
   bannerImage: {
-    height: 160,
-    width: "90%",
+    height: hp("20%"),
+    width: wp("90%"),
     borderRadius: 10,
     objectFit: "cover",
   },

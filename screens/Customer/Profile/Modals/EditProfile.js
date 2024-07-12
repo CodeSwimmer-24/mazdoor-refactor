@@ -48,7 +48,14 @@ const EditProfile = ({
     });
   };
 
-  const { setEmail, setName, setContact, setBuildingAddress, setLocality, setExactLocation } = useAuthStore();
+  const {
+    setEmail,
+    setName,
+    setContact,
+    setBuildingAddress,
+    setLocality,
+    setExactLocation,
+  } = useAuthStore();
   const { locations } = useSystemStore();
 
   const handleSubmit = async () => {
