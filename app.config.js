@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "mazdoor-app",
     "slug": "mazdoor-app",
@@ -16,7 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": process.env.GOOGLE_SERVICES,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -32,4 +32,4 @@
       }
     }
   }
-}
+};
