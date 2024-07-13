@@ -10,16 +10,15 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import CustomTextInput from "../../components/TextInput";
-import DropdownTextInput from "../../components/DropdownTextInput";
+import { useSystemStore } from "../../../zustand/systemStore";
+import { useAuthStore } from "../../../zustand/authStore";
+import { hostUrl } from "../../../services";
+import CustomTextInput from "../../../components/TextInput";
+import DropdownTextInput from "../../../components/DropdownTextInput";
+import colors from "../../../constants/colors";
+import styles from "../../Register/styles";
 
-import { useAuthStore } from "../../zustand/authStore";
-import { useSystemStore } from "../../zustand/systemStore";
-import { hostUrl } from "../../services";
-import colors from "../../constants/colors";
-import styles from "./styles";
-
-const RegisterForm = () => {
+const MazdoorRegister = () => {
   const {
     email,
     role,
@@ -27,6 +26,8 @@ const RegisterForm = () => {
     setName,
     setContact,
     setGender,
+    setAge,
+    setAadharNo,
     setBuildingAddress,
     setLocality,
     setExactLocation,
@@ -40,6 +41,8 @@ const RegisterForm = () => {
     contact: "",
     buildingAddress: "",
     locality: "",
+    aadharNo: "",
+    age: "",
     gender: "M",
     exactLocation: "",
   };
@@ -61,7 +64,8 @@ const RegisterForm = () => {
       !formData.name ||
       !formData.contact ||
       !formData.buildingAddress ||
-      !formData.locality
+      !formData.locality ||
+      !formData.age
     ) {
       Alert.alert("Error", "Please fill all the fields");
       return;
@@ -86,6 +90,8 @@ const RegisterForm = () => {
       name: formData.name,
       role: role,
       gender: formData.gender,
+      aadharNo: formData.aadharNo,
+      age: formData.age,
     };
 
     try {
@@ -107,6 +113,8 @@ const RegisterForm = () => {
         setExactLocation(formData.exactLocation);
         setFormData(initialFormData);
         setIsNewUser(false);
+        setAadharNo(formData.aadharNo);
+        setAge(formData.age);
       } else {
         Alert.alert("Error", "Registration failed");
       }
@@ -131,7 +139,7 @@ const RegisterForm = () => {
         <View style={styles.modalContent}>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
             <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Register Account</Text>
+              <Text style={styles.headerText}>Mazdoor Registration</Text>
               <Text style={styles.subHeaderText}>
                 Please provide all the necessary information.
               </Text>
@@ -158,7 +166,7 @@ const RegisterForm = () => {
               >
                 <Image
                   source={{
-                    uri: "https://files.stickerkade.ir/7523/19.webp",
+                    uri: "https://www.pngitem.com/pimgs/m/99-994041_worker-man-construction-worker-hd-png-download.png",
                   }}
                   style={styles.pictureImage}
                 />
@@ -186,7 +194,7 @@ const RegisterForm = () => {
               >
                 <Image
                   source={{
-                    uri: "https://i.pinimg.com/736x/0f/10/55/0f105565e20366e9c76dec4a16d55a2b.jpg",
+                    uri: "https://www.familyhandyman.com/wp-content/uploads/2021/03/woman-construction-worker-GettyImages-463207617.jpg",
                   }}
                   style={styles.pictureImage}
                 />
@@ -222,7 +230,22 @@ const RegisterForm = () => {
               onChangeText={(text) => handleChange("contact", text)}
               keyboardType="phone-pad"
             />
-
+            <CustomTextInput
+              iconName="document-text-outline"
+              iconType="Ionicons"
+              placeholder="Aadhar Number"
+              value={formData.aadharNo}
+              onChangeText={(text) => handleChange("aadharNo", text)}
+              keyboardType="phone-pad"
+            />
+            <CustomTextInput
+              iconName="people"
+              iconType="Ionicons"
+              placeholder="Age"
+              value={formData.age}
+              onChangeText={(text) => handleChange("age", text)}
+              keyboardType="phone-pad"
+            />
             <DropdownTextInput
               iconName="map"
               list={Object.keys(locations)}
@@ -266,4 +289,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default MazdoorRegister;

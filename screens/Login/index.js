@@ -11,6 +11,8 @@ import Customer from "../Customer";
 import { hostUrl, getFavoriteSPs } from "../../services";
 import { useAuthStore } from "../../zustand/authStore";
 import { useCustomerStore } from "../../zustand/customerStore";
+import MazdoorRegister from "../Mazdoor/Registration";
+import Mazdoor from "../Mazdoor/Home";
 
 const Login = () => {
   const [initializing, setInitializing] = useState(true);
@@ -21,6 +23,8 @@ const Login = () => {
 
   const { email, startupApisCalled, setStartupApisCalled } = authStore;
   const { favoriteSps, setFavoriteSps } = customerStore;
+
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
@@ -48,7 +52,8 @@ const Login = () => {
   }, [user, email]);
 
   GoogleSignin.configure({
-    webClientId: "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com"
+    webClientId:
+      "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
   });
 
   const onGoogleButtonPress = async () => {
@@ -68,7 +73,7 @@ const Login = () => {
 
       const response = await axios.post(apiUrl, {
         emailId: email,
-        role: "customer",
+        role: userRole,
         name: displayName,
       });
 
@@ -79,7 +84,7 @@ const Login = () => {
         // Update Zustand store with email, role, and name
         authStore.setName(displayName);
         authStore.setEmail(email);
-        authStore.setRole("customer");
+        authStore.setRole(userRole);
         authStore.setPicture(result.additionalUserInfo.profile.picture);
         authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
 
@@ -107,7 +112,6 @@ const Login = () => {
         }
 
         setUser(true);
-
       } else {
         console.error(
           "Failed to log in user via API. Server responded with:",
@@ -139,11 +143,17 @@ const Login = () => {
       </View>
     );
   } else if (!user) {
-    return <LoginUi onGoogleButtonPress={onGoogleButtonPress} />;
+    return (
+      <LoginUi
+        onGoogleButtonPress={onGoogleButtonPress}
+        setUserRole={setUserRole}
+        userRole={userRole}
+      />
+    );
   } else if (authStore.isNewUser) {
-    return <RegisterForm />;
+    return userRole === "customer" ? <RegisterForm /> : <MazdoorRegister />;
   } else {
-    return <Customer />;
+    return userRole === "customer" ? <Customer /> : <Mazdoor />;
   }
 };
 
