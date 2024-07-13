@@ -4,7 +4,14 @@ import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import EditProfile from "../Modals/EditProfile";
 
-const Header = ({ name, email, contact, locality, buildingAddress }) => {
+const Header = ({
+  name,
+  email,
+  contact,
+  locality,
+  buildingAddress,
+  exactLocation,
+}) => {
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
   return (
     <View style={styles.container}>
@@ -38,6 +45,7 @@ const Header = ({ name, email, contact, locality, buildingAddress }) => {
         name={name}
         email={email}
         contact={contact}
+        exactLocation={exactLocation}
       />
     </View>
   );

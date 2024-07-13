@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   pictureImage: {
     height: 80,
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   headerText: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "600",
     color: colors.baseColor,
   },
   subHeaderText: {
     marginTop: 5,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "300",
     color: "gray",
   },

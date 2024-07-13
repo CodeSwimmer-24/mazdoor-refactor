@@ -103,7 +103,7 @@ const RegisterForm = () => {
         setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
         setExactLocation(formData.exactLocation);
-        setFormData(initialFormData); // Reset form data to initial values
+        setFormData(initialFormData);
         setIsNewUser(false);
       } else {
         Alert.alert("Error", "Registration failed");
@@ -158,13 +158,7 @@ const RegisterForm = () => {
               onChangeText={(text) => handleChange("contact", text)}
               keyboardType="phone-pad"
             />
-            <CustomTextInput
-              iconName="location-outline"
-              iconType="Ionicons"
-              placeholder="Building Address"
-              value={formData.buildingAddress}
-              onChangeText={(text) => handleChange("buildingAddress", text)}
-            />
+
             <DropdownTextInput
               iconName="map"
               list={Object.keys(locations)}
@@ -181,6 +175,13 @@ const RegisterForm = () => {
               placeholder="Exact Location"
               value={formData.exactLocation}
               onChangeText={(text) => handleChange("exactLocation", text)}
+            />
+            <CustomTextInput
+              iconName="location-outline"
+              iconType="Ionicons"
+              placeholder="Building Address"
+              value={formData.buildingAddress}
+              onChangeText={(text) => handleChange("buildingAddress", text)}
             />
 
             <TouchableOpacity

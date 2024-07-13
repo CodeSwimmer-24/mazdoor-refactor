@@ -6,7 +6,14 @@ import Account from "../Modals/Account";
 import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
 
-const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }) => {
+const Body = ({
+  buildingAddress,
+  locality,
+  name,
+  email,
+  contact,
+  exactLocation,
+}) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
   const [notificationsModalVisible, setNotificationsModalVisible] =
@@ -73,6 +80,7 @@ const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }
         name={name}
         email={email}
         contact={contact}
+        exactLocation={exactLocation}
       />
       <EditProfile
         editAccountModalVisible={editAccountModalVisible}

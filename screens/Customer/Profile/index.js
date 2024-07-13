@@ -6,7 +6,8 @@ import Footer from "./components/Footer";
 import { useAuthStore } from "../../../zustand/authStore";
 
 const Profile = () => {
-  const { name, email, contact, buildingAddress, locality, exactLocation } = useAuthStore();
+  const { name, email, contact, buildingAddress, locality, exactLocation } =
+    useAuthStore();
 
   return (
     <View style={styles.container}>
@@ -18,6 +19,7 @@ const Profile = () => {
           contact={contact}
           buildingAddress={buildingAddress}
           locality={locality}
+          exactLocation={exactLocation}
           name={name}
           email={email}
         />

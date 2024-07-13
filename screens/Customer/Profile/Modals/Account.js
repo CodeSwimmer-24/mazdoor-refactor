@@ -20,6 +20,7 @@ const Account = ({
   name,
   email,
   contact,
+  exactLocation,
 }) => {
   return (
     <Modal
@@ -58,7 +59,7 @@ const Account = ({
                   <View style={styles.detailRow}>
                     <Ionicons name="map-outline" size={20} color="gray" />
                     <Text style={styles.detailText}>
-                      {locality} Okkhala, Delhi
+                      {exactLocation}, {locality} Okhla
                     </Text>
                   </View>
                 </View>
