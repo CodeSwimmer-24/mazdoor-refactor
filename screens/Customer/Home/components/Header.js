@@ -3,8 +3,10 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { SimpleLineIcons, Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import useProfileImage from "../../../../constants/profileImage";
 
 const Header = ({ name, locality, buildingAddress }) => {
+  const profileImageUri = useProfileImage();
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -14,7 +16,7 @@ const Header = ({ name, locality, buildingAddress }) => {
             <View style={styles.profileInfo}>
               <Image
                 source={{
-                  uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
+                  uri: profileImageUri,
                 }}
                 style={styles.profileIcon}
               />
@@ -88,8 +90,6 @@ const styles = StyleSheet.create({
     width: 45,
     borderRadius: 50,
     marginRight: 10,
-    borderWidth: 4,
-    borderColor: "white",
   },
   seeMoreText: {
     fontSize: 12,

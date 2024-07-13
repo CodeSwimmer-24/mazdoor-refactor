@@ -10,6 +10,7 @@ export const useAuthStore = create(
       name: "",
       contact: "",
       picture: "",
+      gender: "",
       buildingAddress: "",
       locality: "",
       exactLocation: "",
@@ -23,25 +24,30 @@ export const useAuthStore = create(
       setName: (name) => set((state) => ({ ...state, name })),
       setContact: (contact) => set((state) => ({ ...state, contact })),
       setPicture: (picture) => set((state) => ({ ...state, picture })),
+      setGender: (gender) => set((state) => ({ ...state, gender })),
       setBuildingAddress: (buildingAddress) =>
         set((state) => ({ ...state, buildingAddress })),
       setLocality: (locality) => set((state) => ({ ...state, locality })),
-      setExactLocation: (exactLocation) => set((state) => ({ ...state, exactLocation })),
+      setExactLocation: (exactLocation) =>
+        set((state) => ({ ...state, exactLocation })),
       setIsNewUser: (isNewUser) => set((state) => ({ ...state, isNewUser })),
-      setStartupApisCalled: (called) => set((state) => ({ ...state, startupApisCalled: called })),
+      setStartupApisCalled: (called) =>
+        set((state) => ({ ...state, startupApisCalled: called })),
 
-      reset: () => set({
-        email: "",
-        role: "",
-        name: "",
-        contact: "",
-        picture: "",
-        buildingAddress: "",
-        locality: "",
-        exactLocation: "",
-        isNewUser: false,
-        startupApisCalled: false 
-      })
+      reset: () =>
+        set({
+          email: "",
+          role: "",
+          name: "",
+          contact: "",
+          picture: "",
+          gender: "",
+          buildingAddress: "",
+          locality: "",
+          exactLocation: "",
+          isNewUser: false,
+          startupApisCalled: false,
+        }),
     }),
     {
       name: "auth-storage", // unique name

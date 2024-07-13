@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import EditProfile from "../Modals/EditProfile";
+import useProfileImage from "../../../../constants/profileImage";
 
 const Header = ({
   name,
@@ -13,14 +14,14 @@ const Header = ({
   exactLocation,
 }) => {
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
+
+  const profileImageUri = useProfileImage();
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
         <View style={styles.profileContainer}>
           <Image
-            source={{
-              uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
-            }}
+            source={{ uri: profileImageUri }}
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
@@ -75,8 +76,6 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 50,
-    borderWidth: 4,
-    borderColor: colors.white,
   },
   textContainer: {
     marginLeft: 10,

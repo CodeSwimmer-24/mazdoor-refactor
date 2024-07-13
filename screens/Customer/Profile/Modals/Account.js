@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
+import useProfileImage from "../../../../constants/profileImage";
 
 const Account = ({
   accountModalVisible,
@@ -22,6 +23,7 @@ const Account = ({
   contact,
   exactLocation,
 }) => {
+  const profileImageUri = useProfileImage();
   return (
     <Modal
       visible={accountModalVisible}
@@ -39,7 +41,7 @@ const Account = ({
               <View style={styles.profileSection}>
                 <Image
                   source={{
-                    uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
+                    uri: profileImageUri,
                   }}
                   style={styles.profileImage}
                 />

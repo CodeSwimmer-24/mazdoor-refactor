@@ -19,6 +19,7 @@ import axios from "axios";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
 import { useSystemStore } from "../../../../zustand/systemStore";
+import useProfileImage from "../../../../constants/profileImage";
 
 const EditProfile = ({
   editAccountModalVisible,
@@ -40,6 +41,7 @@ const EditProfile = ({
   });
 
   const [loading, setLoading] = useState(false);
+  const profileImageUri = useProfileImage();
 
   const handleChange = (name, value) => {
     setFormData({
@@ -152,7 +154,7 @@ const EditProfile = ({
               <View style={styles.profileSection}>
                 <Image
                   source={{
-                    uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
+                    uri: profileImageUri,
                   }}
                   style={styles.profileImage}
                 />

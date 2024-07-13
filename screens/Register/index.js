@@ -26,6 +26,7 @@ const RegisterForm = () => {
     picture,
     setName,
     setContact,
+    setGender,
     setBuildingAddress,
     setLocality,
     setExactLocation,
@@ -39,11 +40,13 @@ const RegisterForm = () => {
     contact: "",
     buildingAddress: "",
     locality: "",
+    gender: "M",
     exactLocation: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
+  const [selectedGender, setSelectedGender] = useState("M");
 
   const handleChange = (name, value) => {
     setFormData({
@@ -77,13 +80,12 @@ const RegisterForm = () => {
         buildingAddress: formData.buildingAddress,
         exactLocation: formData.exactLocation,
         locality: formData.locality,
-        region: "Jharkhand",
-        city: "Jamshedpur",
       },
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
       role: role,
+      gender: formData.gender,
     };
 
     try {
@@ -116,6 +118,12 @@ const RegisterForm = () => {
     }
   };
 
+  const selectGender = (gender) => {
+    setSelectedGender(gender);
+    setFormData({ ...formData, gender });
+    setGender(gender); // Update gender in Zustand state
+  };
+
   return (
     <Modal visible={true} animationType="slide" transparent={true}>
       <StatusBar backgroundColor={colors.primary} />
@@ -128,13 +136,69 @@ const RegisterForm = () => {
                 Please provide all the necessary information.
               </Text>
             </View>
-            <View style={styles.picture}>
-              <Image
-                source={{
-                  uri: "https://global.discourse-cdn.com/monzo/original/3X/3/a/3aae66f7a0128dc50c915d2687d1abad85de36f3.jpeg",
-                }}
-                style={styles.pictureImage}
-              />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.picture,
+                  {
+                    borderWidth: 0.2,
+                    borderRadius: 20,
+                    borderColor:
+                      selectedGender === "M" ? "lightgray" : "transparent",
+                    borderWidth: selectedGender === "M" ? 1 : 0,
+                  },
+                ]}
+                onPress={() => selectGender("M")}
+              >
+                <Image
+                  source={{
+                    uri: "https://files.stickerkade.ir/7523/19.webp",
+                  }}
+                  style={styles.pictureImage}
+                />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "gray",
+                  }}
+                >
+                  Male
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.picture,
+                  {
+                    borderWidth: 0.2,
+                    borderRadius: 20,
+                    borderColor:
+                      selectedGender === "F" ? "lightgray" : "transparent",
+                    borderWidth: selectedGender === "F" ? 1 : 0,
+                  },
+                ]}
+                onPress={() => selectGender("F")}
+              >
+                <Image
+                  source={{
+                    uri: "https://i.pinimg.com/736x/0f/10/55/0f105565e20366e9c76dec4a16d55a2b.jpg",
+                  }}
+                  style={styles.pictureImage}
+                />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "gray",
+                  }}
+                >
+                  Female
+                </Text>
+              </TouchableOpacity>
             </View>
             <CustomTextInput
               iconName="mark-email-read"
