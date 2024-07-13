@@ -71,9 +71,18 @@ const MazdoorRegister = () => {
       return;
     }
 
-    // Check if the contact number is 10 digits
     if (formData.contact.length !== 10) {
       Alert.alert("Error", "Contact number must be 10 digits");
+      return;
+    }
+
+    if (formData.aadharNo.length !== 12) {
+      Alert.alert("Error", "Aadhar number must be 12 digits");
+      return;
+    }
+
+    if (formData.age.length !== 2) {
+      Alert.alert("Error", "Age must be exactly 2 digits");
       return;
     }
 

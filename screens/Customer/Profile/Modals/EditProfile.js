@@ -71,6 +71,17 @@ const EditProfile = ({
   const { locations } = useSystemStore();
 
   const handleSubmit = async () => {
+    if (
+      (role === "mazdoor" && formData.aadharNo.length !== 12) ||
+      formData.age.length !== 2
+    ) {
+      Alert.alert(
+        "Error",
+        "Aadhar number must be 12 digits and age must be 2 digits"
+      );
+      return;
+    }
+
     const payload = {
       address: {
         buildingAddress: formData.buildingAddress,
