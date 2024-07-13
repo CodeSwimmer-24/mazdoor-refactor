@@ -71,14 +71,7 @@ const Card = ({
         <View style={styles.card}>
           <View style={styles.header}>
             <View style={styles.headerLeft}>
-              <View style={styles.iconContainer}>
-                <MaterialIcons
-                  name="electric-bolt"
-                  size={20}
-                  color="#4782da"
-                  style={styles.icon}
-                />
-              </View>
+              <View style={styles.iconContainer}></View>
               <View style={styles.headerTitle}>
                 <Text style={styles.headerText}>{name}</Text>
               </View>
@@ -165,7 +158,12 @@ const Card = ({
             )}
           </View>
         </View>
-        <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
+        <Feedback
+          email={email}
+          setIsVisible={setIsVisible}
+          isVisible={isVisible}
+          serviceType={profession}
+        />
       </TouchableOpacity>
       <Cancel
         cancelVisible={cancelVisible}
