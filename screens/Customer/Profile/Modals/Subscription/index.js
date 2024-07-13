@@ -25,6 +25,7 @@ const Subscription = ({
   subscriptionModalVisible,
   setSubscriptionModalVisible,
   name,
+  role,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
@@ -33,7 +34,9 @@ const Subscription = ({
     const fetchSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/true`
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${
+            role === "customer" ? true : false
+          }`
         );
         const subscriptionData = response.data.map((item) => ({
           subscriptionId: item.subscriptionId,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",

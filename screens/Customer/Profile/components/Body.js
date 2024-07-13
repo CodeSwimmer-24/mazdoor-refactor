@@ -106,6 +106,7 @@ const Body = ({
         setSubscriptionModalVisible={setSubscriptionModalVisible}
         name={name}
         email={email}
+        role={role}
       />
     </View>
   );
