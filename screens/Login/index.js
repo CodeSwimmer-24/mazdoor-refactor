@@ -38,11 +38,8 @@ const Login = () => {
   useEffect(() => {
     if (user && email) {
       if (!favoriteSps.length && !startupApisCalled) {
-        console.log("Getting Favorite Shops");
-
         getFavoriteSPs(email)
           .then((sps) => {
-            console.log("Setting the Favorite Shops");
             setFavoriteSps(sps);
             setStartupApisCalled(true);
           })
@@ -99,7 +96,12 @@ const Login = () => {
             authStore.setName(profileData.name);
             authStore.setContact(profileData.contactNo);
             authStore.setBuildingAddress(profileData.address.buildingAddress);
+            authStore.setGender(profileData.gender);
+            authStore.setAge(profileData.age);
+            authStore.setRole(profileData.role);
+            authStore.setAadharNo(profileData.aadharNo);
             authStore.setLocality(profileData.address.locality);
+            authStore.setExactLocation(profileData.address.exactLocation);
           } else {
             console.error(
               "Failed to fetch user profile via API. Server responded with:",

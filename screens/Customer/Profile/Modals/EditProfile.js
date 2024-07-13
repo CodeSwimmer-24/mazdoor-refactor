@@ -30,6 +30,9 @@ const EditProfile = ({
   name,
   email,
   contact,
+  age,
+  aadharNo,
+  role,
 }) => {
   const [formData, setFormData] = useState({
     buildingAddress,
@@ -38,7 +41,12 @@ const EditProfile = ({
     name,
     email,
     contact,
+    age,
+    aadharNo,
   });
+
+  const { height } = Dimensions.get("window");
+  const modalHeight = role === "mazdoor" ? height * 0.85 : height * 0.55;
 
   const [loading, setLoading] = useState(false);
   const profileImageUri = useProfileImage();
@@ -53,6 +61,8 @@ const EditProfile = ({
   const {
     setEmail,
     setName,
+    setAge,
+    setAadharNo,
     setContact,
     setBuildingAddress,
     setLocality,
@@ -63,17 +73,16 @@ const EditProfile = ({
   const handleSubmit = async () => {
     const payload = {
       address: {
-        area: "",
         buildingAddress: formData.buildingAddress,
-        city: "Jamshedpur",
         exactLocation: formData.exactLocation,
         locality: formData.locality,
-        region: "Jharkhand",
       },
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
-      role: "customer",
+      aadharNo: formData.aadharNo,
+      age: formData.age,
+      role: role,
     };
 
     setLoading(true);
@@ -95,7 +104,9 @@ const EditProfile = ({
         setContact(formData.contact);
         setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
-
+        setExactLocation(formData.exactLocation);
+        setAadharNo(formData.aadharNo);
+        setAge(formData.age);
         setEditAccountModalVisible(false);
         Alert.alert("Success", "Profile updated successfully");
       } else {
@@ -103,7 +114,7 @@ const EditProfile = ({
       }
     } catch (error) {
       if (error.response) {
-        console.error("Error response:", error.response);
+        console.error("Error response:", error.message);
         Alert.alert(
           "Error",
           `Failed to update profile: ${
@@ -136,7 +147,7 @@ const EditProfile = ({
           style={styles.modalOverlay}
           onPress={() => setEditAccountModalVisible(false)}
         />
-        <ScrollView style={styles.modalContent}>
+        <ScrollView style={[styles.modalContent, { height: modalHeight }]}>
           <View>
             <View style={styles.crossContainer}>
               <TouchableOpacity
@@ -176,6 +187,24 @@ const EditProfile = ({
                   value={formData.contact}
                   onChangeText={(text) => handleChange("contact", text)}
                 />
+                {role === "mazdoor" && (
+                  <>
+                    <CustomTextInput
+                      iconName="document-outline"
+                      iconType="Ionicons"
+                      placeholder="Edit Aadhar No."
+                      value={formData.aadharNo}
+                      onChangeText={(text) => handleChange("aadharNo", text)}
+                    />
+                    <CustomTextInput
+                      iconName="people-outline"
+                      iconType="Ionicons"
+                      placeholder="Edit Age"
+                      value={formData.age}
+                      onChangeText={(text) => handleChange("age", text)}
+                    />
+                  </>
+                )}
                 <CustomTextInput
                   iconName="location-outline"
                   iconType="Ionicons"
@@ -234,7 +263,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.5,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -293,6 +321,7 @@ const styles = StyleSheet.create({
   closeButtonContainer: {
     alignItems: "center",
     padding: 10,
+    marginBottom: 20,
   },
   closeButton: {
     backgroundColor: colors.primary,

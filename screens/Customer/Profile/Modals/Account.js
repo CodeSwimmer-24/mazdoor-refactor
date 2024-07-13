@@ -22,8 +22,15 @@ const Account = ({
   email,
   contact,
   exactLocation,
+  age,
+  role,
+  aadharNo,
 }) => {
   const profileImageUri = useProfileImage();
+
+  const { height } = Dimensions.get("window");
+  const modalHeight = role === "mazdoor" ? height * 0.65 : height * 0.55;
+
   return (
     <Modal
       visible={accountModalVisible}
@@ -35,7 +42,7 @@ const Account = ({
           style={styles.modalOverlay}
           onPress={() => setAccountModalVisible(false)}
         />
-        <View style={styles.modalContent}>
+        <View style={[styles.modalContent, { height: modalHeight }]}>
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
@@ -53,9 +60,27 @@ const Account = ({
                   <Ionicons name="call-outline" size={20} color="gray" />
                   <Text style={styles.detailText}>+91 {contact}</Text>
                 </View>
+                {role === "mazdoor" && (
+                  <View style={styles.detailBox2}>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="people-outline" size={24} color="gray" />
+                      <Text style={styles.detailText}>Age {age}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons
+                        name="document-outline"
+                        size={20}
+                        color="gray"
+                      />
+                      <Text style={styles.detailText}>
+                        Aadhar No {aadharNo}
+                      </Text>
+                    </View>
+                  </View>
+                )}
                 <View style={styles.detailBox2}>
                   <View style={styles.detailRow}>
-                    <MaterialIcons name="location-pin" size={24} color="gray" />
+                    <Ionicons name="location-outline" size={24} color="gray" />
                     <Text style={styles.detailText}>{buildingAddress}</Text>
                   </View>
                   <View style={styles.detailRow}>
@@ -82,8 +107,6 @@ const Account = ({
   );
 };
 
-const { height } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
@@ -94,7 +117,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.55,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -135,7 +157,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 7,
-    elevation: 1,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
@@ -151,7 +172,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 7,
-    elevation: 1,
     marginBottom: 20,
   },
   detailText: {

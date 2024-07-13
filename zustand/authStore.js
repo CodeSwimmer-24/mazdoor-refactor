@@ -25,7 +25,7 @@ export const useAuthStore = create(
       setRole: (role) => set((state) => ({ ...state, role })),
       setName: (name) => set((state) => ({ ...state, name })),
       setAadharNo: (aadharNo) => set((state) => ({ ...state, aadharNo })),
-      setAadharNo: (age) => set((state) => ({ ...state, age })),
+      setAge: (age) => set((state) => ({ ...state, age })),
       setContact: (contact) => set((state) => ({ ...state, contact })),
       setPicture: (picture) => set((state) => ({ ...state, picture })),
       setGender: (gender) => set((state) => ({ ...state, gender })),
