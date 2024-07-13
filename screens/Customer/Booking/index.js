@@ -23,6 +23,7 @@ const Booking = ({ navigation }) => {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noData, setNoData] = useState(true);
+  const [reload, setReload] = useState(false);
   const email = useAuthStore((state) => state.email);
 
   const fetchBookings = async () => {
@@ -51,6 +52,13 @@ const Booking = ({ navigation }) => {
       fetchBookings();
     }, [email])
   );
+
+  useEffect(() => {
+    if (reload) {
+      fetchBookings();
+      setReload(false); // Reset the reload state to avoid continuous reloading
+    }
+  }, [reload]);
 
   if (loading) {
     return (
@@ -81,6 +89,7 @@ const Booking = ({ navigation }) => {
                 shopName={serviceProviders[index]?.title || "N/A"}
                 date={`${booking.date} - ${booking.time}`}
                 contactNo={profiles[index]?.contactNo || "7272977850"}
+                bookingId={bookings[index]?.bookingId || "NoID"}
                 location={
                   `${profiles[index]?.address?.locality}, ${profiles[index]?.address?.city}` ||
                   "N/A"
@@ -90,6 +99,7 @@ const Booking = ({ navigation }) => {
                 }
                 status={booking.status}
                 navigation={navigation}
+                setReload={setReload}
               />
             ))}
         </View>

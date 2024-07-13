@@ -11,6 +11,7 @@ import {
 import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Feedback from "../Feedback/Feedback";
+import Cancel from "../Cancel";
 
 const Card = ({
   name,
@@ -22,6 +23,8 @@ const Card = ({
   status,
   navigation,
   email,
+  bookingId,
+  setReload,
 }) => {
   const getStatusColor = () => {
     switch (status.toLowerCase()) {
@@ -38,6 +41,7 @@ const Card = ({
     }
   };
 
+  const [cancelVisible, setCancelVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const handleCall = (number) => {
@@ -55,108 +59,124 @@ const Card = ({
   };
 
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("ServiceDetail", {
-          emailId: email,
-        })
-      }
-      style={styles.container}
-    >
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <View style={styles.iconContainer}>
-              <MaterialIcons
-                name="electric-bolt"
-                size={20}
-                color="#4782da"
-                style={styles.icon}
+    <>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("ServiceDetail", {
+            emailId: email,
+          })
+        }
+        style={styles.container}
+      >
+        <View style={styles.card}>
+          <View style={styles.header}>
+            <View style={styles.headerLeft}>
+              <View style={styles.iconContainer}>
+                <MaterialIcons
+                  name="electric-bolt"
+                  size={20}
+                  color="#4782da"
+                  style={styles.icon}
+                />
+              </View>
+              <View style={styles.headerTitle}>
+                <Text style={styles.headerText}>{name}</Text>
+              </View>
+            </View>
+            <View style={styles.headerRight}>
+              <View style={styles.roleContainer}>
+                <Text style={styles.roleText}>{profession}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.body}>
+            <View style={styles.bodyLeft}>
+              <Image
+                source={{
+                  uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
+                }}
+                style={styles.profileImage}
               />
+              <View style={styles.bodyTextContainer}>
+                <Text style={styles.bodyTitle}>{shopName}</Text>
+                <Text style={styles.bodySubtitle}>{location}</Text>
+                <Text style={styles.bodySubtitle}>{date}</Text>
+              </View>
             </View>
-            <View style={styles.headerTitle}>
-              <Text style={styles.headerText}>{name}</Text>
+            <View style={styles.bodyRight}>
+              <TouchableOpacity onPress={() => handleCall(contactNo)}>
+                <MaterialIcons
+                  name="call"
+                  size={24}
+                  color={colors.primary}
+                  style={styles.callIcon}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleWhatsApp(contactNo)}>
+                <FontAwesome5
+                  name="whatsapp"
+                  size={24}
+                  color="#075e54"
+                  style={styles.whatsappIcon}
+                />
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.headerRight}>
-            <View style={styles.roleContainer}>
-              <Text style={styles.roleText}>{profession}</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View style={styles.bodyLeft}>
-            <Image
-              source={{
-                uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
-              }}
-              style={styles.profileImage}
-            />
-            <View style={styles.bodyTextContainer}>
-              <Text style={styles.bodyTitle}>{shopName}</Text>
-              <Text style={styles.bodySubtitle}>{location}</Text>
-              <Text style={styles.bodySubtitle}>{date}</Text>
-            </View>
-          </View>
-          <View style={styles.bodyRight}>
-            <TouchableOpacity onPress={() => handleCall(contactNo)}>
-              <MaterialIcons
-                name="call"
-                size={24}
-                color={colors.primary}
-                style={styles.callIcon}
-              />
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.footerLeft}>
+              <Text style={[styles.statusText, getStatusColor()]}>
+                {status.toUpperCase()}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleWhatsApp(contactNo)}>
-              <FontAwesome5
-                name="whatsapp"
-                size={24}
-                color="#075e54"
-                style={styles.whatsappIcon}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.footerLeft}>
-            <Text style={[styles.statusText, getStatusColor()]}>
-              {status.toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-          {status.toLowerCase() === "completed" ? (
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(true);
-              }}
-              style={[
-                styles.footerRight,
-                {
-                  backgroundColor: "#4782da1a",
-                },
-              ]}
-            >
-              <Entypo name="star" size={16} color="#4782da" />
-              <Text
+            {status.toLowerCase() === "completed" ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsVisible(true);
+                }}
                 style={[
-                  styles.cancelText,
+                  styles.footerRight,
                   {
-                    color: "#4782da",
+                    backgroundColor: "#4782da1a",
                   },
                 ]}
               >
-                Feedback
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.footerRight}>
-              <Entypo name="cross" size={16} color={colors.danger} />
-              <Text style={styles.cancelText}>CANCEL</Text>
-            </TouchableOpacity>
-          )}
+                <Entypo name="star" size={16} color="#4782da" />
+                <Text
+                  style={[
+                    styles.cancelText,
+                    {
+                      color: "#4782da",
+                    },
+                  ]}
+                >
+                  Feedback
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  setCancelVisible(true);
+                }}
+                style={styles.footerRight}
+              >
+                <Entypo name="cross" size={16} color={colors.danger} />
+                <Text style={styles.cancelText}>CANCEL</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-      </View>
-      <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
-    </TouchableOpacity>
+        <Feedback setIsVisible={setIsVisible} isVisible={isVisible} />
+      </TouchableOpacity>
+      <Cancel
+        cancelVisible={cancelVisible}
+        setCancelVisible={setCancelVisible}
+        email={email}
+        date={date}
+        name={name}
+        bookingId={bookingId}
+        setReload={setReload}
+      />
+    </>
   );
 };
 
