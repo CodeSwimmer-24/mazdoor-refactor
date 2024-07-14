@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,13 +8,19 @@ import {
   TouchableOpacity,
   Dimensions,
   BackHandler,
+  Alert,
+  Linking,
 } from "react-native";
-import React, { useState, useEffect } from "react";
-import SubscriptionUi from "./SubscriptionUi";
-import colors from "../../../../../constants/colors";
 import axios from "axios";
 import { hostUrl } from "../../../../../services";
 import { useAuthStore } from "../../../../../zustand/authStore";
+import Upi from "../Upi";
+import SubscriptionUi from "./SubscriptionUi";
+import colors from "../../../../../constants/colors";
+import {
+  Phone_PAY_UPI_URL,
+  UPI_URL_GPAY,
+} from "../../../../../constants/UpiPayments";
 
 const benefits = [
   "Access to all service providers",
@@ -30,28 +37,27 @@ const Subscription = ({
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
-
-  const [isSubscribed, setIsSubscribed] = useState(true);
-
+  const [upiPopup, setUpiPopup] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const { email } = useAuthStore();
 
   useEffect(() => {
-    const fetchSubscriptions = async () => {
+    const fetchUserSubscription = async () => {
       try {
         const response = await axios.get(
           `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
         );
-        setIsSubscribed(response.data);
+        setIsSubscribed(response.data.isSubscribed);
       } catch (error) {
-        console.error("Error fetching subscriptions:", error);
+        console.error("Error fetching user subscription:", error);
       }
     };
 
-    fetchSubscriptions();
-  }, []);
+    fetchUserSubscription();
+  }, [email]);
 
   useEffect(() => {
-    const fetchSubscriptions = async () => {
+    const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
           `${hostUrl}/mazdoor/v1/getAllSubscription/${
@@ -69,8 +75,8 @@ const Subscription = ({
       }
     };
 
-    fetchSubscriptions();
-  }, []);
+    fetchAllSubscriptions();
+  }, [role]);
 
   useEffect(() => {
     const backAction = () => {
@@ -86,13 +92,51 @@ const Subscription = ({
       backAction
     );
 
-    return () => {
-      backHandler.remove();
-    };
+    return () => backHandler.remove();
   }, [subscriptionModalVisible]);
 
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
+  };
+
+  const payWithGooglePay = () => {
+    Linking.openURL(UPI_URL_GPAY)
+      .then((data) => {
+        console.log("Google Pay opened successfully:", data);
+
+        const transactionStatus = data && data.url === "success";
+        if (transactionStatus) {
+          Alert.alert("Success", "Transaction successful!");
+        } else {
+          Alert.alert("Error", "Transaction failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to open Google Pay:", error);
+        Alert.alert(
+          "Error",
+          "Failed to open Google Pay. Please make sure you have Google Pay installed."
+        );
+      });
+  };
+
+  const payWithPhonePe = () => {
+    Linking.openURL(Phone_PAY_UPI_URL)
+      .then((data) => {
+        console.log("PhonePe opened successfully:", data);
+
+        console.log("PhonePe response data:", data);
+      })
+      .catch((error) => {
+        console.error("Failed to open PhonePe:", error);
+
+        console.error("PhonePe error response:", error);
+
+        Alert.alert(
+          "Error",
+          "Failed to open PhonePe. Please make sure you have PhonePe installed."
+        );
+      });
   };
 
   return (
@@ -100,7 +144,7 @@ const Subscription = ({
       visible={subscriptionModalVisible}
       transparent={true}
       animationType="slide"
-      onRequestClose={() => setSubscriptionModalVisible(false)} // Ensure modal closes on back button press
+      onRequestClose={() => setSubscriptionModalVisible(false)}
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity
@@ -120,17 +164,26 @@ const Subscription = ({
           </ScrollView>
           <View style={styles.closeButtonContainer}>
             {isSubscribed ? (
-              <View style={styles.alredySubs}>
+              <TouchableOpacity style={styles.alreadySubs}>
                 <Text style={styles.closeButtonText}>You are a Subscriber</Text>
-              </View>
+              </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={() => setUpiPopup(true)}
+                style={styles.closeButton}
+              >
                 <Text style={styles.closeButtonText}>Go to payment</Text>
               </TouchableOpacity>
             )}
           </View>
         </View>
       </View>
+      <Upi
+        upiPopup={upiPopup}
+        setUpiPopup={setUpiPopup}
+        payWithGooglePay={payWithGooglePay}
+        payWithPhonePe={payWithPhonePe}
+      />
     </Modal>
   );
 };
@@ -172,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
   },
-  alredySubs: {
+  alreadySubs: {
     backgroundColor: "#4caf50",
     width: "95%",
     alignItems: "center",
