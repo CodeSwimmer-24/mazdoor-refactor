@@ -91,47 +91,52 @@ const Shop = () => {
             </View>
           </>
         ) : (
-          <View style={styles.shopCard}>
-            <View style={styles.shopDetails}>
-              <Text style={styles.shopName}>{serviceProvider.title}</Text>
-              <Text style={styles.description}>
-                {serviceProvider.short_description}
-              </Text>
-              <View style={styles.ratingContainer}>
-                <View style={styles.serviceTypeContainer}>
-                  <Text style={styles.serviceTypeText}>
-                    {serviceProvider.serviceType}
-                  </Text>
-                </View>
-                <Text style={styles.rating}>🌟 {serviceProvider.rating}</Text>
-              </View>
-              <Text style={styles.basePrice}>
-                Base Price{" "}
-                <Text style={styles.basePriceValue}>
-                  {serviceProvider.basePrice}/-
+          <>
+            <View style={styles.shopCard}>
+              <View style={styles.shopDetails}>
+                <Text style={styles.shopName}>{serviceProvider.title}</Text>
+                <Text style={styles.description}>
+                  {serviceProvider.short_description}
                 </Text>
-              </Text>
-              <Text style={styles.availability}>
-                {serviceProvider.availability ? "Available" : "Not Available"}
-              </Text>
+                <View style={styles.ratingContainer}>
+                  <View style={styles.serviceTypeContainer}>
+                    <Text style={styles.serviceTypeText}>
+                      {serviceProvider.serviceType}
+                    </Text>
+                  </View>
+                  <Text style={styles.rating}>🌟 {serviceProvider.rating}</Text>
+                </View>
+                <Text style={styles.basePrice}>
+                  Base Price{" "}
+                  <Text style={styles.basePriceValue}>
+                    {serviceProvider.basePrice}/-
+                  </Text>
+                </Text>
+                <Text style={styles.availability}>
+                  {serviceProvider.availability ? "Available" : "Not Available"}
+                </Text>
+              </View>
+              <View style={styles.editIconContainer}>
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={handleEdit}
+                >
+                  <FontAwesome6 name="edit" size={20} color={colors.primary} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.editIconContainer}>
-              <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-                <FontAwesome6 name="edit" size={20} color={colors.primary} />
-              </TouchableOpacity>
+            <View>
+              <Services />
             </View>
-          </View>
+            <ShopForm
+              shopRegisterForm={shopRegisterForm}
+              setShopRegisterForm={setShopRegisterForm}
+              existingData={existingData}
+              setReload={setReload}
+            />
+          </>
         )}
       </View>
-      <View>
-        <Services />
-      </View>
-      <ShopForm
-        shopRegisterForm={shopRegisterForm}
-        setShopRegisterForm={setShopRegisterForm}
-        existingData={existingData}
-        setReload={setReload}
-      />
     </SafeAreaView>
   );
 };

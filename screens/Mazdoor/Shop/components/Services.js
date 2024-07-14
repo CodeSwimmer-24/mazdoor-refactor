@@ -122,7 +122,6 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 20,
-    paddingHorizontal: 20,
   },
   headerText: {
     fontSize: 18,
@@ -157,10 +156,10 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "90%",
+    width: "94%",
     borderBottomWidth: 0.4,
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     borderBottomColor: "gray",
   },
   serviceName: {

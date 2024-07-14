@@ -100,7 +100,7 @@ const Subscription = ({
       visible={subscriptionModalVisible}
       transparent={true}
       animationType="slide"
-      onRequestClose={() => setSubscriptionModalVisible(false)} // Ensure modal closes on back button press
+      onRequestClose={() => setSubscriptionModalVisible(false)}
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity
