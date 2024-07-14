@@ -13,6 +13,7 @@ import SubscriptionUi from "./SubscriptionUi";
 import colors from "../../../../../constants/colors";
 import axios from "axios";
 import { hostUrl } from "../../../../../services";
+import { useAuthStore } from "../../../../../zustand/authStore";
 
 const benefits = [
   "Access to all service providers",
@@ -29,6 +30,25 @@ const Subscription = ({
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
+
+  const [isSubscribed, setIsSubscribed] = useState(true);
+
+  const { email } = useAuthStore();
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await axios.get(
+          `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
+        );
+        setIsSubscribed(response.data);
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      }
+    };
+
+    fetchSubscriptions();
+  }, []);
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
@@ -99,9 +119,15 @@ const Subscription = ({
             />
           </ScrollView>
           <View style={styles.closeButtonContainer}>
-            <TouchableOpacity style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Go to payment</Text>
-            </TouchableOpacity>
+            {isSubscribed ? (
+              <View style={styles.alredySubs}>
+                <Text style={styles.closeButtonText}>You are a Subscriber</Text>
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>Go to payment</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -145,6 +171,14 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 16,
     color: "white",
+  },
+  alredySubs: {
+    backgroundColor: "#4caf50",
+    width: "95%",
+    alignItems: "center",
+    paddingVertical: 15,
+    borderRadius: 10,
+    elevation: 5,
   },
 });
 

@@ -12,7 +12,7 @@ import { hostUrl, getFavoriteSPs } from "../../services";
 import { useAuthStore } from "../../zustand/authStore";
 import { useCustomerStore } from "../../zustand/customerStore";
 import MazdoorRegister from "../Mazdoor/Registration";
-import Mazdoor from "../Mazdoor/Home";
+import Mazdoor from "../Mazdoor";
 
 const Login = () => {
   const [initializing, setInitializing] = useState(true);

@@ -2,11 +2,11 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
-import { getTabBarOptions } from "../../../constants/tabBarStyles";
-import Booking from "../../Customer/Booking";
-import Profile from "../../Customer/Profile";
-import Shop from "../Shop";
-import MazdoorHome from "./screens";
+import { getTabBarOptions } from "../../constants/tabBarStyles";
+import Booking from "./Booking/index";
+import Profile from "../Customer/Profile";
+import Shop from "./Shop";
+import MazdoorHome from "./Home/screens";
 
 const Tab = createBottomTabNavigator();
 
