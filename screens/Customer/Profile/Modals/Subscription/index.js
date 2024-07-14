@@ -47,7 +47,8 @@ const Subscription = ({
         const response = await axios.get(
           `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
         );
-        setIsSubscribed(response.data.isSubscribed);
+        setIsSubscribed(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching user subscription:", error);
       }
@@ -164,9 +165,11 @@ const Subscription = ({
           </ScrollView>
           <View style={styles.closeButtonContainer}>
             {isSubscribed ? (
-              <TouchableOpacity style={styles.alreadySubs}>
-                <Text style={styles.closeButtonText}>You are a Subscriber</Text>
-              </TouchableOpacity>
+              <View style={styles.alreadySubs}>
+                <Text style={styles.closeButtonText}>
+                  You are a Subscriber 🎉
+                </Text>
+              </View>
             ) : (
               <TouchableOpacity
                 onPress={() => setUpiPopup(true)}
