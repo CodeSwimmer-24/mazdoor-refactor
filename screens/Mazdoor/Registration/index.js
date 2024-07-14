@@ -65,7 +65,8 @@ const MazdoorRegister = () => {
       !formData.contact ||
       !formData.buildingAddress ||
       !formData.locality ||
-      !formData.age
+      !formData.age ||
+      !formData.exactLocation
     ) {
       Alert.alert("Error", "Please fill all the fields");
       return;
