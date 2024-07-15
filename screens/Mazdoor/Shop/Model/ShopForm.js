@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, FontAwesome6 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { useAuthStore } from "../../../../zustand/authStore";
 import CustomTextInput from "../../../../components/TextInput";
 import { hostUrl } from "../../../../services";
+import { Dropdown } from "react-native-element-dropdown"; // Assuming you're using this dropdown library
 
 const ShopForm = ({
   shopRegisterForm,
@@ -21,6 +22,7 @@ const ShopForm = ({
   setReload,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [services, setServices] = useState([]);
   const { email } = useAuthStore((state) => ({ email: state.email }));
 
   const initialFormData = {
@@ -38,6 +40,20 @@ const ShopForm = ({
       setFormData(existingData);
     }
   }, [existingData]);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const response = await fetch(`${hostUrl}/mazdoor/v1/getAllServices`);
+      const data = await response.json();
+      setServices(data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
 
   const handleChange = (name, value) => {
     setFormData({
@@ -98,12 +114,36 @@ const ShopForm = ({
                 value={formData.title}
                 onChangeText={(text) => handleChange("title", text)}
               />
-              <CustomTextInput
-                iconType="Ionicons"
-                iconName="hammer"
-                placeholder="Enter Service Type"
+              <Dropdown
+                style={styles.dropdownButton}
+                placeholderStyle={{ color: "#D0D0D0" }}
+                selectedTextStyle={{ color: colors.baseColor }}
+                iconStyle={{ color: "gray" }}
+                data={services}
+                search
+                searchPlaceholder="Search..."
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={formData.serviceType}
                 value={formData.serviceType}
-                onChangeText={(text) => handleChange("serviceType", text)}
+                onChange={(item) => handleChange("serviceType", item.value)}
+                renderLeftIcon={() => (
+                  <FontAwesome6
+                    name="hammer"
+                    size={14}
+                    color="lightgray"
+                    style={styles.icon}
+                  />
+                )}
+                renderRightIcon={() => (
+                  <Entypo
+                    name="chevron-small-down"
+                    size={24}
+                    color="gray"
+                    style={styles.icon}
+                  />
+                )}
               />
               <CustomTextInput
                 iconType="Ionicons"
@@ -196,6 +236,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "400",
+  },
+  dropdownButton: {
+    borderWidth: 1,
+    borderColor: "#D0D0D0",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginBottom: 20,
+  },
+  icon: {
+    marginRight: 10,
   },
 });
 

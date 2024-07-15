@@ -26,6 +26,8 @@ const Login = () => {
 
   const [userRole, setUserRole] = useState("");
 
+  const { role } = useAuthStore();
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
@@ -153,9 +155,9 @@ const Login = () => {
       />
     );
   } else if (authStore.isNewUser) {
-    return userRole === "customer" ? <RegisterForm /> : <MazdoorRegister />;
+    return role === "customer" ? <RegisterForm /> : <MazdoorRegister />;
   } else {
-    return userRole === "customer" ? <Customer /> : <Mazdoor />;
+    return role === "customer" ? <Customer /> : <Mazdoor />;
   }
 };
 
