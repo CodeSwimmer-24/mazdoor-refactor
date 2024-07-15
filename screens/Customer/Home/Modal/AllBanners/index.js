@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Modal,
@@ -8,7 +9,6 @@ import {
   Text,
   Image,
 } from "react-native";
-import React from "react";
 import { Entypo } from "@expo/vector-icons";
 import colors from "../../../../../constants/colors";
 
@@ -31,59 +31,19 @@ const AllBanners = ({ isVisible, setIsVisible }) => {
         />
         <View style={[styles.modalContent, { height: modalHeight }]}>
           <ScrollView>
-            <View style={styles.scrollContent}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingTop: 10,
-                  paddingHorizontal: 10,
-                }}
+            <View style={styles.header}>
+              <Text style={styles.headerText}>List of promotions</Text>
+              <TouchableOpacity
+                onPress={() => setIsVisible(false)}
+                style={styles.closeButton}
               >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#505050",
-                  }}
-                >
-                  List of pramotions
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsVisible(false);
-                  }}
-                  style={{
-                    backgroundColor: colors.dangerBackground,
-                    padding: 5,
-                    borderRadius: 50,
-                  }}
-                >
-                  <Entypo name="cross" size={20} color={colors.danger} />
-                </TouchableOpacity>
-              </View>
+                <Entypo name="cross" size={20} color={colors.danger} />
+              </TouchableOpacity>
             </View>
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              {offerList.map((list, index) => {
-                return (
-                  <Image
-                    key={index}
-                    source={{
-                      uri: list,
-                    }}
-                    style={{
-                      width: "100%",
-                      height: 180,
-                      borderRadius: 10,
-                      objectFit: "cover",
-                      marginTop: 20,
-                    }}
-                  />
-                );
-              })}
+            <View style={styles.imageContainer}>
+              {offerList.map((url, index) => (
+                <Image key={index} source={{ uri: url }} style={styles.image} />
+              ))}
             </View>
           </ScrollView>
         </View>
@@ -109,6 +69,31 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: 10,
+    paddingHorizontal: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    color: "#505050",
+  },
+  closeButton: {
+    backgroundColor: colors.dangerBackground,
+    padding: 5,
+    borderRadius: 50,
+  },
+  imageContainer: {
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: 180,
+    borderRadius: 10,
+    resizeMode: "cover",
+    marginTop: 20,
   },
   scrollContent: {
     paddingBottom: 20,

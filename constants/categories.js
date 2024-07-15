@@ -10,6 +10,7 @@ import washing from "../assets/assets/washing.png";
 import welder from "../assets/assets/welder.png";
 import gutter from "../assets/assets/gutter.png";
 import tile from "../assets/assets/tile.png";
+import more from "../assets/assets/more.png";
 
 const categories = [
   {
@@ -35,12 +36,6 @@ const categories = [
     value: "Painter",
     label: "Painter",
     backgroundColor: "rgb(229, 246, 253)",
-  },
-  {
-    image: chef,
-    value: "",
-    label: "Cook",
-    backgroundColor: "#f9f9f6",
   },
   {
     image: mechanicCar,
@@ -83,6 +78,12 @@ const categories = [
     label: "Tile/Marble",
     value: "Tile/Marble",
     backgroundColor: "#edf9ed",
+  },
+  {
+    image: more,
+    label: "View More",
+    value: "More",
+    backgroundColor: "#673de72a",
   },
 ];
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -6,29 +6,60 @@ import {
 } from "react-native-responsive-screen";
 
 import categories from "../../../../constants/categories";
+import AllCategories from "../Modal/AllCategories";
 
-const CategoryItem = ({ imageSource, label, backgroundColor, navigation }) => (
-  <TouchableOpacity
-    style={styles.categoryItem}
-    onPress={() =>
-      navigation.push("CategoryDetail", {
-        label,
-      })
-    }
-  >
-    <View style={[styles.categoryIconContainer, { backgroundColor }]}>
-      <Image source={imageSource} style={styles.categoryIcon} />
-    </View>
-    <Text style={styles.categoryLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
+const CategoryItem = ({
+  imageSource,
+  label,
+  backgroundColor,
+  navigation,
+  setIsVisible,
+}) => {
+  if (label === "View More") {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setIsVisible(true);
+        }}
+        style={styles.categoryItem}
+      >
+        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+          <Image source={imageSource} style={styles.categoryIcon} />
+        </View>
+        <Text style={styles.categoryLabel}>{label}</Text>
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <TouchableOpacity
+        style={styles.categoryItem}
+        onPress={() =>
+          navigation.push("CategoryDetail", {
+            label,
+          })
+        }
+      >
+        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+          <Image source={imageSource} style={styles.categoryIcon} />
+        </View>
+        <Text style={styles.categoryLabel}>{label}</Text>
+      </TouchableOpacity>
+    );
+  }
+};
 const Category = ({ navigation }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Categories</Text>
-        <TouchableOpacity style={styles.seeMoreButton}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(true);
+          }}
+          style={styles.seeMoreButton}
+        >
           <Text style={styles.seeMoreText}>See All</Text>
         </TouchableOpacity>
       </View>
@@ -40,9 +71,16 @@ const Category = ({ navigation }) => {
             label={category.label}
             backgroundColor={category.backgroundColor}
             navigation={navigation}
+            setIsVisible={setIsVisible}
           />
         ))}
       </View>
+      <AllCategories
+        categories={categories}
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+      />
     </View>
   );
 };
