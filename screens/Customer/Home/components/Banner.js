@@ -1,17 +1,25 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import colors from "../../../../constants/colors";
+import AllBanners from "../Modal/AllBanners";
 
 const Banner = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
     <View style={styles.bannerContainer}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Promotions</Text>
-        <TouchableOpacity style={styles.seeMoreButton}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("ssss");
+            setIsVisible(true);
+          }}
+          style={styles.seeMoreButton}
+        >
           <Text style={styles.seeMoreText}>See All</Text>
         </TouchableOpacity>
       </View>
@@ -21,6 +29,7 @@ const Banner = () => {
           uri: "https://previews.123rf.com/images/mcandy/mcandy1609/mcandy160900031/64232823-big-sale-banner-with-bright-ink-blue-color-blots-over-white-background-each-element-separate-on.jpg",
         }}
       />
+      <AllBanners isVisible={isVisible} setIsVisible={setIsVisible} />
     </View>
   );
 };

@@ -6,23 +6,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import styles from "./styles";
 
-const LoginUi = ({ onGoogleButtonPress }) => {
+const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <View style={styles.container}>
       <Image source={Logo} style={styles.logo} />
 
-      {/* <TextInput
-        value={displayName}
-        placeholder="Name"
-        onChangeText={(text) => setDisplayName(text)}
-      /> */}
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={onGoogleButtonPress}
+          onPress={() => {
+            onGoogleButtonPress();
+            setUserRole("customer");
+          }}
         >
           <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
           <Text style={styles.buttonText}>Continue with Google</Text>
@@ -32,7 +29,8 @@ const LoginUi = ({ onGoogleButtonPress }) => {
         <Text style={styles.bottomText}>Sign in as a Mazdoor Account! </Text>
         <TouchableOpacity
           onPress={() => {
-            setIsVisible(true);
+            onGoogleButtonPress();
+            setUserRole("mazdoor");
           }}
         >
           <Text style={styles.signIn}>SignIn</Text>

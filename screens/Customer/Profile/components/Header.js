@@ -12,6 +12,7 @@ const Header = ({
   locality,
   buildingAddress,
   exactLocation,
+  role,
 }) => {
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
 
@@ -30,13 +31,15 @@ const Header = ({
             <Text style={styles.emailText}>+91 {contact}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            setEditAccountModalVisible(true);
-          }}
-        >
-          <Octicons name="pencil" size={24} color="white" />
-        </TouchableOpacity>
+        {role === "customer" && (
+          <TouchableOpacity
+            onPress={() => {
+              setEditAccountModalVisible(true);
+            }}
+          >
+            <Octicons name="pencil" size={24} color="white" />
+          </TouchableOpacity>
+        )}
       </View>
       <EditProfile
         editAccountModalVisible={editAccountModalVisible}

@@ -13,6 +13,9 @@ const Body = ({
   email,
   contact,
   exactLocation,
+  age,
+  role,
+  aadharNo,
 }) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
@@ -81,6 +84,9 @@ const Body = ({
         email={email}
         contact={contact}
         exactLocation={exactLocation}
+        age={age}
+        role={role}
+        aadharNo={aadharNo}
       />
       <EditProfile
         editAccountModalVisible={editAccountModalVisible}
@@ -91,12 +97,16 @@ const Body = ({
         name={name}
         email={email}
         contact={contact}
+        age={age}
+        role={role}
+        aadharNo={aadharNo}
       />
       <Subscription
         subscriptionModalVisible={subscriptionModalVisible}
         setSubscriptionModalVisible={setSubscriptionModalVisible}
         name={name}
         email={email}
+        role={role}
       />
     </View>
   );
