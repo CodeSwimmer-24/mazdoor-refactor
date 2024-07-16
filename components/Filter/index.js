@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import colors from "../../constants/colors";
@@ -28,6 +29,9 @@ const Filter = ({
   const [tempExactLocation, setTempExactLocation] =
     useState(filterExactLocation);
 
+  // State for managing the loading spinner
+  const [loading, setLoading] = useState(false);
+
   const handleLocationChange = (location) => {
     setTempLocation(location);
     setTempExactLocation({ locality: location, exact: "" });
@@ -41,9 +45,18 @@ const Filter = ({
   };
 
   const applyFilters = () => {
+    setLoading(true);
     setFilterLocation(tempLocation);
     setFilterExactLocation(tempExactLocation);
-    setIsFilterVisible(false);
+    setTimeout(() => {
+      setLoading(false);
+      setIsFilterVisible(false);
+    }, 1000);
+  };
+
+  const getExactLocationList = () => {
+    const exactLocations = locations[tempLocation] || [];
+    return ["All", ...exactLocations];
   };
 
   return (
@@ -90,7 +103,7 @@ const Filter = ({
                   iconName="location-outline"
                   iconType="Ionicons"
                   placeholder="Exact Location"
-                  list={locations[tempLocation] || []}
+                  list={getExactLocationList()}
                   value={tempExactLocation.exact}
                   onChangeText={handleExactLocationChange}
                 />
@@ -98,8 +111,16 @@ const Filter = ({
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-              <Text style={styles.applyButtonText}>Apply Filters</Text>
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={applyFilters}
+              disabled={loading} // Disable the button while loading
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.applyButtonText}>Apply Filters</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>

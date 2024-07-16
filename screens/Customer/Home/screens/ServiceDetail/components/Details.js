@@ -17,14 +17,13 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
   const { favoriteSps, setFavoriteSps } = useCustomerStore();
 
   const [isFav, setIsFav] = useState(false);
-  // Ensure shortProfile and address are defined before accessing nested properties
+
   const area = shortProfile?.address?.area || "Unknown Area";
   const locality = shortProfile?.address?.locality || "Unknown Locality";
   const exactLocation =
     shortProfile?.address?.exactLocation || "Exact Location";
 
   useEffect(() => {
-    // to process when service provider fully loads
     if (serviceProvider?.emailId) {
       const existsInFav = favoriteSps.some(
         (sp) => sp.serviceProvider.emailId === serviceProvider.emailId
@@ -35,7 +34,6 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
 
   const addToFavourites = async () => {
     if (!isFav) {
-      console.log("Adding to Favourites");
       try {
         const result = await axios.post(`${hostUrl}/mazdoor/v1/addFavoriteSP`, {
           spEmailId: serviceProvider.emailId,
@@ -58,34 +56,20 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <View>
+      <View style={styles.headerContainer}>
+        <View style={styles.infoContainer}>
           <Text style={styles.shopTitle}>{serviceProvider.title}</Text>
           <Text style={styles.shopDescription}>
-            {serviceProvider.short_description}
+            {serviceProvider.short_description
+              ? `${serviceProvider.short_description.slice(0, 50)}...`
+              : "NO Description found..."}
           </Text>
         </View>
-        <TouchableOpacity onPress={addToFavourites}>
+        <TouchableOpacity style={styles.favButton} onPress={addToFavourites}>
           {isFav ? (
-            <MaterialIcons
-              style={{ paddingHorizontal: 9 }}
-              name="bookmark"
-              size={26}
-              color={colors.primary}
-            />
+            <MaterialIcons name="bookmark" size={26} color={colors.primary} />
           ) : (
-            <Feather
-              style={{ paddingHorizontal: 10 }}
-              name="bookmark"
-              size={24}
-              color={colors.primary}
-            />
+            <Feather name="bookmark" size={24} color={colors.primary} />
           )}
         </TouchableOpacity>
       </View>
@@ -127,6 +111,13 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: 25,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  infoContainer: {
+    width: "80%",
+  },
   shopTitle: {
     fontSize: 22,
     fontWeight: "600",
@@ -135,6 +126,9 @@ const styles = StyleSheet.create({
   shopDescription: {
     fontSize: 12,
     color: "gray",
+  },
+  favButton: {
+    marginTop: 10,
   },
   tagAndLocationContainer: {
     marginTop: 15,
