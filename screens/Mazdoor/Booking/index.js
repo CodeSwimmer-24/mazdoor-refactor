@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../../constants/colors";
-import Requested from "./components/Requested";
 import Pending from "./components/Pending";
-import Canceled from "./components/Canceled";
+import Confirmed from "./components/Confirmed";
+import Completed from "./components/Completed";
 
 const Booking = () => {
   const [loading, setLoading] = useState(false);
@@ -28,11 +28,11 @@ const Booking = () => {
 
   const switchScreens = () => {
     if (screens === 1) {
-      return <Requested />;
-    } else if (screens === 2) {
       return <Pending />;
+    } else if (screens === 2) {
+      return <Confirmed />;
     } else if (screens === 3) {
-      return <Canceled />;
+      return <Completed />;
     } else return null;
   };
 
@@ -54,7 +54,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 1 && styles.activeTabText]}
             >
-              Requesting
+              Pending Req.
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -64,7 +64,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 2 && styles.activeTabText]}
             >
-              Pending
+              Confirm Req.
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -74,7 +74,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 3 && styles.activeTabText]}
             >
-              Closed
+              Compleated
             </Text>
           </TouchableOpacity>
         </View>

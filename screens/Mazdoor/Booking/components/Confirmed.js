@@ -16,20 +16,19 @@ import { hostUrl } from "../../../../services/index";
 import axios from "axios";
 import colors from "../../../../constants/colors";
 
-const Pending = () => {
+const Confirmed = () => {
   const { email } = useAuthStore();
 
   const [data, setData] = useState(null);
   const [userInfo, setUserInfo] = useState([]);
   const [bookingInfo, setBookingInfo] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rejecting, setRejecting] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+  const [compleated, setCompleated] = useState(false);
 
   useEffect(() => {
     axios
       .get(
-        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=pending`
+        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=Confirmed`
       )
       .then((response) => {
         setData(response.data);
@@ -43,71 +42,35 @@ const Pending = () => {
         console.log(error);
         setLoading(false);
       });
-  }, [rejecting, confirm]);
+  }, [compleated]);
 
-  const rejectBooking = (bookingId) => {
-    setRejecting(true);
-    Alert.alert(
-      "Reject Booking",
-      "Are you sure you want to reject this booking?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => setRejecting(false),
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => {
-            axios
-              .put(
-                `${hostUrl}/mazdoor/v1/updateBookingStatus?bookingId=${bookingId}&status=Rejected`
-              )
-              .then((response) => {
-                console.log(response);
+  const compleatedBooking = (bookingId) => {
+    setCompleated(true);
+    Alert.alert("Booking Compleated", "Have you compleated the service?", [
+      {
+        text: "Cancel",
+        onPress: () => setCompleated(false),
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          axios
+            .put(
+              `${hostUrl}/mazdoor/v1/updateBookingStatus?bookingId=${bookingId}&status=Completed`
+            )
+            .then((response) => {
+              console.log(response);
 
-                setRejecting(false);
-              })
-              .catch((error) => {
-                console.log(error);
-                setRejecting(false);
-              });
-          },
+              setCompleated(false);
+            })
+            .catch((error) => {
+              console.log(error);
+              setCompleated(false);
+            });
         },
-      ]
-    );
-  };
-  const confirmBooking = (bookingId) => {
-    setConfirm(true);
-    Alert.alert(
-      "Confirm Booking",
-      "Are you sure you want to confirm this Booking?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => setConfirm(false),
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => {
-            axios
-              .put(
-                `${hostUrl}/mazdoor/v1/updateBookingStatus?bookingId=${bookingId}&status=Confirmed`
-              )
-              .then((response) => {
-                console.log(response);
-
-                setConfirm(false);
-              })
-              .catch((error) => {
-                console.log(error);
-                setConfirm(false);
-              });
-          },
-        },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleCall = (number) => {
@@ -192,23 +155,13 @@ const Pending = () => {
             </View>
             <View style={styles.footer}>
               <TouchableOpacity
-                onPress={() => rejectBooking(bookingInfo.bookingId)}
-                style={styles.rejectButton}
-              >
-                {rejecting ? (
-                  <ActivityIndicator size="small" color={colors.danger} />
-                ) : (
-                  <Text style={styles.rejectText}>Reject</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => confirmBooking(bookingInfo.bookingId)}
+                onPress={() => compleatedBooking(bookingInfo.bookingId)}
                 style={styles.acceptButton}
               >
-                {confirm ? (
+                {compleated ? (
                   <ActivityIndicator size="small" color="#4caf50" />
                 ) : (
-                  <Text style={styles.acceptText}>Accept</Text>
+                  <Text style={styles.acceptText}>Compleated</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -314,4 +267,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Pending;
+export default Confirmed;

@@ -16,20 +16,18 @@ import { hostUrl } from "../../../../services/index";
 import axios from "axios";
 import colors from "../../../../constants/colors";
 
-const Pending = () => {
+const Completed = () => {
   const { email } = useAuthStore();
 
   const [data, setData] = useState(null);
   const [userInfo, setUserInfo] = useState([]);
   const [bookingInfo, setBookingInfo] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rejecting, setRejecting] = useState(false);
-  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     axios
       .get(
-        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=pending`
+        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=Completed`
       )
       .then((response) => {
         setData(response.data);
@@ -43,72 +41,7 @@ const Pending = () => {
         console.log(error);
         setLoading(false);
       });
-  }, [rejecting, confirm]);
-
-  const rejectBooking = (bookingId) => {
-    setRejecting(true);
-    Alert.alert(
-      "Reject Booking",
-      "Are you sure you want to reject this booking?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => setRejecting(false),
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => {
-            axios
-              .put(
-                `${hostUrl}/mazdoor/v1/updateBookingStatus?bookingId=${bookingId}&status=Rejected`
-              )
-              .then((response) => {
-                console.log(response);
-
-                setRejecting(false);
-              })
-              .catch((error) => {
-                console.log(error);
-                setRejecting(false);
-              });
-          },
-        },
-      ]
-    );
-  };
-  const confirmBooking = (bookingId) => {
-    setConfirm(true);
-    Alert.alert(
-      "Confirm Booking",
-      "Are you sure you want to confirm this Booking?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => setConfirm(false),
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => {
-            axios
-              .put(
-                `${hostUrl}/mazdoor/v1/updateBookingStatus?bookingId=${bookingId}&status=Confirmed`
-              )
-              .then((response) => {
-                console.log(response);
-
-                setConfirm(false);
-              })
-              .catch((error) => {
-                console.log(error);
-                setConfirm(false);
-              });
-          },
-        },
-      ]
-    );
-  };
+  }, []);
 
   const handleCall = (number) => {
     let phoneNumber = `tel:${number}`;
@@ -190,28 +123,7 @@ const Pending = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.footer}>
-              <TouchableOpacity
-                onPress={() => rejectBooking(bookingInfo.bookingId)}
-                style={styles.rejectButton}
-              >
-                {rejecting ? (
-                  <ActivityIndicator size="small" color={colors.danger} />
-                ) : (
-                  <Text style={styles.rejectText}>Reject</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => confirmBooking(bookingInfo.bookingId)}
-                style={styles.acceptButton}
-              >
-                {confirm ? (
-                  <ActivityIndicator size="small" color="#4caf50" />
-                ) : (
-                  <Text style={styles.acceptText}>Accept</Text>
-                )}
-              </TouchableOpacity>
-            </View>
+            <View style={styles.footer}></View>
           </View>
         </View>
       ) : (
@@ -314,4 +226,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Pending;
+export default Completed;
