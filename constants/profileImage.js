@@ -6,7 +6,7 @@ const useProfileImage = () => {
   if (gender === "M") {
     return "https://files.stickerkade.ir/7523/19.webp";
   } else {
-    return "https://i.pinimg.com/736x/0f/10/55/0f105565e20366e9c76dec4a16d55a2b.jpg";
+    return "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2022/02/06/962605803.png";
   }
 };
 

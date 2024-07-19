@@ -176,7 +176,7 @@ const MazdoorRegister = () => {
               >
                 <Image
                   source={{
-                    uri: "https://www.pngitem.com/pimgs/m/99-994041_worker-man-construction-worker-hd-png-download.png",
+                    uri: "https://files.stickerkade.ir/7523/19.webp",
                   }}
                   style={styles.pictureImage}
                 />
@@ -204,7 +204,7 @@ const MazdoorRegister = () => {
               >
                 <Image
                   source={{
-                    uri: "https://www.familyhandyman.com/wp-content/uploads/2021/03/woman-construction-worker-GettyImages-463207617.jpg",
+                    uri: "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2022/02/06/962605803.png",
                   }}
                   style={styles.pictureImage}
                 />
