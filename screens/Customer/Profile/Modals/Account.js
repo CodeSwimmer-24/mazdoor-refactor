@@ -28,6 +28,8 @@ const Account = ({
 }) => {
   const profileImageUri = useProfileImage();
 
+  console.log(role, "ROLEE");
+
   const { height } = Dimensions.get("window");
   const modalHeight = role === "mazdoor" ? height * 0.65 : height * 0.55;
 

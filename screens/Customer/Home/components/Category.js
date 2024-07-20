@@ -14,6 +14,7 @@ const CategoryItem = ({
   backgroundColor,
   navigation,
   setIsVisible,
+  subCategory,
 }) => {
   if (label === "View More") {
     return (
@@ -36,6 +37,7 @@ const CategoryItem = ({
         onPress={() =>
           navigation.push("CategoryDetail", {
             label,
+            subCategory: subCategory,
           })
         }
       >
@@ -72,6 +74,7 @@ const Category = ({ navigation }) => {
             backgroundColor={category.backgroundColor}
             navigation={navigation}
             setIsVisible={setIsVisible}
+            subCategory={category.subCategory}
           />
         ))}
       </View>

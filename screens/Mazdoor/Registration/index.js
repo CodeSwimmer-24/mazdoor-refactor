@@ -28,6 +28,7 @@ const MazdoorRegister = () => {
     setGender,
     setAge,
     setAadharNo,
+    setRole,
     setBuildingAddress,
     setLocality,
     setExactLocation,
@@ -59,7 +60,6 @@ const MazdoorRegister = () => {
   };
 
   const handleSubmit = async () => {
-    // Check if any field is empty
     if (
       !formData.name ||
       !formData.contact ||
@@ -98,7 +98,7 @@ const MazdoorRegister = () => {
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
-      role: role,
+      role: "mazdoor",
       gender: formData.gender,
       aadharNo: formData.aadharNo,
       age: formData.age,
@@ -123,8 +123,10 @@ const MazdoorRegister = () => {
         setExactLocation(formData.exactLocation);
         setFormData(initialFormData);
         setIsNewUser(false);
+        setRole("mazdoor");
         setAadharNo(formData.aadharNo);
         setAge(formData.age);
+        setGender(formData.gender);
       } else {
         Alert.alert("Error", "Registration failed");
       }
