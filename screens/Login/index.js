@@ -153,17 +153,9 @@ const Login = () => {
       />
     );
   } else if (authStore.isNewUser) {
-    return userRole === "customer" || role === "customer" ? (
-      <RegisterForm />
-    ) : (
-      <MazdoorRegister />
-    );
+    return userRole === "customer" ? <RegisterForm /> : <MazdoorRegister />;
   } else {
-    return userRole === "customer" || role === "customer" ? (
-      <Customer />
-    ) : (
-      <Mazdoor />
-    );
+    return userRole === "customer" ? <Customer /> : <Mazdoor />;
   }
 };
 
