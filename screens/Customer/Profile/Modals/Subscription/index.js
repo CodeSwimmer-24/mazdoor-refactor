@@ -172,7 +172,7 @@ const Subscription = ({
               </View>
             ) : (
               <TouchableOpacity
-                onPress={() => setUpiPopup(true)}
+                onPress={payWithGooglePay}
                 style={styles.closeButton}
               >
                 <Text style={styles.closeButtonText}>Go to payment</Text>

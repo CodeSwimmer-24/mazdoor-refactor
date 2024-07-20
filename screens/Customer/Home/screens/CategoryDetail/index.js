@@ -32,26 +32,34 @@ const CategoryDetail = ({ route, navigation }) => {
     exact: "All",
   });
 
-  const newSubCategory = subCategory.split(",").map((item) => item.trim());
+  const newSubCategory = subCategory
+    ? subCategory.split(",").map((item) => item.trim())
+    : [];
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     newSubCategory[0] || ""
   );
 
+  const [subCategoryData, setSubCategoryData] = useState(
+    newSubCategory[0] || "All categories"
+  );
+
+  const fetchServiceProviders = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${hostUrl}/mazdoor/v1/getAllServiceProviders?exactLocation=${filterExactLocation.exact}&locality=${filterLocation}&serviceType=${label}&subCategory=${subCategoryData}`
+      );
+      setServiceProviders(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchServiceProviders = async () => {
-      try {
-        const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllServiceProviders?exactLocation=${filterExactLocation.exact}&locality=${locality}&serviceType=${label}`
-        );
-        setServiceProviders(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
     fetchServiceProviders();
-  }, [filterExactLocation, filterLocation]);
+  }, [filterExactLocation, filterLocation, subCategoryData]);
 
   useEffect(() => {
     const parent = navigation.getParent();
@@ -60,12 +68,8 @@ const CategoryDetail = ({ route, navigation }) => {
     });
   }, [isFocused]);
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+  if (!subCategory) {
+    return null;
   }
 
   return (
@@ -88,64 +92,75 @@ const CategoryDetail = ({ route, navigation }) => {
           {`${filterLocation},  ${filterExactLocation.exact}`}
         </Text>
       </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.subCategoryScrollView}
-      >
-        <View style={styles.subCategoryContainer}>
-          {newSubCategory.map((item) => {
-            const isSelected = selectedSubCategory === item;
-            return (
-              <TouchableOpacity
-                key={item}
-                style={[
-                  styles.subCategoryButton,
-                  isSelected
-                    ? { backgroundColor: colors.primary }
-                    : { borderColor: colors.primary, borderWidth: 1 },
-                ]}
-                onPress={() => setSelectedSubCategory(item)}
-              >
-                <Text
+      <View style={styles.subCategoryScrollView}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.subCategoryContainer}>
+            {newSubCategory?.map((item) => {
+              const isSelected = selectedSubCategory === item;
+              return (
+                <TouchableOpacity
+                  key={item}
                   style={[
-                    styles.subCategoryText,
+                    styles.subCategoryButton,
                     isSelected
-                      ? { color: colors.white }
-                      : { color: colors.primary },
+                      ? { backgroundColor: colors.primary }
+                      : { borderColor: colors.primary, borderWidth: 1 },
                   ]}
+                  onPress={() => {
+                    setSelectedSubCategory(item);
+                    setSubCategoryData(item);
+                  }}
                 >
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
-      <View style={styles.content}>
-        <ScrollView style={styles.scrollView}>
-          {serviceProviders.length > 0 ? (
-            serviceProviders.map((item, index) => (
-              <View key={index} style={styles.cardContainer}>
-                <ServiceCard
-                  id={index}
-                  name={item.title}
-                  category={label}
-                  rating={item.rating}
-                  location={item.short_description}
-                  price={item.basePrice}
-                  onPress={() =>
-                    navigation.push("ServiceDetail", {
-                      emailId: item.emailId,
-                    })
-                  }
-                />
-              </View>
-            ))
-          ) : (
-            <NotFound />
-          )}
+                  <Text
+                    style={[
+                      styles.subCategoryText,
+                      isSelected
+                        ? { color: colors.white }
+                        : { color: colors.primary },
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </ScrollView>
+      </View>
+      <View style={styles.content}>
+        {loading ? (
+          <ActivityIndicator
+            style={{
+              marginTop: "50%",
+            }}
+            size="large"
+            color={colors.primary}
+          />
+        ) : (
+          <ScrollView style={styles.scrollView}>
+            {serviceProviders.length > 0 ? (
+              serviceProviders.map((item, index) => (
+                <View key={index} style={styles.cardContainer}>
+                  <ServiceCard
+                    id={index}
+                    name={item.title}
+                    category={label}
+                    rating={item.rating}
+                    location={item.short_description}
+                    price={item.basePrice}
+                    onPress={() =>
+                      navigation.push("ServiceDetail", {
+                        emailId: item.emailId,
+                      })
+                    }
+                  />
+                </View>
+              ))
+            ) : (
+              <NotFound />
+            )}
+          </ScrollView>
+        )}
       </View>
       <Filter
         filterLocation={filterLocation}

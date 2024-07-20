@@ -80,13 +80,11 @@ const Login = () => {
         const responseData = response.data;
         console.log("User logged in successfully!", responseData);
 
-        // Update Zustand store with email, role, and name
         authStore.setName(displayName);
         authStore.setEmail(email);
         authStore.setRole(userRole);
         authStore.setPicture(result.additionalUserInfo.profile.picture);
-        authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
-
+        authStore.setIsNewUser(responseData.isNewUser);
         if (!responseData.isNewUser) {
           const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
           const profileResponse = await axios.get(profileApiUrl);
@@ -128,7 +126,7 @@ const Login = () => {
     } catch (error) {
       console.error("Failed to authenticate user with Firebase.", error);
     } finally {
-      setLoading(false); // Set loading to false when login process completes (success or failure)
+      setLoading(false);
     }
   };
 
@@ -155,9 +153,17 @@ const Login = () => {
       />
     );
   } else if (authStore.isNewUser) {
-    return userRole === "customer" ? <RegisterForm /> : <MazdoorRegister />;
+    return userRole === "customer" || role === "customer" ? (
+      <RegisterForm />
+    ) : (
+      <MazdoorRegister />
+    );
   } else {
-    return userRole === "customer" ? <Customer /> : <Mazdoor />;
+    return userRole === "customer" || role === "customer" ? (
+      <Customer />
+    ) : (
+      <Mazdoor />
+    );
   }
 };
 
