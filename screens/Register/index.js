@@ -105,6 +105,7 @@ const RegisterForm = () => {
         setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
         setExactLocation(formData.exactLocation);
+        setGender(formData.gender);
         setFormData(initialFormData);
         setIsNewUser(false);
       } else {
