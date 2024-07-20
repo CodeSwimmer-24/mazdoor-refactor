@@ -5,23 +5,28 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { useAuthStore } from "../../../../zustand/authStore";
 import { hostUrl } from "../../../../services";
 import AddService from "../Model/AddService";
+import EditService from "./EditService";
 
 const Services = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isEditVisible, setIsEditVisible] = useState(false);
+  const [serviceId, setServiceId] = useState("");
+  const [serviceDetails, setServiceDetails] = useState({});
   const { email } = useAuthStore();
-
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchServices = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
@@ -39,6 +44,57 @@ const Services = () => {
 
   const handleAddService = () => {
     setIsFormVisible(true);
+  };
+
+  const handleDeleteService = (id) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this service?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => deleteService(id),
+        },
+      ]
+    );
+  };
+
+  const deleteService = async (serviceId) => {
+    try {
+      const response = await fetch(
+        `${hostUrl}/mazdoor/v1/deleteService/${email}/${serviceId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        Alert.alert("Success", "Service deleted successfully.");
+        setReload((prev) => !prev);
+      } else {
+        const errorData = await response.json();
+        Alert.alert(
+          "Error",
+          errorData.message || "Failed to delete the service."
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      Alert.alert(
+        "Error",
+        "An error occurred while deleting the service. Please try again."
+      );
+    }
+  };
+
+  const handleEditService = (service) => {
+    setServiceDetails(service);
+    setServiceId(service.id);
+    setIsEditVisible(true);
   };
 
   if (loading) {
@@ -60,18 +116,14 @@ const Services = () => {
       </View>
 
       <ScrollView>
-        <View
-          style={{
-            alignItems: "center",
-          }}
-        >
+        <View style={{ alignItems: "center" }}>
           {services.length === 0 ? (
             <View style={styles.noDataContainer}>
               <Text style={styles.noDataText}>No Data found</Text>
             </View>
           ) : (
-            services.map((service, index) => (
-              <View key={index} style={styles.serviceItem}>
+            services.map((service) => (
+              <View key={service.id} style={styles.serviceItem}>
                 <View style={{ width: "80%" }}>
                   <Text style={styles.serviceName}>{service.serviceName}</Text>
                   <Text style={styles.serviceDescription}>
@@ -80,14 +132,20 @@ const Services = () => {
                   <Text style={styles.servicePrice}>₹ {service.price}/-</Text>
                 </View>
                 <View style={styles.serviceActions}>
-                  <TouchableOpacity style={styles.iconButton}>
+                  <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => handleDeleteService(service.id)}
+                  >
                     <MaterialIcons
                       name="delete-forever"
                       size={26}
                       color={colors.danger}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.iconButton}>
+                  <TouchableOpacity
+                    onPress={() => handleEditService(service)}
+                    style={styles.iconButton}
+                  >
                     <MaterialIcons
                       name="edit-note"
                       size={30}
@@ -104,15 +162,17 @@ const Services = () => {
       {isFormVisible && (
         <AddService setReload={setReload} setIsFormVisible={setIsFormVisible} />
       )}
-    </View>
-  );
-};
 
-const IconButton = ({ name }) => {
-  return (
-    <TouchableOpacity style={styles.iconButton}>
-      <AntDesign name={name} size={22} color={colors.primary} />
-    </TouchableOpacity>
+      {isEditVisible && (
+        <EditService
+          isVisible={isEditVisible}
+          onClose={() => setIsEditVisible(false)}
+          serviceId={serviceId}
+          serviceDetails={serviceDetails}
+          setReload={setReload}
+        />
+      )}
+    </View>
   );
 };
 
@@ -159,7 +219,6 @@ const styles = {
     width: "94%",
     borderBottomWidth: 0.4,
     paddingVertical: 10,
-    // paddingHorizontal: 10,
     borderBottomColor: "gray",
   },
   serviceName: {

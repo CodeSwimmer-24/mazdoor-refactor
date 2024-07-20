@@ -16,11 +16,13 @@ import { AntDesign } from "@expo/vector-icons";
 import ShopForm from "./Model/ShopForm";
 import { hostUrl } from "../../../services";
 import Services from "./components/Services";
+import EditShopDetails from "./Model/EditShopDetails";
 
 const Shop = () => {
   const [serviceProvider, setServiceProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shopRegisterForm, setShopRegisterForm] = useState(false);
+  const [editForm, setEditForm] = useState(false);
   const [existingData, setExistingData] = useState(null);
   const [reload, setReload] = useState(false);
   const { email } = useAuthStore();
@@ -45,7 +47,7 @@ const Shop = () => {
 
   const handleEdit = () => {
     setExistingData(serviceProvider);
-    setShopRegisterForm(true);
+    setEditForm(true);
   };
 
   if (loading) {
@@ -131,6 +133,12 @@ const Shop = () => {
             <ShopForm
               shopRegisterForm={shopRegisterForm}
               setShopRegisterForm={setShopRegisterForm}
+              existingData={existingData}
+              setReload={setReload}
+            />
+            <EditShopDetails
+              editForm={editForm}
+              setEditForm={setEditForm}
               existingData={existingData}
               setReload={setReload}
             />

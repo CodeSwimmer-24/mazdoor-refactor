@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontWeight: "600",
     fontSize: 18,
-    color: "gray",
+    color: "#505050",
   },
   locationContainer: {
     width: "80%",
