@@ -84,7 +84,7 @@ const RegisterForm = () => {
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
-      role: role,
+      role: "customer",
       gender: formData.gender,
     };
 
