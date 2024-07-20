@@ -75,6 +75,7 @@ const AllCategories = ({ isVisible, setIsVisible, navigation }) => {
                     onPress={() => {
                       navigation.push("CategoryDetail", {
                         label: item.label,
+                        subCategory: item.sub_category,
                       });
                       setIsVisible(false);
                     }}

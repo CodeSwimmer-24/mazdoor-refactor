@@ -20,20 +20,22 @@ import { useAuthStore } from "../../../../../zustand/authStore";
 import Filter from "../../../../../components/Filter";
 
 const CategoryDetail = ({ route, navigation }) => {
-  const { label } = route.params;
+  const { label, subCategory } = route.params;
   const isFocused = useIsFocused();
   const [serviceProviders, setServiceProviders] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const { locality } = useAuthStore();
-
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
   const [filterLocation, setFilterLocation] = useState(locality);
   const [filterExactLocation, setFilterExactLocation] = useState({
     locality: locality,
     exact: "All",
   });
+
+  const newSubCategory = subCategory.split(",").map((item) => item.trim());
+  const [selectedSubCategory, setSelectedSubCategory] = useState(
+    newSubCategory[0] || ""
+  );
 
   useEffect(() => {
     const fetchServiceProviders = async () => {
@@ -75,28 +77,51 @@ const CategoryDetail = ({ route, navigation }) => {
             <Entypo name="chevron-left" size={28} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerText}>{label}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              setIsFilterVisible(true);
-            }}
-          >
+          <TouchableOpacity onPress={() => setIsFilterVisible(true)}>
             <AntDesign name="filter" size={28} color={colors.white} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
       <View style={styles.currentLocation}>
-        <Ionicons name="location-sharp" size={24} color="#c8c8c8" />
-        <Text
-          style={{
-            paddingHorizontal: 6,
-            fontSize: 16,
-            color: "#c8c8c8",
-            fontWeight: "500",
-          }}
-        >
+        <Ionicons name="location-sharp" size={20} color="#c8c8c8" />
+        <Text style={styles.locationText}>
           {`${filterLocation},  ${filterExactLocation.exact}`}
         </Text>
       </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.subCategoryScrollView}
+      >
+        <View style={styles.subCategoryContainer}>
+          {newSubCategory.map((item) => {
+            const isSelected = selectedSubCategory === item;
+            return (
+              <TouchableOpacity
+                key={item}
+                style={[
+                  styles.subCategoryButton,
+                  isSelected
+                    ? { backgroundColor: colors.primary }
+                    : { borderColor: colors.primary, borderWidth: 1 },
+                ]}
+                onPress={() => setSelectedSubCategory(item)}
+              >
+                <Text
+                  style={[
+                    styles.subCategoryText,
+                    isSelected
+                      ? { color: colors.white }
+                      : { color: colors.primary },
+                  ]}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
       <View style={styles.content}>
         <ScrollView style={styles.scrollView}>
           {serviceProviders.length > 0 ? (
@@ -156,8 +181,38 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.white,
   },
+  currentLocation: {
+    alignItems: "center",
+    paddingHorizontal: 25,
+    paddingBottom: 10,
+    flexDirection: "row",
+  },
+  locationText: {
+    paddingHorizontal: 6,
+    fontSize: 14,
+    color: "#c8c8c8",
+    fontWeight: "500",
+  },
+  subCategoryScrollView: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  subCategoryContainer: {
+    flexDirection: "row",
+  },
+  subCategoryButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    borderRadius: 50,
+  },
+  subCategoryText: {
+    fontSize: 12,
+    fontWeight: "600",
+  },
   content: {
     alignItems: "center",
+    marginBottom: 50,
   },
   scrollView: {
     width: "90%",
@@ -165,12 +220,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginVertical: 5,
     marginHorizontal: 5,
-  },
-  currentLocation: {
-    alignItems: "center",
-    paddingHorizontal: 25,
-    paddingBottom: 10,
-    flexDirection: "row",
   },
 });
 
