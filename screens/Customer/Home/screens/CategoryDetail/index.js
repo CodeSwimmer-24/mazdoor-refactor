@@ -62,6 +62,7 @@ const CategoryDetail = ({ route, navigation }) => {
   }, [filterExactLocation, filterLocation, subCategoryData]);
 
   useEffect(() => {
+    console.log("Catdetail", isFocused);
     const parent = navigation.getParent();
     parent?.setOptions({
       tabBarStyle: { display: "none" },

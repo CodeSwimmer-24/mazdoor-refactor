@@ -21,11 +21,14 @@ const HomeMain = ({ navigation }) => {
 
   useEffect(() => {
     console.log("HOME MAIN RERENDERED", ", isFocused", isFocused);
-    const parent = navigation.getParent();
-    parent?.setOptions({
-      tabBarStyle: { display: "flex" },
-      ...getTabBarOptions(),
-    });
+
+    if (isFocused) {
+      const parent = navigation.getParent();
+      parent?.setOptions({
+        tabBarStyle: { display: "flex" },
+        ...getTabBarOptions(),
+      });
+    }
   }, [isFocused]);
 
   return (
