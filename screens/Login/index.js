@@ -55,8 +55,6 @@ const Login = () => {
       "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
   });
 
-  console.log(role, userRole);
-
   const onGoogleButtonPress = async () => {
     setLoading(true); // Set loading to true when starting login process
 

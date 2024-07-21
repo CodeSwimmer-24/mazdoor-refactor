@@ -46,7 +46,6 @@ const Profile = () => {
           aadharNo={aadharNo}
           age={age}
         />
-        <Footer />
       </ScrollView>
     </View>
   );

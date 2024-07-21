@@ -5,6 +5,8 @@ import colors from "../../../../constants/colors";
 import Account from "../Modals/Account";
 import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
+import ShareApp from "../Modals/ShareApp";
+import Footer from "./Footer";
 
 const Body = ({
   buildingAddress,
@@ -25,6 +27,8 @@ const Body = ({
     useState(false);
   const [technicalSupportModalVisible, setTechnicalSupportModalVisible] =
     useState(false);
+  const [shareAppVisible, setShareAppVisible] = useState(false);
+  const [logoutVisible, setLogoutVisible] = useState(false);
 
   const renderRow = (title, subtitle, icon, stateSetter) => (
     <TouchableOpacity onPress={() => stateSetter(true)} style={styles.row}>
@@ -69,10 +73,22 @@ const Body = ({
           setSubscriptionModalVisible
         )}
         {renderRow(
-          "Technical Support",
-          "We are here to help you out",
-          "headphones",
+          "Your Feedback",
+          "Share your feedback in playstore.",
+          "message-circle",
           setTechnicalSupportModalVisible
+        )}
+        {renderRow(
+          "Share",
+          "Share this app with your friends.",
+          "share-2",
+          setShareAppVisible
+        )}
+        {renderRow(
+          "Logout",
+          "It you want to logout from this app.",
+          "share",
+          setLogoutVisible
         )}
       </View>
       <Account
@@ -107,6 +123,14 @@ const Body = ({
         name={name}
         email={email}
         role={role}
+      />
+      <ShareApp
+        shareAppVisible={shareAppVisible}
+        setShareAppVisible={setShareAppVisible}
+      />
+      <Footer
+        logoutVisible={logoutVisible}
+        setLogoutVisible={setLogoutVisible}
       />
     </View>
   );
