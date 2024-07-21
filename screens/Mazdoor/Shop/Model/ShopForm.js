@@ -30,6 +30,7 @@ const ShopForm = ({
     short_description: "",
     serviceType: "",
     basePrice: 0,
+    subCategory: "All categories",
     availability: true,
   };
 

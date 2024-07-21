@@ -10,8 +10,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import colors from "../../../../constants/colors";
-import { hostUrl } from "../../../../services";
 import { AntDesign } from "@expo/vector-icons";
+import { hostUrl } from "../../../../services/index";
 
 const EditService = ({
   isVisible,
@@ -26,6 +26,8 @@ const EditService = ({
   );
   const [price, setPrice] = useState(serviceDetails.price.toString());
   const [loading, setLoading] = useState(false);
+
+  console.log(serviceId, serviceDetails);
 
   useEffect(() => {
     setServiceName(serviceDetails.serviceName);
@@ -55,7 +57,7 @@ const EditService = ({
           body: JSON.stringify({
             serviceName,
             serviceDescription,
-            price,
+            price: parseFloat(price), // Ensure price is sent as a number
           }),
         }
       );
@@ -87,12 +89,7 @@ const EditService = ({
     <Modal visible={isVisible} transparent={true} animationType="slide">
       <TouchableOpacity onPress={onClose} style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={styles.header}>
             <Text style={styles.modalTitle}>Edit Service</Text>
             <TouchableOpacity onPress={onClose}>
               <AntDesign name="close" size={20} color={colors.danger} />
@@ -131,7 +128,7 @@ const EditService = ({
           <TouchableOpacity
             style={styles.button}
             onPress={handleUpdateService}
-            disabled={loading} // Disable button when loading
+            disabled={loading}
           >
             {loading ? (
               <ActivityIndicator color="white" />
@@ -157,6 +154,10 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "white",
     borderRadius: 5,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   modalTitle: {
     fontSize: 18,

@@ -56,10 +56,18 @@ const EditShopDetails = ({
   };
 
   const handleChange = (name, value) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (name === "basePrice") {
+      const parsedValue = parseFloat(value);
+      setFormData({
+        ...formData,
+        [name]: isNaN(parsedValue) ? value : parsedValue,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const addServiceProvider = async () => {
@@ -156,12 +164,10 @@ const EditShopDetails = ({
               />
               <CustomTextInput
                 iconType="MaterialIcons"
-                iconName="attach-money"
+                iconName="money"
                 placeholder="Enter Base Price"
                 value={formData.basePrice.toString()}
-                onChangeText={(text) =>
-                  handleChange("basePrice", parseFloat(text))
-                }
+                onChangeText={(text) => handleChange("basePrice", text)}
                 keyboardType="numeric"
               />
             </View>
