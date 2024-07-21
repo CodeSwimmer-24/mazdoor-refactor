@@ -72,8 +72,8 @@ const EditProfile = ({
 
   const handleSubmit = async () => {
     if (
-      (role === "mazdoor" && formData.aadharNo.length !== 12) ||
-      formData.age.length !== 2
+      role === "mazdoor" &&
+      (formData.aadharNo.length !== 12 || formData.age.length !== 2)
     ) {
       Alert.alert(
         "Error",
@@ -195,7 +195,7 @@ const EditProfile = ({
                   iconName="call-outline"
                   iconType="Ionicons"
                   placeholder="Edit Contact No."
-                  value={formData.contact}
+                  value={formData.contact && String(formData.contact)}
                   onChangeText={(text) => handleChange("contact", text)}
                 />
                 {role === "mazdoor" && (
@@ -204,14 +204,14 @@ const EditProfile = ({
                       iconName="document-outline"
                       iconType="Ionicons"
                       placeholder="Edit Aadhar No."
-                      value={formData.aadharNo}
+                      value={formData.aadharNo && String(formData.aadharNo)}
                       onChangeText={(text) => handleChange("aadharNo", text)}
                     />
                     <CustomTextInput
                       iconName="people-outline"
                       iconType="Ionicons"
                       placeholder="Edit Age"
-                      value={formData.age}
+                      value={formData.age && String(formData.age)}
                       onChangeText={(text) => handleChange("age", text)}
                     />
                   </>
