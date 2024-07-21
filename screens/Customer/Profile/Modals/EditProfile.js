@@ -48,6 +48,8 @@ const EditProfile = ({
   const { height } = Dimensions.get("window");
   const modalHeight = role === "mazdoor" ? height * 0.85 : height * 0.55;
 
+  const { gender } = useAuthStore();
+
   const [loading, setLoading] = useState(false);
   const profileImageUri = useProfileImage();
 
@@ -92,6 +94,7 @@ const EditProfile = ({
       emailId: email,
       name: formData.name,
       aadharNo: formData.aadharNo,
+      gender: gender,
       age: formData.age,
       role: role,
     };
