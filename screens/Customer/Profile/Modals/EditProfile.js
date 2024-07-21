@@ -198,7 +198,7 @@ const EditProfile = ({
                   iconName="call-outline"
                   iconType="Ionicons"
                   placeholder="Edit Contact No."
-                  value={formData.contact && String(formData.contact)}
+                  value={String(formData.contact)}
                   onChangeText={(text) => handleChange("contact", text)}
                 />
                 {role === "mazdoor" && (
@@ -207,14 +207,14 @@ const EditProfile = ({
                       iconName="document-outline"
                       iconType="Ionicons"
                       placeholder="Edit Aadhar No."
-                      value={formData.aadharNo && String(formData.aadharNo)}
+                      value={String(formData.aadharNo)}
                       onChangeText={(text) => handleChange("aadharNo", text)}
                     />
                     <CustomTextInput
                       iconName="people-outline"
                       iconType="Ionicons"
                       placeholder="Edit Age"
-                      value={formData.age && String(formData.age)}
+                      value={String(formData.age)}
                       onChangeText={(text) => handleChange("age", text)}
                     />
                   </>
