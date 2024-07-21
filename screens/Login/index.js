@@ -55,6 +55,8 @@ const Login = () => {
       "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
   });
 
+  console.log(role, userRole);
+
   const onGoogleButtonPress = async () => {
     setLoading(true); // Set loading to true when starting login process
 
@@ -153,9 +155,29 @@ const Login = () => {
       />
     );
   } else if (authStore.isNewUser) {
-    return userRole === "customer" ? <RegisterForm /> : <MazdoorRegister />;
+    return !role ? (
+      userRole === "customer" ? (
+        <RegisterForm />
+      ) : (
+        <MazdoorRegister />
+      )
+    ) : role === "customer" ? (
+      <RegisterForm />
+    ) : (
+      <MazdoorRegister />
+    );
   } else {
-    return userRole === "customer" ? <Customer /> : <Mazdoor />;
+    return !role ? (
+      userRole === "customer" ? (
+        <Customer />
+      ) : (
+        <Mazdoor />
+      )
+    ) : role === "customer" ? (
+      <Customer />
+    ) : (
+      <Mazdoor />
+    );
   }
 };
 
