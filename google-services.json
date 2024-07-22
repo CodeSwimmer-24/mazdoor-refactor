@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1061751220739",
+    "project_id": "digimazdoor-94a11",
+    "storage_bucket": "digimazdoor-94a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061751220739:android:af5b2dc0f3acf4fd96fc36",
+        "android_client_info": {
+          "package_name": "com.shahilcoder.mazdoorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061751220739-aqgckk7uj0atqg63orjuqb30qnhfn71f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shahilcoder.mazdoorapp",
+            "certificate_hash": "6ce24c8dbbf8a9051481fe0d9a11b8155bafa002"
+          }
+        },
+        {
+          "client_id": "1061751220739-i6neov3elob0h1loqh3sl4kmnnavoti9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shahilcoder.mazdoorapp",
+            "certificate_hash": "89626984989c5fecb45827d7feda21d0c67734f2"
+          }
+        },
+        {
+          "client_id": "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWcyRD4nENKdJVjdb9Ch5D0rHIM3-O1mE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
