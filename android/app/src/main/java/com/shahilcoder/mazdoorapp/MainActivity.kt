@@ -1,4 +1,4 @@
-package com.shahilcoder.mazdoorapp
+package com.fahad999.mazdoorapp
 
 import android.os.Build
 import android.os.Bundle

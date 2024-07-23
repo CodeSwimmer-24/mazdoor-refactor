@@ -1,4 +1,4 @@
-package com.shahilcoder.mazdoorapp
+package com.fahad999.mazdoorapp
 
 import android.app.Application
 import android.content.res.Configuration
