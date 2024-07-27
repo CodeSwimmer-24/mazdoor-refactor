@@ -1,15 +1,16 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SimpleLineIcons, Octicons } from "@expo/vector-icons";
+import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
 import { useAuthStore } from "../../../../zustand/authStore";
 
 const Header = ({ name, locality, buildingAddress }) => {
   const profileImageUri = useProfileImage();
-
   const { exactLocation } = useAuthStore();
+
+  const notificationCount = 0;
 
   return (
     <View>
@@ -30,14 +31,22 @@ const Header = ({ name, locality, buildingAddress }) => {
               </View>
             </View>
             <TouchableOpacity>
-              <Octicons name="bell" size={22} color={colors.baseColor} />
+              <View style={styles.notificationIconContainer}>
+                <Feather name="bell" size={22} color={colors.primary} />
+
+                <View style={styles.notificationCountContainer}>
+                  <Text style={styles.notificationCountText}>
+                    {notificationCount}
+                  </Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={styles.locationContainer}>
             <View style={styles.locationContent}>
               <SimpleLineIcons name="location-pin" size={22} color="gray" />
               <Text style={styles.locationText}>
-                {exactLocation ? `${exactLocation}, ` : "CurrenetLocation"}
+                {exactLocation ? `${exactLocation}, ` : "CurrentLocation"}
                 {locality ? locality : "Area"}
               </Text>
             </View>
@@ -108,8 +117,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: 10,
-    height: 45,
-    width: 45,
+    height: 46,
+    width: 46,
     backgroundColor: "white",
     borderRadius: 50,
     borderColor: "gray",
@@ -154,6 +163,25 @@ const styles = StyleSheet.create({
   signOutButtonContainer: {
     marginTop: 50,
     paddingHorizontal: 20,
+  },
+  notificationIconContainer: {
+    position: "relative",
+  },
+  notificationCountContainer: {
+    position: "absolute",
+    right: -6,
+    top: -8,
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    alignItems: "center",
+  },
+  notificationCountText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 10,
+    fontWeight: "bold",
   },
 });
 
