@@ -4,6 +4,7 @@ import Header from "../../../Customer/Home/components/Header";
 import { useAuthStore } from "../../../../zustand/authStore";
 import colors from "../../../../constants/colors";
 import Banner from "../../../Customer/Home/components/Banner";
+import Graph from "../components/Graph";
 
 const MazdoorHome = () => {
   const { name, locality, buildingAddress } = useAuthStore();
@@ -21,6 +22,7 @@ const MazdoorHome = () => {
         locality={locality}
       />
       <Banner />
+      {/* <Graph /> */}
     </View>
   );
 };

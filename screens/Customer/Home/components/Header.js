@@ -4,9 +4,13 @@ import { StatusBar } from "expo-status-bar";
 import { SimpleLineIcons, Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Header = ({ name, locality, buildingAddress }) => {
   const profileImageUri = useProfileImage();
+
+  const { exactLocation } = useAuthStore();
+
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -33,7 +37,7 @@ const Header = ({ name, locality, buildingAddress }) => {
             <View style={styles.locationContent}>
               <SimpleLineIcons name="location-pin" size={22} color="gray" />
               <Text style={styles.locationText}>
-                {buildingAddress ? buildingAddress : "CurrenetLocation"},
+                {exactLocation ? `${exactLocation}, ` : "CurrenetLocation"}
                 {locality ? locality : "Area"}
               </Text>
             </View>

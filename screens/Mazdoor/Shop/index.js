@@ -34,7 +34,6 @@ const Shop = () => {
           `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
         );
         const data = await response.json();
-
         setServiceProvider(data.serviceProvider);
       } catch (error) {
         console.error("Error fetching service provider details:", error);
@@ -130,20 +129,20 @@ const Shop = () => {
             <View>
               <Services />
             </View>
-            <ShopForm
-              shopRegisterForm={shopRegisterForm}
-              setShopRegisterForm={setShopRegisterForm}
-              existingData={existingData}
-              setReload={setReload}
-            />
-            <EditShopDetails
-              editForm={editForm}
-              setEditForm={setEditForm}
-              existingData={existingData}
-              setReload={setReload}
-            />
           </>
         )}
+        <ShopForm
+          shopRegisterForm={shopRegisterForm}
+          setShopRegisterForm={setShopRegisterForm}
+          existingData={existingData}
+          setReload={setReload}
+        />
+        <EditShopDetails
+          editForm={editForm}
+          setEditForm={setEditForm}
+          existingData={existingData}
+          setReload={setReload}
+        />
       </View>
     </SafeAreaView>
   );

@@ -97,8 +97,8 @@ const ShopForm = ({
           style={styles.modalOverlay}
           onPress={() => setShopRegisterForm(false)}
         />
-        <View style={styles.modalContent}>
-          <ScrollView>
+        <ScrollView style={styles.modalContent}>
+          <View>
             <View style={styles.header}>
               <Text style={styles.headerText}>Enter Shop Details</Text>
               <TouchableOpacity
@@ -109,12 +109,14 @@ const ShopForm = ({
               </TouchableOpacity>
             </View>
             <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
+              <Text style={styles.textLabel}>Enter Shop Name</Text>
               <CustomTextInput
                 iconName="store"
                 placeholder="Enter Shop Name"
                 value={formData.title}
                 onChangeText={(text) => handleChange("title", text)}
               />
+              <Text style={styles.textLabel}>Enter Work Category</Text>
               <Dropdown
                 style={styles.dropdownButton}
                 placeholderStyle={{ color: "#D0D0D0" }}
@@ -126,7 +128,11 @@ const ShopForm = ({
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={formData.serviceType}
+                placeholder={
+                  formData.serviceType
+                    ? formData.serviceType
+                    : "Select Category"
+                }
                 value={formData.serviceType}
                 onChange={(item) => handleChange("serviceType", item.value)}
                 renderLeftIcon={() => (
@@ -146,6 +152,7 @@ const ShopForm = ({
                   />
                 )}
               />
+              <Text style={styles.textLabel}>Enter Short Discription</Text>
               <CustomTextInput
                 iconType="Ionicons"
                 iconName="paper-plane-outline"
@@ -153,15 +160,16 @@ const ShopForm = ({
                 value={formData.short_description}
                 onChangeText={(text) => handleChange("short_description", text)}
               />
+              <Text style={styles.textLabel}>Enter Base Price</Text>
               <CustomTextInput
                 iconType="MaterialIcons"
-                iconName="attach-money"
+                iconName="currency-rupee"
                 placeholder="Enter Base Price"
                 value={formData.basePrice.toString()}
                 onChangeText={(text) => handleChange("basePrice", text)}
               />
             </View>
-          </ScrollView>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={addServiceProvider}
@@ -173,7 +181,7 @@ const ShopForm = ({
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -191,7 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.65,
+    height: height * 0.5,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -209,6 +217,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     color: "gray",
+  },
+  textLabel: {
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    fontWeight: "500",
+    fontSize: 13,
+    color: colors.primary,
   },
   closeButton: {
     backgroundColor: colors.dangerBackground,
