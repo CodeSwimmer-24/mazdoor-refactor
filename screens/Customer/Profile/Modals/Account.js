@@ -88,7 +88,7 @@ const Account = ({
                   <View style={styles.detailRow}>
                     <Ionicons name="map-outline" size={20} color="gray" />
                     <Text style={styles.detailText}>
-                      {exactLocation}, {locality} Okhla
+                      {exactLocation}, {locality} okhla New Delhi
                     </Text>
                   </View>
                 </View>
