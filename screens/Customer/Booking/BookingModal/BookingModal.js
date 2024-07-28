@@ -23,6 +23,7 @@ import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
 import Subscription from "../../Profile/Modals/Subscription";
 import SuccessAlert from "../../../../components/SuccessAlert";
+import FailAlert from "../../../../components/FailAlert";
 
 const BookingModal = ({
   bookingIsVisible,
@@ -36,6 +37,7 @@ const BookingModal = ({
     email: state.email,
   }));
   const [alertVisible, setAlertVisible] = useState(false);
+  const [failAlertVisible, setFailAlertVisible] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
 
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
@@ -60,8 +62,14 @@ const BookingModal = ({
       }
 
       const result = await response.json();
-      setAlertVisible(true);
-      setBookingVisible(false);
+      const alredyBooked = result.existingBooking;
+
+      if (alredyBooked === true) {
+        setFailAlertVisible(true);
+      } else {
+        setAlertVisible(true);
+        setBookingVisible(false);
+      }
     } catch (error) {
       console.error("Error making booking:", error);
       Alert.alert("Booking Failed", "There was an error with your booking.");
@@ -162,16 +170,16 @@ const BookingModal = ({
                           color="gray"
                         />
                         <Text style={styles.detailText}>
-                          {shortProfile.address?.buildingAddress},{" "}
-                          {shortProfile.address?.exactLocation},
+                          {shortProfile.address?.buildingAddress}
+                          {shortProfile.address?.exactLocation}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
                         <Ionicons name="map-outline" size={20} color="gray" />
                         <Text style={styles.detailText}>
-                          {shortProfile.address?.locality},{" "}
-                          {shortProfile.address?.area},{" "}
-                          {shortProfile.address?.region}, Delhi
+                          {shortProfile.address?.locality}
+                          {shortProfile.address?.area}
+                          {shortProfile.address?.region}, Okhla, Delhi
                         </Text>
                       </View>
                     </View>
@@ -300,6 +308,12 @@ const BookingModal = ({
         message="Your booking has been confirmed!"
         info="Go to Booking page to see details."
         onClose={() => setAlertVisible(false)}
+      />
+      <FailAlert
+        visible={failAlertVisible}
+        message="Already in your Book List"
+        info="Go to Booking page to see details."
+        onClose={() => setFailAlertVisible(false)}
       />
       {subscriptionModalVisible && (
         <Subscription
