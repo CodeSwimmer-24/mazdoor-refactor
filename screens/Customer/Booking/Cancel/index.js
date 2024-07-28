@@ -65,7 +65,7 @@ const Cancel = ({
               <Image
                 style={styles.profileImage}
                 source={{
-                  uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
+                  uri: "https://previews.123rf.com/images/jemastock/jemastock1911/jemastock191114276/133601522-construction-worker-avatar-profile-vector-illustration-graphic-design.jpg",
                 }}
               />
               <Text style={styles.profileName}>{name}</Text>

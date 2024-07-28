@@ -83,12 +83,20 @@ const Account = ({
                 <View style={styles.detailBox2}>
                   <View style={styles.detailRow}>
                     <Ionicons name="location-outline" size={24} color="gray" />
-                    <Text style={styles.detailText}>{buildingAddress}</Text>
+                    <Text style={styles.detailText}>
+                      {buildingAddress}, {exactLocation}
+                    </Text>
                   </View>
                   <View style={styles.detailRow}>
-                    <Ionicons name="map-outline" size={20} color="gray" />
-                    <Text style={styles.detailText}>
-                      {exactLocation}, {locality} okhla New Delhi
+                    <Text
+                      style={[
+                        styles.detailText,
+                        {
+                          marginLeft: 28,
+                        },
+                      ]}
+                    >
+                      {locality}, Jamia Nagar, New Delhi
                     </Text>
                   </View>
                 </View>

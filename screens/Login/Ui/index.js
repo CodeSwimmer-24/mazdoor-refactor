@@ -41,7 +41,7 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
             onPress={() => handleGoogleButtonPress("customer")}
           >
             <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
-            <Text style={styles.buttonText}>SignIn with User Account</Text>
+            <Text style={styles.buttonText}>SignIn with Customer Account</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -57,7 +57,7 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
                 setIsVisible(!isVisible);
               }}
             >
-              <Text style={styles.signIn}>SignUp</Text>
+              <Text style={styles.signIn}>Mazdoor SignUp</Text>
             </TouchableOpacity>
           </View>
         ) : (
