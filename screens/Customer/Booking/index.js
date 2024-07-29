@@ -15,7 +15,8 @@ import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
 import NotFound from "../../../components/NotFound";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Booking = ({ navigation }) => {
   const [bookings, setBookings] = useState([]);

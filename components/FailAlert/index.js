@@ -8,28 +8,29 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import fail from "../.../../../assets/assets/fail.png";
+import fail from "../../assets/assets/fail.png";
 import colors from "../../constants/colors";
 
-const FailAlert = ({ visible, message, onClose }) => {
+const FailAlert = ({ visible, message, onClose, navigation }) => {
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Image source={fail} style={styles.image} />
-          <View
-            style={{
-              width: "90%",
-              paddingVertical: 20,
-            }}
-          >
+          <View style={styles.messageContainer}>
             <Text style={styles.messageText}>{message}</Text>
             <Text style={styles.info}>
-              You can find this booking alredy in your booking list.
+              You can find this booking already in your booking list.
             </Text>
           </View>
-          <TouchableOpacity style={styles.okButton} onPress={onClose}>
-            <Text style={styles.okButtonText}>Close</Text>
+          <TouchableOpacity
+            style={styles.okButton}
+            onPress={() => navigation.navigate("Booking")}
+          >
+            <Text style={styles.okButtonText}>View Booking</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -37,7 +38,7 @@ const FailAlert = ({ visible, message, onClose }) => {
   );
 };
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   modalOverlay: {
@@ -46,19 +47,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image: {
-    height: 150,
-    width: 150,
-    marginTop: 15,
-    marginBottom: 15,
-  },
   modalContainer: {
     width: width * 0.8,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    padding: 20,
     backgroundColor: colors.white,
     borderRadius: 5,
     alignItems: "center",
+  },
+  image: {
+    height: 150,
+    width: 150,
+    marginVertical: 15,
+  },
+  messageContainer: {
+    width: "90%",
+    paddingVertical: 20,
   },
   messageText: {
     fontSize: 20,
@@ -77,15 +80,26 @@ const styles = StyleSheet.create({
   okButton: {
     backgroundColor: colors.primary,
     paddingVertical: 10,
-    paddingHorizontal: 80,
+    paddingHorizontal: 50,
     borderRadius: 5,
     elevation: 5,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   okButtonText: {
     color: colors.white,
     fontSize: 16,
     fontWeight: "600",
+  },
+  closeButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 0.3,
+    borderBottomColor: colors.primary,
+    paddingBottom: 4,
+  },
+  closeButtonText: {
+    color: colors.primary,
   },
 });
 

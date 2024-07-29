@@ -12,6 +12,7 @@ import CategoryDetail from "./screens/CategoryDetail";
 import ServiceDetail from "./screens/ServiceDetail";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
 import { useIsFocused } from "@react-navigation/native";
+import Booking from "../Booking";
 
 const Stack = createNativeStackNavigator();
 

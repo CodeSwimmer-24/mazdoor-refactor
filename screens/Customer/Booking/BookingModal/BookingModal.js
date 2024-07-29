@@ -30,6 +30,7 @@ const BookingModal = ({
   setBookingVisible,
   shortProfile,
   serviceProvider,
+  navigation,
 }) => {
   const [loading, setLoading] = useState(false);
   const { name, email } = useAuthStore((state) => ({
@@ -314,6 +315,7 @@ const BookingModal = ({
         message="Already in your Book List"
         info="Go to Booking page to see details."
         onClose={() => setFailAlertVisible(false)}
+        navigation={navigation}
       />
       {subscriptionModalVisible && (
         <Subscription

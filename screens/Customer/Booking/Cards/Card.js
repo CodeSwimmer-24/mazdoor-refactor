@@ -146,15 +146,17 @@ const Card = ({
                 </Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  setCancelVisible(true);
-                }}
-                style={styles.footerRight}
-              >
-                <Entypo name="cross" size={16} color={colors.danger} />
-                <Text style={styles.cancelText}>CANCEL</Text>
-              </TouchableOpacity>
+              status.toLowerCase() !== "rejected" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setCancelVisible(true);
+                  }}
+                  style={styles.footerRight}
+                >
+                  <Entypo name="cross" size={16} color={colors.danger} />
+                  <Text style={styles.cancelText}>CANCEL</Text>
+                </TouchableOpacity>
+              )
             )}
           </View>
         </View>
