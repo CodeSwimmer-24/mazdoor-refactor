@@ -15,10 +15,12 @@ import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
 import NotFound from "../../../components/NotFound";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused, CommonActions } from "@react-navigation/native";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Booking = ({ navigation }) => {
+  const isFocused = useIsFocused();
+
   const [bookings, setBookings] = useState([]);
   const [serviceProviders, setServiceProviders] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -26,6 +28,19 @@ const Booking = ({ navigation }) => {
   const [noData, setNoData] = useState(true);
   const [reload, setReload] = useState(false);
   const email = useAuthStore((state) => state.email);
+
+  useEffect(() => {
+    if (isFocused) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'HomeMain'}]
+        })
+      );
+
+      console.log("Stack navigation cleared");
+    }
+  }, [isFocused]);
 
   const fetchBookings = async () => {
     try {
