@@ -9,18 +9,14 @@ import {
   Dimensions,
   BackHandler,
   Alert,
-  Linking,
 } from "react-native";
 import axios from "axios";
 import { hostUrl } from "../../../../../services";
 import { useAuthStore } from "../../../../../zustand/authStore";
-import Upi from "../Upi";
 import SubscriptionUi from "./SubscriptionUi";
 import colors from "../../../../../constants/colors";
-import {
-  Phone_PAY_UPI_URL,
-  UPI_URL_GPAY,
-} from "../../../../../constants/UpiPayments";
+import RazorpayCheckout from "react-native-razorpay";
+import { rzp_logo } from "../../../../../constants/UpiPayments";
 
 const benefits = [
   "Access to all service providers",
@@ -37,9 +33,9 @@ const Subscription = ({
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
-  const [upiPopup, setUpiPopup] = useState(false);
+  const [reload, setReload] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { email } = useAuthStore();
+  const { email, contact } = useAuthStore();
 
   useEffect(() => {
     const fetchUserSubscription = async () => {
@@ -48,14 +44,13 @@ const Subscription = ({
           `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
         );
         setIsSubscribed(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching user subscription:", error);
       }
     };
 
     fetchUserSubscription();
-  }, [email]);
+  }, [email, reload]);
 
   useEffect(() => {
     const fetchAllSubscriptions = async () => {
@@ -69,6 +64,7 @@ const Subscription = ({
           subscriptionId: item.subscriptionId,
           subscriptionDuration: item.subscriptionDuration,
           price: item.price,
+          subscriptionDesc: item.subscriptionDesc,
         }));
         setSubscriptions(subscriptionData);
       } catch (error) {
@@ -100,43 +96,68 @@ const Subscription = ({
     setSelectedPlan(plan);
   };
 
-  const payWithGooglePay = () => {
-    Linking.openURL(UPI_URL_GPAY)
-      .then((data) => {
-        console.log("Google Pay opened successfully:", data);
+  const handlePayment = () => {
+    const selectedSubscription = subscriptions.find(
+      (subscription) => subscription.subscriptionDuration === selectedPlan
+    );
 
-        const transactionStatus = data && data.url === "success";
-        if (transactionStatus) {
-          Alert.alert("Success", "Transaction successful!");
-        } else {
-          Alert.alert("Error", "Transaction failed. Please try again.");
+    if (!selectedSubscription) {
+      Alert.alert("Error", "Selected plan not found");
+      return;
+    }
+
+    const amountInPaise = selectedSubscription.price * 100;
+
+    const options = {
+      description: "Subscription payment",
+      image: rzp_logo,
+      currency: "INR",
+      key: "rzp_test_3QzD2D63ToPhc3",
+      amount: amountInPaise,
+      name: "Your App Name",
+      prefill: {
+        email: email,
+        contact: contact,
+        name: name,
+      },
+      theme: { color: colors.baseColor },
+      method: "upi",
+      upi: {
+        vpa: "success@razorpay",
+      },
+    };
+
+    RazorpayCheckout.open(options)
+      .then(async (data) => {
+        Alert.alert("Payment Successful");
+
+        const todayDate = new Date().toISOString().split("T")[0]; // Format date to YYYY-MM-DD
+
+        const payload = {
+          emailId: email,
+          selectedSubscriptionId: selectedSubscription.subscriptionId,
+          subsEndDate: todayDate,
+          subsStartDate: "", // Add logic to calculate start date if needed
+          subscriptionDesc: selectedSubscription.subscriptionDesc,
+          subscriptionDuration: selectedSubscription.subscriptionDuration,
+          subscriptionStatus: true,
+        };
+
+        try {
+          const response = await axios.post(
+            `${hostUrl}/mazdoor/v1/addUserSubscription`,
+            payload
+          );
+          if (response.status === 200) {
+            setIsSubscribed(true);
+            setReload(true);
+          }
+        } catch (error) {
+          console.error("Error adding user subscription:", error);
         }
       })
       .catch((error) => {
-        console.error("Failed to open Google Pay:", error);
-        Alert.alert(
-          "Error",
-          "Failed to open Google Pay. Please make sure you have Google Pay installed."
-        );
-      });
-  };
-
-  const payWithPhonePe = () => {
-    Linking.openURL(Phone_PAY_UPI_URL)
-      .then((data) => {
-        console.log("PhonePe opened successfully:", data);
-
-        console.log("PhonePe response data:", data);
-      })
-      .catch((error) => {
-        console.error("Failed to open PhonePe:", error);
-
-        console.error("PhonePe error response:", error);
-
-        Alert.alert(
-          "Error",
-          "Failed to open PhonePe. Please make sure you have PhonePe installed."
-        );
+        Alert.alert(`Error: ${error.code} | ${error.description}`);
       });
   };
 
@@ -172,7 +193,7 @@ const Subscription = ({
               </View>
             ) : (
               <TouchableOpacity
-                onPress={payWithGooglePay}
+                onPress={handlePayment}
                 style={styles.closeButton}
               >
                 <Text style={styles.closeButtonText}>Go to payment</Text>
@@ -181,12 +202,6 @@ const Subscription = ({
           </View>
         </View>
       </View>
-      <Upi
-        upiPopup={upiPopup}
-        setUpiPopup={setUpiPopup}
-        payWithGooglePay={payWithGooglePay}
-        payWithPhonePe={payWithPhonePe}
-      />
     </Modal>
   );
 };
