@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signIn: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: colors.primary,
   },
