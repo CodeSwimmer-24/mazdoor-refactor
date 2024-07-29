@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   okButtonText: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
   },
   closeButton: {
