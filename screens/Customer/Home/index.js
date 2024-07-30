@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,12 +13,14 @@ import ServiceDetail from "./screens/ServiceDetail";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
 import { useIsFocused } from "@react-navigation/native";
 import Booking from "../Booking";
+import Notification from "../../../components/Notification";
 
 const Stack = createNativeStackNavigator();
 
 const HomeMain = ({ navigation }) => {
   const isFocused = useIsFocused();
   const { name, buildingAddress, locality } = useAuthStore();
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -31,20 +33,31 @@ const HomeMain = ({ navigation }) => {
   }, [isFocused]);
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#f9f9f9" />
-      <Header
-        name={name}
-        buildingAddress={buildingAddress}
-        locality={locality}
-      />
+    <>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#f9f9f9" />
+        <Header
+          name={name}
+          buildingAddress={buildingAddress}
+          locality={locality}
+          setIsDrawerVisible={setIsDrawerVisible}
+          isDrawerVisible={isDrawerVisible}
+        />
 
-      <ScrollView>
-        <Banner />
-        <Category navigation={navigation} />
-        {/* <TopRated /> */}
-      </ScrollView>
-    </View>
+        <ScrollView>
+          <Banner />
+          <Category navigation={navigation} />
+
+          {/* <TopRated /> */}
+        </ScrollView>
+      </View>
+      {isDrawerVisible && (
+        <Notification
+          isVisible={isDrawerVisible}
+          setIsVisible={setIsDrawerVisible}
+        />
+      )}
+    </>
   );
 };
 

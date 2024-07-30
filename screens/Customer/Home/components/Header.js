@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
 import { useAuthStore } from "../../../../zustand/authStore";
+import Notification from "../../../../components/Notification";
 
-const Header = ({ name, locality, buildingAddress }) => {
+const Header = ({ name, locality, setIsDrawerVisible }) => {
   const profileImageUri = useProfileImage();
   const { exactLocation } = useAuthStore();
 
@@ -25,7 +26,7 @@ const Header = ({ name, locality, buildingAddress }) => {
                 <Text style={styles.userName}>{name}</Text>
               </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
               <View style={styles.notificationIconContainer}>
                 <Feather name="bell" size={22} color={colors.primary} />
 

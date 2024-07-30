@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "white",
     borderRadius: 10,
-    elevation: 2,
+    elevation: 3,
     marginBottom: 20,
   },
   row: {
