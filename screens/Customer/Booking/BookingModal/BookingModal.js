@@ -25,6 +25,7 @@ import { useAuthStore } from "../../../../zustand/authStore";
 import Subscription from "../../Profile/Modals/Subscription";
 import SuccessAlert from "../../../../components/SuccessAlert";
 import FailAlert from "../../../../components/FailAlert";
+import { Entypo } from "@expo/vector-icons";
 
 const BookingModal = ({
   bookingIsVisible,
@@ -137,6 +138,24 @@ const BookingModal = ({
           <View style={styles.modalContent}>
             <ScrollView>
               <View style={styles.scrollContent}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setBookingVisible(false)}
+                    style={{
+                      backgroundColor: colors.dangerBackground,
+                      paddingVertical: 5,
+                      paddingHorizontal: 5,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Entypo name="cross" size={20} color={colors.danger} />
+                  </TouchableOpacity>
+                </View>
                 <View style={styles.profileSection}>
                   <Image
                     source={{
@@ -346,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.65,
+    height: height * 0.68,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

@@ -107,7 +107,7 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
                 <View style={styles.copyLinkContent}>
                   <Entypo name="link" size={24} color={colors.primary} />
                   <Text style={styles.copyLinkText}>
-                    https://digimazdoor.tech//swagger-ui.html
+                    https://digimazdoor.tech/playstore
                   </Text>
                 </View>
               </TouchableOpacity>
