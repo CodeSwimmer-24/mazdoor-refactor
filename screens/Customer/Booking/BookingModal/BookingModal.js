@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   Linking,
+  Clipboard,
 } from "react-native";
 import {
   MaterialIcons,
@@ -77,6 +78,10 @@ const BookingModal = ({
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyToClipboard = () => {
+    Clipboard.setString(shortProfile.contactNo.toString());
   };
 
   useEffect(() => {
@@ -158,7 +163,7 @@ const BookingModal = ({
                         <Text style={styles.detailText}>+91 **********</Text>
                       )}
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={copyToClipboard}>
                       <FontAwesome6 name="copy" size={18} color="gray" />
                     </TouchableOpacity>
                   </View>
@@ -180,7 +185,7 @@ const BookingModal = ({
                           {shortProfile.address?.locality},
                           {shortProfile.address?.area},
                           {shortProfile.address?.region},{" "}
-                          {shortProfile.address.city}
+                          {shortProfile.address?.city}
                         </Text>
                       </View>
                     </View>
