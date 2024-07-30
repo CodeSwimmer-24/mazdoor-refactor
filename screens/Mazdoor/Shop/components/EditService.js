@@ -27,8 +27,6 @@ const EditService = ({
   const [price, setPrice] = useState(serviceDetails.price.toString());
   const [loading, setLoading] = useState(false);
 
-  console.log(serviceId, serviceDetails);
-
   useEffect(() => {
     setServiceName(serviceDetails.serviceName);
     setServiceDescription(serviceDetails.serviceDescription);

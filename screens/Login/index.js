@@ -61,9 +61,7 @@ const Login = () => {
     await GoogleSignin.hasPlayServices({
       showPlayServicesUpdateDialog: true,
     });
-    console.log("BEFORE ID TOKEN");
     const { idToken } = await GoogleSignin.signIn();
-    console.log(idToken, "ID TOKEN");
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     try {
@@ -80,7 +78,6 @@ const Login = () => {
 
       if (response.status === 200) {
         const responseData = response.data;
-        console.log("User logged in successfully!", responseData);
 
         authStore.setName(displayName);
         authStore.setEmail(email);
@@ -93,7 +90,6 @@ const Login = () => {
 
           if (profileResponse.status === 200) {
             const profileData = profileResponse.data;
-            console.log("User profile fetched successfully!");
 
             authStore.setName(profileData.name);
             authStore.setContact(profileData.contactNo);

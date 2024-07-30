@@ -21,8 +21,6 @@ const HomeMain = ({ navigation }) => {
   const { name, buildingAddress, locality } = useAuthStore();
 
   useEffect(() => {
-    console.log("HOME MAIN RERENDERED", ", isFocused", isFocused);
-
     if (isFocused) {
       const parent = navigation.getParent();
       parent?.setOptions({

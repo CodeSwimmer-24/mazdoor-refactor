@@ -15,7 +15,11 @@ import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
 import NotFound from "../../../components/NotFound";
-import { useFocusEffect, useIsFocused, CommonActions } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useIsFocused,
+  CommonActions,
+} from "@react-navigation/native";
 import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Booking = ({ navigation }) => {
@@ -34,11 +38,9 @@ const Booking = ({ navigation }) => {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'HomeMain'}]
+          routes: [{ name: "HomeMain" }],
         })
       );
-
-      console.log("Stack navigation cleared");
     }
   }, [isFocused]);
 

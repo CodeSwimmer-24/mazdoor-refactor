@@ -79,7 +79,7 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
         `${hostUrl}/mazdoor/v1/addSPFeedback`,
         feedbackData
       );
-      console.log("Feedback submitted:", response.data);
+
       setSuccessMessage("Feedback submitted successfully!");
       setLoading(false);
       setIsVisible(false);

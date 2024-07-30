@@ -47,7 +47,6 @@ const Banner = () => {
         <Text style={styles.headerTitle}>Promotions</Text>
         <TouchableOpacity
           onPress={() => {
-            console.log("ssss");
             setIsVisible(true);
           }}
           style={styles.seeMoreButton}
