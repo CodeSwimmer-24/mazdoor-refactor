@@ -176,11 +176,11 @@ const BookingModal = ({
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
-                        <Ionicons name="map-outline" size={20} color="gray" />
                         <Text style={styles.detailText}>
-                          {shortProfile.address?.locality}
-                          {shortProfile.address?.area}
-                          {shortProfile.address?.region}, Okhla, Delhi
+                          {shortProfile.address?.locality},
+                          {shortProfile.address?.area},
+                          {shortProfile.address?.region},{" "}
+                          {shortProfile.address.city}
                         </Text>
                       </View>
                     </View>

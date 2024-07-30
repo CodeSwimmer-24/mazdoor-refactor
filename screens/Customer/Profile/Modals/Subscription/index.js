@@ -129,15 +129,11 @@ const Subscription = ({
 
     RazorpayCheckout.open(options)
       .then(async (data) => {
-        Alert.alert("Payment Successful");
-
-        const todayDate = new Date().toISOString().split("T")[0]; // Format date to YYYY-MM-DD
+        Alert.alert("Payment Successful", "Thanks for subscribing");
 
         const payload = {
           emailId: email,
           selectedSubscriptionId: selectedSubscription.subscriptionId,
-          subsEndDate: todayDate,
-          subsStartDate: "", // Add logic to calculate start date if needed
           subscriptionDesc: selectedSubscription.subscriptionDesc,
           subscriptionDuration: selectedSubscription.subscriptionDuration,
           subscriptionStatus: true,

@@ -22,12 +22,7 @@ const SubscriptionUi = ({
         <AntDesign name="left" size={22} color="black" />
       </TouchableOpacity>
       <View style={styles.profileContainer}>
-        <Image
-          source={{
-            uri: profileImageUri,
-          }}
-          style={styles.profileImage}
-        />
+        <Image source={profileImageUri} style={styles.profileImage} />
         <View style={styles.profileTextContainer}>
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.subscriptionType}>Full access Subscription</Text>

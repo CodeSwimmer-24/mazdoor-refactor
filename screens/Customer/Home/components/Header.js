@@ -19,12 +19,7 @@ const Header = ({ name, locality, buildingAddress }) => {
         <View style={styles.headerContent}>
           <View style={styles.headerTopRow}>
             <View style={styles.profileInfo}>
-              <Image
-                source={{
-                  uri: profileImageUri,
-                }}
-                style={styles.profileIcon}
-              />
+              <Image source={profileImageUri} style={styles.profileIcon} />
               <View>
                 <Text style={styles.welcomeText}>Hey, Welcome 👋</Text>
                 <Text style={styles.userName}>{name}</Text>
@@ -99,8 +94,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   profileIcon: {
-    height: 45,
-    width: 45,
+    height: 50,
+    width: 50,
     borderRadius: 50,
     marginRight: 10,
   },
@@ -112,6 +107,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   profilePicture: {
     alignItems: "center",
@@ -136,14 +132,14 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 19,
     color: colors.baseColor,
   },
   locationContainer: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 18,
   },
   locationContent: {
     width: "90%",

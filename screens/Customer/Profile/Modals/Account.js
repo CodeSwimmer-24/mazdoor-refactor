@@ -48,12 +48,7 @@ const Account = ({
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
-                <Image
-                  source={{
-                    uri: profileImageUri,
-                  }}
-                  style={styles.profileImage}
-                />
+                <Image source={profileImageUri} style={styles.profileImage} />
                 <Text style={styles.profileName}>{name}</Text>
                 <Text style={styles.profileEmail}>{email}</Text>
               </View>

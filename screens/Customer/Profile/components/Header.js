@@ -21,10 +21,7 @@ const Header = ({
     <View style={styles.container}>
       <View style={styles.innerContainer}>
         <View style={styles.profileContainer}>
-          <Image
-            source={{ uri: profileImageUri }}
-            style={styles.profileImage}
-          />
+          <Image source={profileImageUri} style={styles.profileImage} />
           <View style={styles.textContainer}>
             <Text style={styles.nameText}>{name}</Text>
             <Text style={styles.emailText}>{email}</Text>
