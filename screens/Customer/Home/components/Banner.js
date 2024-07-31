@@ -13,14 +13,13 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import AllBanners from "../Modal/AllBanners";
+import banner1 from "../../../../assets/Post/banner1.png";
+import banner2 from "../../../../assets/Post/banner2.png";
+import banner3 from "../../../../assets/Post/banner3.png";
 
 const { width } = Dimensions.get("window");
 
-const images = [
-  "https://previews.123rf.com/images/mcandy/mcandy1609/mcandy160900031/64232823-big-sale-banner-with-bright-ink-blue-color-blots-over-white-background-each-element-separate-on.jpg",
-  "https://image.shutterstock.com/image-vector/super-sale-badge-discount-banner-260nw-1503109874.jpg",
-  "https://www.shutterstock.com/image-vector/summer-sale-template-banner-vector-260nw-656471581.jpg",
-];
+const images = [banner1, banner2, banner3];
 
 const Banner = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -68,7 +67,7 @@ const Banner = () => {
       >
         {images.map((image, index) => (
           <View key={index} style={styles.imageContainer}>
-            <Image source={{ uri: image }} style={styles.image} />
+            <Image source={image} style={styles.image} />
           </View>
         ))}
       </ScrollView>
