@@ -91,7 +91,9 @@ const Booking = ({ navigation }) => {
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>My Bookings</Text>
-        <Text style={styles.subHeaderText}>You can view last 10 bookings.</Text>
+        <Text style={styles.subHeaderText}>
+          You can view your top ten bookings.
+        </Text>
       </View>
       <ScrollView style={styles.scrollView}>
         <View style={styles.bookingsContainer}>
