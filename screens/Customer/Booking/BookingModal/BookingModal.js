@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   Linking,
+  Clipboard,
 } from "react-native";
 import {
   MaterialIcons,
@@ -23,12 +24,15 @@ import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
 import Subscription from "../../Profile/Modals/Subscription";
 import SuccessAlert from "../../../../components/SuccessAlert";
+import FailAlert from "../../../../components/FailAlert";
+import { Entypo } from "@expo/vector-icons";
 
 const BookingModal = ({
   bookingIsVisible,
   setBookingVisible,
   shortProfile,
   serviceProvider,
+  navigation,
 }) => {
   const [loading, setLoading] = useState(false);
   const { name, email } = useAuthStore((state) => ({
@@ -36,6 +40,7 @@ const BookingModal = ({
     email: state.email,
   }));
   const [alertVisible, setAlertVisible] = useState(false);
+  const [failAlertVisible, setFailAlertVisible] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
 
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
@@ -60,14 +65,24 @@ const BookingModal = ({
       }
 
       const result = await response.json();
-      setAlertVisible(true);
-      setBookingVisible(false);
+      const alredyBooked = result.existingBooking;
+
+      if (alredyBooked === true) {
+        setFailAlertVisible(true);
+      } else {
+        setAlertVisible(true);
+        setBookingVisible(false);
+      }
     } catch (error) {
       console.error("Error making booking:", error);
       Alert.alert("Booking Failed", "There was an error with your booking.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyToClipboard = () => {
+    Clipboard.setString(shortProfile.contactNo.toString());
   };
 
   useEffect(() => {
@@ -80,7 +95,7 @@ const BookingModal = ({
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
-        console.log(result, email);
+
         if (result === true) {
           setSubscribe(true);
         } else {
@@ -123,10 +138,28 @@ const BookingModal = ({
           <View style={styles.modalContent}>
             <ScrollView>
               <View style={styles.scrollContent}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setBookingVisible(false)}
+                    style={{
+                      backgroundColor: colors.dangerBackground,
+                      paddingVertical: 5,
+                      paddingHorizontal: 5,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Entypo name="cross" size={20} color={colors.danger} />
+                  </TouchableOpacity>
+                </View>
                 <View style={styles.profileSection}>
                   <Image
                     source={{
-                      uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
+                      uri: "https://previews.123rf.com/images/jemastock/jemastock1911/jemastock191114276/133601522-construction-worker-avatar-profile-vector-illustration-graphic-design.jpg",
                     }}
                     style={styles.profileImage}
                   />
@@ -149,7 +182,7 @@ const BookingModal = ({
                         <Text style={styles.detailText}>+91 **********</Text>
                       )}
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={copyToClipboard}>
                       <FontAwesome6 name="copy" size={18} color="gray" />
                     </TouchableOpacity>
                   </View>
@@ -162,16 +195,16 @@ const BookingModal = ({
                           color="gray"
                         />
                         <Text style={styles.detailText}>
-                          {shortProfile.address?.buildingAddress},{" "}
-                          {shortProfile.address?.exactLocation},
+                          {shortProfile.address?.buildingAddress}
+                          {shortProfile.address?.exactLocation}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
-                        <Ionicons name="map-outline" size={20} color="gray" />
                         <Text style={styles.detailText}>
-                          {shortProfile.address?.locality},{" "}
-                          {shortProfile.address?.area},{" "}
-                          {shortProfile.address?.region}, Delhi
+                          {shortProfile.address?.locality},
+                          {shortProfile.address?.area},
+                          {shortProfile.address?.region},{" "}
+                          {shortProfile.address?.city}
                         </Text>
                       </View>
                     </View>
@@ -300,6 +333,14 @@ const BookingModal = ({
         message="Your booking has been confirmed!"
         info="Go to Booking page to see details."
         onClose={() => setAlertVisible(false)}
+        navigation={navigation}
+      />
+      <FailAlert
+        visible={failAlertVisible}
+        message="Already in your Book List"
+        info="Go to Booking page to see details."
+        onClose={() => setFailAlertVisible(false)}
+        navigation={navigation}
       />
       {subscriptionModalVisible && (
         <Subscription
@@ -324,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.65,
+    height: height * 0.68,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

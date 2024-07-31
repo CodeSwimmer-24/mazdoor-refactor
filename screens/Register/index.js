@@ -13,6 +13,9 @@ import {
 import CustomTextInput from "../../components/TextInput";
 import DropdownTextInput from "../../components/DropdownTextInput";
 
+import mail from "../../assets/assets/mail.png";
+import femail from "../../assets/assets/femail.png";
+
 import { useAuthStore } from "../../zustand/authStore";
 import { useSystemStore } from "../../zustand/systemStore";
 import { hostUrl } from "../../services";
@@ -148,25 +151,20 @@ const RegisterForm = () => {
                 style={[
                   styles.picture,
                   {
-                    borderWidth: 0.4,
-                    borderRadius: 10,
+                    borderWidth: 0.5,
+                    borderRadius: 15,
                     borderColor:
-                      selectedGender === "M" ? "lightgray" : "transparent",
+                      selectedGender === "M" ? "#D0D0D0" : "transparent",
                     borderWidth: selectedGender === "M" ? 1 : 0,
                   },
                 ]}
                 onPress={() => selectGender("M")}
               >
-                <Image
-                  source={{
-                    uri: "https://files.stickerkade.ir/7523/19.webp",
-                  }}
-                  style={styles.pictureImage}
-                />
+                <Image source={mail} style={styles.pictureImage} />
                 <Text
                   style={{
                     fontSize: 12,
-                    color: "gray",
+                    color: "#505050",
                   }}
                 >
                   Male
@@ -176,25 +174,20 @@ const RegisterForm = () => {
                 style={[
                   styles.picture,
                   {
-                    borderWidth: 0.4,
+                    borderWidth: 0.5,
                     borderRadius: 10,
                     borderColor:
-                      selectedGender === "F" ? "lightgray" : "transparent",
+                      selectedGender === "F" ? "#D0D0D0" : "transparent",
                     borderWidth: selectedGender === "F" ? 1 : 0,
                   },
                 ]}
                 onPress={() => selectGender("F")}
               >
-                <Image
-                  source={{
-                    uri: "https://i.pinimg.com/736x/0f/10/55/0f105565e20366e9c76dec4a16d55a2b.jpg",
-                  }}
-                  style={styles.pictureImage}
-                />
+                <Image source={femail} style={styles.pictureImage} />
                 <Text
                   style={{
                     fontSize: 12,
-                    color: "gray",
+                    color: "#505050",
                   }}
                 >
                   Female

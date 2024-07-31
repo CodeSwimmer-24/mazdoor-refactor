@@ -104,6 +104,7 @@ const ServiceDetail = ({ route, navigation }) => {
         setBookingVisible={setBookingVisible}
         shortProfile={shortProfile}
         serviceProvider={serviceProvider}
+        navigation={navigation}
       />
     </View>
   );

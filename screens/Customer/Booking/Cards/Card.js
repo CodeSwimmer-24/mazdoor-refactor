@@ -86,7 +86,7 @@ const Card = ({
             <View style={styles.bodyLeft}>
               <Image
                 source={{
-                  uri: "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg",
+                  uri: "https://previews.123rf.com/images/jemastock/jemastock1911/jemastock191114276/133601522-construction-worker-avatar-profile-vector-illustration-graphic-design.jpg",
                 }}
                 style={styles.profileImage}
               />
@@ -146,15 +146,17 @@ const Card = ({
                 </Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  setCancelVisible(true);
-                }}
-                style={styles.footerRight}
-              >
-                <Entypo name="cross" size={16} color={colors.danger} />
-                <Text style={styles.cancelText}>CANCEL</Text>
-              </TouchableOpacity>
+              status.toLowerCase() !== "rejected" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setCancelVisible(true);
+                  }}
+                  style={styles.footerRight}
+                >
+                  <Entypo name="cross" size={16} color={colors.danger} />
+                  <Text style={styles.cancelText}>CANCEL</Text>
+                </TouchableOpacity>
+              )
             )}
           </View>
         </View>

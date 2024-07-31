@@ -52,7 +52,7 @@ const Login = () => {
 
   GoogleSignin.configure({
     webClientId:
-      "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com",
+      "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
   });
 
   const onGoogleButtonPress = async () => {
@@ -78,7 +78,6 @@ const Login = () => {
 
       if (response.status === 200) {
         const responseData = response.data;
-        console.log("User logged in successfully!", responseData);
 
         authStore.setName(displayName);
         authStore.setEmail(email);
@@ -91,7 +90,6 @@ const Login = () => {
 
           if (profileResponse.status === 200) {
             const profileData = profileResponse.data;
-            console.log("User profile fetched successfully!");
 
             authStore.setName(profileData.name);
             authStore.setContact(profileData.contactNo);

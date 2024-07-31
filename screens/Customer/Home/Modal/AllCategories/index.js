@@ -9,14 +9,14 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { Entypo, AntDesign, Feather } from "@expo/vector-icons";
+import { Entypo, Feather } from "@expo/vector-icons";
 import colors from "../../../../../constants/colors";
 import { hostUrl } from "../../../../../services/index";
 import axios from "axios";
 
-const AllCategories = ({ isVisible, setIsVisible, navigation }) => {
+const AllCategories = ({ isVisible, setIsVisible }) => {
   const { height } = Dimensions.get("window");
-  const modalHeight = height * 0.7;
+  const modalHeight = height * 0.5;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
@@ -70,27 +70,13 @@ const AllCategories = ({ isVisible, setIsVisible, navigation }) => {
                     onChangeText={(text) => setSearchQuery(text)}
                   />
                 </View>
-                {filteredData.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.push("CategoryDetail", {
-                        label: item.label,
-                        subCategory: item.sub_category,
-                      });
-                      setIsVisible(false);
-                    }}
-                    key={index}
-                    style={[
-                      styles.itemContainer,
-                      {
-                        backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
-                      },
-                    ]}
-                  >
-                    <Text style={styles.itemText}>{item.label}</Text>
-                    <AntDesign name="right" size={20} color="lightgray" />
-                  </TouchableOpacity>
-                ))}
+                <View style={styles.itemsContainer}>
+                  {filteredData.map((item, index) => (
+                    <TouchableOpacity key={index} style={styles.itemContainer}>
+                      <Text style={styles.itemText}>{item.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
             </View>
           </View>
@@ -135,8 +121,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: "#fff",
-    elevation: 4,
-    marginHorizontal: 5, // Adjust margin horizontally as needed
+    elevation: 2,
+    marginHorizontal: 5,
   },
   searchIcon: {
     marginRight: 10,
@@ -158,9 +144,13 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 50,
   },
-  itemContainer: {
+  itemsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
+  },
+  itemContainer: {
+    width: "48%",
     paddingVertical: 15,
     paddingHorizontal: 10,
     borderRadius: 7,
@@ -171,7 +161,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 16,
     fontWeight: "400",
-    color: "#505050",
+    color: colors.baseColor,
   },
 });
 

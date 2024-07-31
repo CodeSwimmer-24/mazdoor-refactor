@@ -59,7 +59,8 @@ const categories = [
     image: truck,
     label: "Room Shifting",
     value: "Room Shifting",
-    subCategory: "All categories",
+    subCategory:
+      "All Categories, 407 Pickup, Chota Hathi, Thela, Battery Rickshaw",
     backgroundColor: "#fef9e8",
   },
   {

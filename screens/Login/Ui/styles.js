@@ -47,12 +47,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomText: {
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(12),
     color: "gray",
     fontWeight: "200",
+    alignItems: "center",
+    flexDirection: "row",
+    alignItems: "center",
   },
   signIn: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: colors.primary,
   },

@@ -54,7 +54,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 1 && styles.activeTabText]}
             >
-              Pending Req.
+              Pending
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -64,7 +64,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 2 && styles.activeTabText]}
             >
-              Confirm Req.
+              Confirm
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

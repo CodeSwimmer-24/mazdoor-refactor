@@ -15,9 +15,16 @@ import Card from "./Cards/Card";
 import { useAuthStore } from "../../../zustand/authStore";
 import { hostUrl } from "../../../services";
 import NotFound from "../../../components/NotFound";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useIsFocused,
+  CommonActions,
+} from "@react-navigation/native";
+import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Booking = ({ navigation }) => {
+  const isFocused = useIsFocused();
+
   const [bookings, setBookings] = useState([]);
   const [serviceProviders, setServiceProviders] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -25,6 +32,17 @@ const Booking = ({ navigation }) => {
   const [noData, setNoData] = useState(true);
   const [reload, setReload] = useState(false);
   const email = useAuthStore((state) => state.email);
+
+  useEffect(() => {
+    if (isFocused) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "HomeMain" }],
+        })
+      );
+    }
+  }, [isFocused]);
 
   const fetchBookings = async () => {
     try {
@@ -73,7 +91,9 @@ const Booking = ({ navigation }) => {
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>My Bookings</Text>
-        <Text style={styles.subHeaderText}>You can view last 10 bookings.</Text>
+        <Text style={styles.subHeaderText}>
+          You can view your top ten bookings.
+        </Text>
       </View>
       <ScrollView style={styles.scrollView}>
         <View style={styles.bookingsContainer}>
@@ -95,7 +115,7 @@ const Booking = ({ navigation }) => {
                   "N/A"
                 }
                 imageUrl={
-                  "https://img.freepik.com/free-photo/close-up-man-wearing-protection-helmet_23-2148921427.jpg"
+                  "https://previews.123rf.com/images/jemastock/jemastock1911/jemastock191114276/133601522-construction-worker-avatar-profile-vector-illustration-graphic-design.jpg"
                 }
                 status={booking.status}
                 navigation={navigation}

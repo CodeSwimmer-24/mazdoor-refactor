@@ -28,8 +28,6 @@ const Account = ({
 }) => {
   const profileImageUri = useProfileImage();
 
-  console.log(role, "ROLEE");
-
   const { height } = Dimensions.get("window");
   const modalHeight = role === "mazdoor" ? height * 0.65 : height * 0.55;
 
@@ -48,12 +46,7 @@ const Account = ({
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
-                <Image
-                  source={{
-                    uri: profileImageUri,
-                  }}
-                  style={styles.profileImage}
-                />
+                <Image source={profileImageUri} style={styles.profileImage} />
                 <Text style={styles.profileName}>{name}</Text>
                 <Text style={styles.profileEmail}>{email}</Text>
               </View>
@@ -83,12 +76,20 @@ const Account = ({
                 <View style={styles.detailBox2}>
                   <View style={styles.detailRow}>
                     <Ionicons name="location-outline" size={24} color="gray" />
-                    <Text style={styles.detailText}>{buildingAddress}</Text>
+                    <Text style={styles.detailText}>
+                      {buildingAddress}, {exactLocation}
+                    </Text>
                   </View>
                   <View style={styles.detailRow}>
-                    <Ionicons name="map-outline" size={20} color="gray" />
-                    <Text style={styles.detailText}>
-                      {exactLocation}, {locality} Okhla
+                    <Text
+                      style={[
+                        styles.detailText,
+                        {
+                          marginLeft: 28,
+                        },
+                      ]}
+                    >
+                      {locality}, Jamia Nagar, New Delhi
                     </Text>
                   </View>
                 </View>

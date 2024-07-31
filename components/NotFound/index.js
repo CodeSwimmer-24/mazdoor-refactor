@@ -5,7 +5,6 @@ import nolike from "../../assets/assets/nolike.png";
 import colors from "../../constants/colors";
 
 const NotFound = ({ info, image }) => {
-  console.log(image);
   return (
     <View style={styles.noDataContainer}>
       {image === "nolike" ? (

@@ -1,14 +1,16 @@
 import { useAuthStore } from "../zustand/authStore";
+import mail from "../assets/assets/mail.png";
+import femail from "../assets/assets/femail.png";
 
 const useProfileImage = () => {
   const { gender } = useAuthStore();
 
   if (gender === "M") {
-    return "https://files.stickerkade.ir/7523/19.webp";
+    return mail;
   } else if (gender === "F") {
-    return "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2022/02/06/962605803.png";
+    return femail;
   } else {
-    return "https://files.stickerkade.ir/7523/19.webp";
+    return mail;
   }
 };
 

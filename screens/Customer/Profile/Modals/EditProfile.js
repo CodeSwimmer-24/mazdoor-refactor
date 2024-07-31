@@ -177,12 +177,7 @@ const EditProfile = ({
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
-                <Image
-                  source={{
-                    uri: profileImageUri,
-                  }}
-                  style={styles.profileImage}
-                />
+                <Image source={profileImageUri} style={styles.profileImage} />
               </View>
             </View>
             <View style={{ alignItems: "center" }}>

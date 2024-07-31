@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Linking,
+} from "react-native";
 import React, { useState } from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
@@ -7,6 +14,7 @@ import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
 import ShareApp from "../Modals/ShareApp";
 import Footer from "./Footer";
+import Notification from "../Modals/Notification/Notification";
 
 const Body = ({
   buildingAddress,
@@ -25,13 +33,22 @@ const Body = ({
     useState(false);
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
     useState(false);
-  const [technicalSupportModalVisible, setTechnicalSupportModalVisible] =
-    useState(false);
   const [shareAppVisible, setShareAppVisible] = useState(false);
   const [logoutVisible, setLogoutVisible] = useState(false);
 
   const renderRow = (title, subtitle, icon, stateSetter) => (
-    <TouchableOpacity onPress={() => stateSetter(true)} style={styles.row}>
+    <TouchableOpacity
+      onPress={() => {
+        if (title === "Your Feedback") {
+          Linking.openURL(
+            "https://play.google.com/store/apps/details?id=YOUR_APP_ID"
+          );
+        } else {
+          stateSetter(true);
+        }
+      }}
+      style={styles.row}
+    >
       <View style={styles.rowLeft}>
         <View style={styles.iconWrapper}>
           <Feather name={icon} size={20} color={colors.primary} />
@@ -76,7 +93,7 @@ const Body = ({
           "Your Feedback",
           "Share your feedback in playstore.",
           "message-circle",
-          setTechnicalSupportModalVisible
+          () => {} // No state setter needed for opening URL
         )}
         {renderRow(
           "Share",
@@ -132,6 +149,10 @@ const Body = ({
         logoutVisible={logoutVisible}
         setLogoutVisible={setLogoutVisible}
       />
+      <Notification
+        notificationsModalVisible={notificationsModalVisible}
+        setNotificationsModalVisible={setNotificationsModalVisible}
+      />
     </View>
   );
 };
@@ -146,7 +167,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "white",
     borderRadius: 10,
-    elevation: 5,
+    elevation: 3,
     marginBottom: 20,
   },
   row: {
