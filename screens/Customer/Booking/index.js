@@ -20,7 +20,6 @@ import {
   useIsFocused,
   CommonActions,
 } from "@react-navigation/native";
-import { getTabBarOptions } from "../../../constants/tabBarStyles";
 
 const Booking = ({ navigation }) => {
   const isFocused = useIsFocused();
