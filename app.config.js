@@ -1,35 +1,35 @@
 export default {
-  "expo": {
-    "name": "mazdoor-app",
-    "slug": "mazdoor-app",
-    "plugins": ["@react-native-google-signin/google-signin"],
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+  expo: {
+    name: "mazdoor-app",
+    slug: "mazdoor-app",
+    plugins: ["@react-native-google-signin/google-signin"],
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "light",
+    splash: {
+      image: "./assets/splash.png",
+      resizeMode: "contain",
+      backgroundColor: "#2f1c6a",
     },
-    "ios": {
-      "supportsTablet": true
+    ios: {
+      supportsTablet: true,
     },
-    "android": {
-      "googleServicesFile": process.env.GOOGLE_SERVICES,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    android: {
+      googleServicesFile: process.env.GOOGLE_SERVICES,
+      adaptiveIcon: {
+        foregroundImage: "./assets/adaptive-icon.png",
+        backgroundColor: "#ffffff",
       },
-      "package": "com.shahilcoder.mazdoorapp"
+      package: "com.fahad999.mazdoorapp",
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    web: {
+      favicon: "./assets/favicon.png",
     },
-    "extra": {
-      "eas": {
-        "projectId": "92907b10-5293-4d52-aa35-69f892dad590"
-      }
-    }
-  }
+    extra: {
+      eas: {
+        projectId: "22b84d92-fefb-4f2c-a4c6-37ac30e85a5a",
+      },
+    },
+  },
 };

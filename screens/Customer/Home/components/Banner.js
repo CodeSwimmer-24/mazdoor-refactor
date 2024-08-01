@@ -1,59 +1,119 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
-import colors from "../../../../constants/colors";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import AllBanners from "../Modal/AllBanners";
+import banner1 from "../../../../assets/Post/banner1.png";
+import banner2 from "../../../../assets/Post/banner2.png";
+import banner3 from "../../../../assets/Post/banner3.png";
+
+const { width } = Dimensions.get("window");
+
+const images = [banner1, banner2, banner3];
 
 const Banner = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const scrollViewRef = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % images.length;
+      setCurrentIndex(nextIndex);
+      scrollViewRef.current.scrollTo({
+        x: width * nextIndex * 0.9,
+        animated: true,
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, images.length]);
+
   return (
     <View style={styles.bannerContainer}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Promotions</Text>
-        <TouchableOpacity style={styles.seeMoreButton}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(true);
+          }}
+          style={styles.seeMoreButton}
+        >
           <Text style={styles.seeMoreText}>See All</Text>
         </TouchableOpacity>
       </View>
-      <Image
-        style={styles.bannerImage}
-        source={{
-          uri: "https://previews.123rf.com/images/mcandy/mcandy1609/mcandy160900031/64232823-big-sale-banner-with-bright-ink-blue-color-blots-over-white-background-each-element-separate-on.jpg",
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(event) => {
+          const newIndex = Math.floor(
+            event.nativeEvent.contentOffset.x / (width * 0.9)
+          );
+          setCurrentIndex(newIndex);
         }}
-      />
+      >
+        {images.map((image, index) => (
+          <View key={index} style={styles.imageContainer}>
+            <Image source={image} style={styles.image} />
+          </View>
+        ))}
+      </ScrollView>
+      <AllBanners isVisible={isVisible} setIsVisible={setIsVisible} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   bannerContainer: {
-    marginTop: 20,
+    marginTop: hp("2%"),
     alignItems: "center",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%",
-    marginBottom: 10,
-    marginTop: -5,
+    width: wp("90%"),
+    marginBottom: hp("1.0%"),
+    marginTop: hp("-0.625%"),
+  },
+  imageContainer: {
+    paddingLeft: 20,
+    width: width * 0.9,
+    padding: wp("2.5%"),
+  },
+  image: {
+    width: "100%",
+    height: hp("20%"),
+    resizeMode: "cover",
+    borderRadius: 10,
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: hp("2%"),
     fontWeight: "600",
     color: "#505050",
   },
   seeMoreButton: {
     backgroundColor: "#673de71a",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: hp("0.625%"),
+    paddingHorizontal: wp("2.5%"),
     borderRadius: 50,
   },
   seeMoreText: {
-    fontSize: 12,
+    fontSize: hp("1.5%"),
     fontWeight: "600",
     color: "#673de7",
-  },
-  bannerImage: {
-    height: 160,
-    width: "90%",
-    borderRadius: 10,
-    objectFit: "cover",
   },
 });
 

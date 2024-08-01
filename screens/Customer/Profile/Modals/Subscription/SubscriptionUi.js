@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../../../../constants/colors";
+import useProfileImage from "../../../../../constants/profileImage";
 
 const SubscriptionUi = ({
   name,
@@ -11,6 +12,7 @@ const SubscriptionUi = ({
   subscriptions,
   setSubscriptionModalVisible,
 }) => {
+  const profileImageUri = useProfileImage();
   return (
     <>
       <TouchableOpacity
@@ -20,12 +22,7 @@ const SubscriptionUi = ({
         <AntDesign name="left" size={22} color="black" />
       </TouchableOpacity>
       <View style={styles.profileContainer}>
-        <Image
-          source={{
-            uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
-          }}
-          style={styles.profileImage}
-        />
+        <Image source={profileImageUri} style={styles.profileImage} />
         <View style={styles.profileTextContainer}>
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.subscriptionType}>Full access Subscription</Text>

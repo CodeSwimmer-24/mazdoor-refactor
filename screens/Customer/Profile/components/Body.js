@@ -1,23 +1,54 @@
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Linking,
+} from "react-native";
 import React, { useState } from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Account from "../Modals/Account";
 import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
+import ShareApp from "../Modals/ShareApp";
+import Footer from "./Footer";
+import Notification from "../Modals/Notification/Notification";
 
-const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }) => {
+const Body = ({
+  buildingAddress,
+  locality,
+  name,
+  email,
+  contact,
+  exactLocation,
+  age,
+  role,
+  aadharNo,
+}) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false);
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
     useState(false);
-  const [technicalSupportModalVisible, setTechnicalSupportModalVisible] =
-    useState(false);
+  const [shareAppVisible, setShareAppVisible] = useState(false);
+  const [logoutVisible, setLogoutVisible] = useState(false);
 
   const renderRow = (title, subtitle, icon, stateSetter) => (
-    <TouchableOpacity onPress={() => stateSetter(true)} style={styles.row}>
+    <TouchableOpacity
+      onPress={() => {
+        if (title === "Your Feedback") {
+          Linking.openURL(
+            "https://play.google.com/store/apps/details?id=YOUR_APP_ID"
+          );
+        } else {
+          stateSetter(true);
+        }
+      }}
+      style={styles.row}
+    >
       <View style={styles.rowLeft}>
         <View style={styles.iconWrapper}>
           <Feather name={icon} size={20} color={colors.primary} />
@@ -59,10 +90,22 @@ const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }
           setSubscriptionModalVisible
         )}
         {renderRow(
-          "Technical Support",
-          "We are here to help you out",
-          "headphones",
-          setTechnicalSupportModalVisible
+          "Your Feedback",
+          "Share your feedback in playstore.",
+          "message-circle",
+          () => {} // No state setter needed for opening URL
+        )}
+        {renderRow(
+          "Share",
+          "Share this app with your friends.",
+          "share-2",
+          setShareAppVisible
+        )}
+        {renderRow(
+          "Logout",
+          "It you want to logout from this app.",
+          "share",
+          setLogoutVisible
         )}
       </View>
       <Account
@@ -73,6 +116,10 @@ const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }
         name={name}
         email={email}
         contact={contact}
+        exactLocation={exactLocation}
+        age={age}
+        role={role}
+        aadharNo={aadharNo}
       />
       <EditProfile
         editAccountModalVisible={editAccountModalVisible}
@@ -83,12 +130,28 @@ const Body = ({ buildingAddress, exactLocation, locality, name, email, contact }
         name={name}
         email={email}
         contact={contact}
+        age={age}
+        role={role}
+        aadharNo={aadharNo}
       />
       <Subscription
         subscriptionModalVisible={subscriptionModalVisible}
         setSubscriptionModalVisible={setSubscriptionModalVisible}
         name={name}
         email={email}
+        role={role}
+      />
+      <ShareApp
+        shareAppVisible={shareAppVisible}
+        setShareAppVisible={setShareAppVisible}
+      />
+      <Footer
+        logoutVisible={logoutVisible}
+        setLogoutVisible={setLogoutVisible}
+      />
+      <Notification
+        notificationsModalVisible={notificationsModalVisible}
+        setNotificationsModalVisible={setNotificationsModalVisible}
       />
     </View>
   );
@@ -104,7 +167,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "white",
     borderRadius: 10,
-    elevation: 5,
+    elevation: 3,
     marginBottom: 20,
   },
   row: {

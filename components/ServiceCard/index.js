@@ -23,7 +23,7 @@ const ServiceCard = ({
             color="#A9A9A9"
             style={{ marginRight: 5 }}
           />
-          <Text style={styles.locationText}>{location}</Text>
+          <Text style={styles.locationText}>{location.slice(0, 40)}...</Text>
         </View>
         <View style={styles.detailsContainer}>
           <View style={styles.categoryBadge}>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 4,
+    width: "80%",
   },
   locationText: {
     color: "#A9A9A9",

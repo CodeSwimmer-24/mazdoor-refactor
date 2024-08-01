@@ -1,116 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
-import electrician from "../../../../assets/assets/electrician.png";
-import plumber from "../../../../assets/assets/plumber.png";
-import carpenter from "../../../../assets/assets/carpenter.png";
-import painter from "../../../../assets/assets/paint-roller.png";
-import chef from "../../../../assets/assets/chef.png";
-import mechanicCar from "../../../../assets/assets/mechanicCar.png";
-import truck from "../../../../assets/assets/truck.png";
-import ac from "../../../../assets/assets/ac.png";
-import washing from "../../../../assets/assets/washing.png";
-import welder from "../../../../assets/assets/welder.png";
-import gutter from "../../../../assets/assets/gutter.png";
-import tile from "../../../../assets/assets/tile.png";
+import categories from "../../../../constants/categories";
+import AllCategories from "../Modal/AllCategories";
 
-const categories = [
-  {
-    image: electrician,
-    label: "Electrician",
-    value: "Electrician",
-    backgroundColor: "rgb(237, 247, 237)",
-  },
-  {
-    image: plumber,
-    value: "Plumber",
-    label: "Plumber",
-    backgroundColor: "rgb(249, 220, 220)",
-  },
-  {
-    image: carpenter,
-    value: "Carpenter",
-    label: "Carpenter",
-    backgroundColor: "#fff4e5",
-  },
-  {
-    image: painter,
-    value: "Painter",
-    label: "Painter",
-    backgroundColor: "rgb(229, 246, 253)",
-  },
-  {
-    image: chef,
-    value: "",
-    label: "Cook",
-    backgroundColor: "#f9f9f6",
-  },
-  {
-    image: mechanicCar,
-    label: "Mechanic",
-    value: "Mechanic",
-    backgroundColor: "#e3e4ef",
-  },
-  {
-    image: ac,
-    label: "AC Reapir",
-    value: "Electronics Technician",
-    backgroundColor: "#eff4f9",
-  },
-  {
-    image: truck,
-    label: "Room Shifting",
-    value: "",
-    backgroundColor: "#fef9e8",
-  },
-  {
-    image: welder,
-    label: "Welder",
-    value: "Welder",
-    backgroundColor: "#cfd7e6",
-  },
-  {
-    image: washing,
-    label: "Laundry",
-    value: "",
-    backgroundColor: "#ede8f2",
-  },
-  {
-    image: gutter,
-    label: "Gutter Cleaner",
-    value: "Gutter Cleaner",
-    backgroundColor: "#fef7e8",
-  },
-  {
-    image: tile,
-    label: "Tile/Marble",
-    value: "Tile/Marble",
-    backgroundColor: "#edf9ed",
-  },
-];
-
-const CategoryItem = ({ imageSource, label, backgroundColor, navigation }) => (
-  <TouchableOpacity
-    style={styles.categoryItem}
-    onPress={() =>
-      navigation.push("CategoryDetail", {
-        label,
-      })
-    }
-  >
-    <View style={[styles.categoryIconContainer, { backgroundColor }]}>
-      <Image source={imageSource} style={styles.categoryIcon} />
-    </View>
-    <Text style={styles.categoryLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
+const CategoryItem = ({
+  imageSource,
+  label,
+  backgroundColor,
+  navigation,
+  setIsVisible,
+  subCategory,
+}) => {
+  if (label === "View More") {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setIsVisible(true);
+        }}
+        style={styles.categoryItem}
+      >
+        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+          <Image source={imageSource} style={styles.categoryIcon} />
+        </View>
+        <Text style={styles.categoryLabel}>{label}</Text>
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <TouchableOpacity
+        style={styles.categoryItem}
+        onPress={() =>
+          navigation.push("CategoryDetail", {
+            label,
+            subCategory: subCategory,
+          })
+        }
+      >
+        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+          <Image source={imageSource} style={styles.categoryIcon} />
+        </View>
+        <Text style={styles.categoryLabel}>{label}</Text>
+      </TouchableOpacity>
+    );
+  }
+};
 const Category = ({ navigation }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Categories</Text>
-        <TouchableOpacity style={styles.seeMoreButton}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(true);
+          }}
+          style={styles.seeMoreButton}
+        >
           <Text style={styles.seeMoreText}>See All</Text>
         </TouchableOpacity>
       </View>
@@ -122,9 +73,17 @@ const Category = ({ navigation }) => {
             label={category.label}
             backgroundColor={category.backgroundColor}
             navigation={navigation}
+            setIsVisible={setIsVisible}
+            subCategory={category.subCategory}
           />
         ))}
       </View>
+      <AllCategories
+        categories={categories}
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+      />
     </View>
   );
 };
@@ -133,57 +92,58 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: hp("2%"),
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%",
+    width: wp("90%"),
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: hp("2%"),
     fontWeight: "600",
     color: "#505050",
   },
   seeMoreButton: {
     backgroundColor: "#673de71a",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: hp("0.5%"),
+    paddingHorizontal: wp("2.5%"),
     borderRadius: 50,
   },
   seeMoreText: {
-    fontSize: 12,
+    fontSize: hp("1.5%"),
     fontWeight: "600",
     color: "#673de7",
   },
   categoryContainer: {
     marginTop: 0,
-    width: "98%",
+    width: wp("98%"),
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    paddingBottom: hp("8.75%"),
   },
   categoryItem: {
     flexDirection: "column",
     alignItems: "center",
-    width: "22%", // Adjust the width as needed to fit four items per row
-    marginVertical: 10,
+    width: wp("22%"),
+    marginVertical: hp("1.25%"),
   },
   categoryIconContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingVertical: hp("1.2%"),
+    paddingHorizontal: wp("2.6%"),
     borderRadius: 50,
   },
   categoryIcon: {
-    height: 32,
-    width: 32,
+    height: hp("3.7%"), // Decreased height
+    width: wp("7.4%"), // Decreased width
   },
   categoryLabel: {
-    marginTop: 5,
+    marginTop: hp("0.625%"),
     color: "#505050",
-    fontSize: 11,
+    fontSize: hp("1.375%"),
     fontWeight: "500",
-    textAlign: "center", // Center the text
+    textAlign: "center",
   },
 });
 

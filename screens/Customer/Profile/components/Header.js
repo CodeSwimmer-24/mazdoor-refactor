@@ -3,32 +3,40 @@ import React, { useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import EditProfile from "../Modals/EditProfile";
+import useProfileImage from "../../../../constants/profileImage";
 
-const Header = ({ name, email, contact, locality, buildingAddress }) => {
+const Header = ({
+  name,
+  email,
+  contact,
+  locality,
+  buildingAddress,
+  exactLocation,
+  role,
+}) => {
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
+
+  const profileImageUri = useProfileImage();
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
         <View style={styles.profileContainer}>
-          <Image
-            source={{
-              uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
-            }}
-            style={styles.profileImage}
-          />
+          <Image source={profileImageUri} style={styles.profileImage} />
           <View style={styles.textContainer}>
             <Text style={styles.nameText}>{name}</Text>
             <Text style={styles.emailText}>{email}</Text>
             <Text style={styles.emailText}>+91 {contact}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            setEditAccountModalVisible(true);
-          }}
-        >
-          <Octicons name="pencil" size={24} color="white" />
-        </TouchableOpacity>
+        {role === "customer" && (
+          <TouchableOpacity
+            onPress={() => {
+              setEditAccountModalVisible(true);
+            }}
+          >
+            <Octicons name="pencil" size={24} color="white" />
+          </TouchableOpacity>
+        )}
       </View>
       <EditProfile
         editAccountModalVisible={editAccountModalVisible}
@@ -38,6 +46,7 @@ const Header = ({ name, email, contact, locality, buildingAddress }) => {
         name={name}
         email={email}
         contact={contact}
+        exactLocation={exactLocation}
       />
     </View>
   );
@@ -67,8 +76,6 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 50,
-    borderWidth: 4,
-    borderColor: colors.white,
   },
   textContainer: {
     marginLeft: 10,

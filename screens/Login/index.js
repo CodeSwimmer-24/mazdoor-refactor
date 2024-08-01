@@ -11,6 +11,8 @@ import Customer from "../Customer";
 import { hostUrl, getFavoriteSPs } from "../../services";
 import { useAuthStore } from "../../zustand/authStore";
 import { useCustomerStore } from "../../zustand/customerStore";
+import MazdoorRegister from "../Mazdoor/Registration";
+import Mazdoor from "../Mazdoor";
 
 const Login = () => {
   const [initializing, setInitializing] = useState(true);
@@ -21,6 +23,10 @@ const Login = () => {
 
   const { email, startupApisCalled, setStartupApisCalled } = authStore;
   const { favoriteSps, setFavoriteSps } = customerStore;
+
+  const [userRole, setUserRole] = useState("");
+
+  const { role } = useAuthStore();
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
@@ -34,11 +40,8 @@ const Login = () => {
   useEffect(() => {
     if (user && email) {
       if (!favoriteSps.length && !startupApisCalled) {
-        console.log("Getting Favorite Shops");
-
         getFavoriteSPs(email)
           .then((sps) => {
-            console.log("Setting the Favorite Shops");
             setFavoriteSps(sps);
             setStartupApisCalled(true);
           })
@@ -48,7 +51,8 @@ const Login = () => {
   }, [user, email]);
 
   GoogleSignin.configure({
-    webClientId: "1061751220739-t2ti12p4u36or9f10qjgk14jrhlt4csn.apps.googleusercontent.com"
+    webClientId:
+      "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
   });
 
   const onGoogleButtonPress = async () => {
@@ -68,33 +72,34 @@ const Login = () => {
 
       const response = await axios.post(apiUrl, {
         emailId: email,
-        role: "customer",
+        role: userRole,
         name: displayName,
       });
 
       if (response.status === 200) {
         const responseData = response.data;
-        console.log("User logged in successfully!", responseData);
 
-        // Update Zustand store with email, role, and name
         authStore.setName(displayName);
         authStore.setEmail(email);
-        authStore.setRole("customer");
+        authStore.setRole(userRole);
         authStore.setPicture(result.additionalUserInfo.profile.picture);
-        authStore.setIsNewUser(responseData.isNewUser); // Set isNewUser from API response
-
+        authStore.setIsNewUser(responseData.isNewUser);
         if (!responseData.isNewUser) {
           const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
           const profileResponse = await axios.get(profileApiUrl);
 
           if (profileResponse.status === 200) {
             const profileData = profileResponse.data;
-            console.log("User profile fetched successfully!");
 
             authStore.setName(profileData.name);
             authStore.setContact(profileData.contactNo);
             authStore.setBuildingAddress(profileData.address.buildingAddress);
+            authStore.setGender(profileData.gender);
+            authStore.setAge(profileData.age);
+            authStore.setRole(profileData.role);
+            authStore.setAadharNo(profileData.aadharNo);
             authStore.setLocality(profileData.address.locality);
+            authStore.setExactLocation(profileData.address.exactLocation);
           } else {
             console.error(
               "Failed to fetch user profile via API. Server responded with:",
@@ -107,7 +112,6 @@ const Login = () => {
         }
 
         setUser(true);
-
       } else {
         console.error(
           "Failed to log in user via API. Server responded with:",
@@ -120,7 +124,7 @@ const Login = () => {
     } catch (error) {
       console.error("Failed to authenticate user with Firebase.", error);
     } finally {
-      setLoading(false); // Set loading to false when login process completes (success or failure)
+      setLoading(false);
     }
   };
 
@@ -139,11 +143,37 @@ const Login = () => {
       </View>
     );
   } else if (!user) {
-    return <LoginUi onGoogleButtonPress={onGoogleButtonPress} />;
+    return (
+      <LoginUi
+        onGoogleButtonPress={onGoogleButtonPress}
+        setUserRole={setUserRole}
+        userRole={userRole}
+      />
+    );
   } else if (authStore.isNewUser) {
-    return <RegisterForm />;
+    return !role ? (
+      userRole === "customer" ? (
+        <RegisterForm />
+      ) : (
+        <MazdoorRegister />
+      )
+    ) : role === "customer" ? (
+      <RegisterForm />
+    ) : (
+      <MazdoorRegister />
+    );
   } else {
-    return <Customer />;
+    return !role ? (
+      userRole === "customer" ? (
+        <Customer />
+      ) : (
+        <Mazdoor />
+      )
+    ) : role === "customer" ? (
+      <Customer />
+    ) : (
+      <Mazdoor />
+    );
   }
 };
 

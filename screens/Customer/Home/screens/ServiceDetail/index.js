@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  BackHandler,
+} from "react-native";
 import Details from "./components/Details";
 import Section from "./components/Section";
 import colors from "../../../../../constants/colors";
@@ -46,7 +52,26 @@ const ServiceDetail = ({ route, navigation }) => {
     parent?.setOptions({
       tabBarStyle: { display: "none" },
     });
-  }, []);
+  }, [navigation]);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (bookingIsVisible === true) {
+        setBookingVisible(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [bookingIsVisible]);
 
   return (
     <View style={styles.container}>
@@ -63,10 +88,6 @@ const ServiceDetail = ({ route, navigation }) => {
         serviceProvider={serviceProvider}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Message</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => {
             setBookingVisible(true);
@@ -83,6 +104,7 @@ const ServiceDetail = ({ route, navigation }) => {
         setBookingVisible={setBookingVisible}
         shortProfile={shortProfile}
         serviceProvider={serviceProvider}
+        navigation={navigation}
       />
     </View>
   );
@@ -101,10 +123,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   button: {
-    width: "48%",
+    width: "95%",
     backgroundColor: colors.secondary,
     borderRadius: 50,
     alignItems: "center",

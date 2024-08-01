@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,13 +7,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image,
+  BackHandler,
+  Alert,
 } from "react-native";
-import React, { useState, useEffect } from "react";
-import SubscriptionUi from "./SubscriptionUi";
-import colors from "../../../../../constants/colors";
 import axios from "axios";
 import { hostUrl } from "../../../../../services";
+import { useAuthStore } from "../../../../../zustand/authStore";
+import SubscriptionUi from "./SubscriptionUi";
+import colors from "../../../../../constants/colors";
+import RazorpayCheckout from "react-native-razorpay";
+import { rzp_logo } from "../../../../../constants/UpiPayments";
 
 const benefits = [
   "Access to all service providers",
@@ -25,20 +29,42 @@ const Subscription = ({
   subscriptionModalVisible,
   setSubscriptionModalVisible,
   name,
+  role,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
+  const [reload, setReload] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { email, contact } = useAuthStore();
 
   useEffect(() => {
-    const fetchSubscriptions = async () => {
+    const fetchUserSubscription = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/true`
+          `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
+        );
+        setIsSubscribed(response.data);
+      } catch (error) {
+        console.error("Error fetching user subscription:", error);
+      }
+    };
+
+    fetchUserSubscription();
+  }, [email, reload]);
+
+  useEffect(() => {
+    const fetchAllSubscriptions = async () => {
+      try {
+        const response = await axios.get(
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${
+            role === "customer" ? true : false
+          }`
         );
         const subscriptionData = response.data.map((item) => ({
           subscriptionId: item.subscriptionId,
           subscriptionDuration: item.subscriptionDuration,
           price: item.price,
+          subscriptionDesc: item.subscriptionDesc,
         }));
         setSubscriptions(subscriptionData);
       } catch (error) {
@@ -46,11 +72,89 @@ const Subscription = ({
       }
     };
 
-    fetchSubscriptions();
-  }, []);
+    fetchAllSubscriptions();
+  }, [role]);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (subscriptionModalVisible) {
+        setSubscriptionModalVisible(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [subscriptionModalVisible]);
 
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
+  };
+
+  const handlePayment = () => {
+    const selectedSubscription = subscriptions.find(
+      (subscription) => subscription.subscriptionDuration === selectedPlan
+    );
+
+    if (!selectedSubscription) {
+      Alert.alert("Error", "Selected plan not found");
+      return;
+    }
+
+    const amountInPaise = selectedSubscription.price * 100;
+
+    const options = {
+      description: "Subscription payment",
+      image: rzp_logo,
+      currency: "INR",
+      key: "rzp_test_3QzD2D63ToPhc3",
+      amount: amountInPaise,
+      name: "Your App Name",
+      prefill: {
+        email: email,
+        contact: contact,
+        name: name,
+      },
+      theme: { color: colors.baseColor },
+      method: "upi",
+      upi: {
+        vpa: "success@razorpay",
+      },
+    };
+
+    RazorpayCheckout.open(options)
+      .then(async (data) => {
+        Alert.alert("Payment Successful", "Thanks for subscribing");
+
+        const payload = {
+          emailId: email,
+          selectedSubscriptionId: selectedSubscription.subscriptionId,
+          subscriptionDesc: selectedSubscription.subscriptionDesc,
+          subscriptionDuration: selectedSubscription.subscriptionDuration,
+          subscriptionStatus: true,
+        };
+
+        try {
+          const response = await axios.post(
+            `${hostUrl}/mazdoor/v1/addUserSubscription`,
+            payload
+          );
+          if (response.status === 200) {
+            setIsSubscribed(true);
+            setReload(true);
+          }
+        } catch (error) {
+          console.error("Error adding user subscription:", error);
+        }
+      })
+      .catch((error) => {
+        Alert.alert(`Error: ${error.code} | ${error.description}`);
+      });
   };
 
   return (
@@ -58,6 +162,7 @@ const Subscription = ({
       visible={subscriptionModalVisible}
       transparent={true}
       animationType="slide"
+      onRequestClose={() => setSubscriptionModalVisible(false)}
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity
@@ -76,9 +181,20 @@ const Subscription = ({
             />
           </ScrollView>
           <View style={styles.closeButtonContainer}>
-            <TouchableOpacity style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Go to payment</Text>
-            </TouchableOpacity>
+            {isSubscribed ? (
+              <View style={styles.alreadySubs}>
+                <Text style={styles.closeButtonText}>
+                  You are a Subscriber 🎉
+                </Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={handlePayment}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Go to payment</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -102,7 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
@@ -122,6 +238,14 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 16,
     color: "white",
+  },
+  alreadySubs: {
+    backgroundColor: "#4caf50",
+    width: "95%",
+    alignItems: "center",
+    paddingVertical: 15,
+    borderRadius: 10,
+    elevation: 5,
   },
 });
 

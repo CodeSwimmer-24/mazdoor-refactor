@@ -19,6 +19,7 @@ import axios from "axios";
 import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
 import { useSystemStore } from "../../../../zustand/systemStore";
+import useProfileImage from "../../../../constants/profileImage";
 
 const EditProfile = ({
   editAccountModalVisible,
@@ -29,6 +30,9 @@ const EditProfile = ({
   name,
   email,
   contact,
+  age,
+  aadharNo,
+  role,
 }) => {
   const [formData, setFormData] = useState({
     buildingAddress,
@@ -37,9 +41,17 @@ const EditProfile = ({
     name,
     email,
     contact,
+    age,
+    aadharNo,
   });
 
+  const { height } = Dimensions.get("window");
+  const modalHeight = role === "mazdoor" ? height * 0.85 : height * 0.55;
+
+  const { gender } = useAuthStore();
+
   const [loading, setLoading] = useState(false);
+  const profileImageUri = useProfileImage();
 
   const handleChange = (name, value) => {
     setFormData({
@@ -48,23 +60,43 @@ const EditProfile = ({
     });
   };
 
-  const { setEmail, setName, setContact, setBuildingAddress, setLocality, setExactLocation } = useAuthStore();
+  const {
+    setEmail,
+    setName,
+    setAge,
+    setAadharNo,
+    setContact,
+    setBuildingAddress,
+    setLocality,
+    setExactLocation,
+  } = useAuthStore();
   const { locations } = useSystemStore();
 
   const handleSubmit = async () => {
+    if (
+      role === "mazdoor" &&
+      (formData.aadharNo.length !== 12 || formData.age.length !== 2)
+    ) {
+      Alert.alert(
+        "Error",
+        "Aadhar number must be 12 digits and age must be 2 digits"
+      );
+      return;
+    }
+
     const payload = {
       address: {
-        area: "",
         buildingAddress: formData.buildingAddress,
-        city: "Jamshedpur",
         exactLocation: formData.exactLocation,
         locality: formData.locality,
-        region: "Jharkhand",
       },
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
-      role: "customer",
+      aadharNo: formData.aadharNo,
+      gender: gender,
+      age: formData.age,
+      role: role,
     };
 
     setLoading(true);
@@ -86,7 +118,9 @@ const EditProfile = ({
         setContact(formData.contact);
         setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
-
+        setExactLocation(formData.exactLocation);
+        setAadharNo(formData.aadharNo);
+        setAge(formData.age);
         setEditAccountModalVisible(false);
         Alert.alert("Success", "Profile updated successfully");
       } else {
@@ -94,7 +128,7 @@ const EditProfile = ({
       }
     } catch (error) {
       if (error.response) {
-        console.error("Error response:", error.response);
+        console.error("Error response:", error.message);
         Alert.alert(
           "Error",
           `Failed to update profile: ${
@@ -127,7 +161,7 @@ const EditProfile = ({
           style={styles.modalOverlay}
           onPress={() => setEditAccountModalVisible(false)}
         />
-        <ScrollView style={styles.modalContent}>
+        <ScrollView style={[styles.modalContent, { height: modalHeight }]}>
           <View>
             <View style={styles.crossContainer}>
               <TouchableOpacity
@@ -143,12 +177,7 @@ const EditProfile = ({
           <ScrollView>
             <View style={styles.scrollContent}>
               <View style={styles.profileSection}>
-                <Image
-                  source={{
-                    uri: "https://pixelmator.com/community/download/file.php?avatar=20501_1694070821.jpg",
-                  }}
-                  style={styles.profileImage}
-                />
+                <Image source={profileImageUri} style={styles.profileImage} />
               </View>
             </View>
             <View style={{ alignItems: "center" }}>
@@ -164,9 +193,27 @@ const EditProfile = ({
                   iconName="call-outline"
                   iconType="Ionicons"
                   placeholder="Edit Contact No."
-                  value={formData.contact}
+                  value={String(formData.contact)}
                   onChangeText={(text) => handleChange("contact", text)}
                 />
+                {role === "mazdoor" && (
+                  <>
+                    <CustomTextInput
+                      iconName="document-outline"
+                      iconType="Ionicons"
+                      placeholder="Edit Aadhar No."
+                      value={String(formData.aadharNo)}
+                      onChangeText={(text) => handleChange("aadharNo", text)}
+                    />
+                    <CustomTextInput
+                      iconName="people-outline"
+                      iconType="Ionicons"
+                      placeholder="Edit Age"
+                      value={String(formData.age)}
+                      onChangeText={(text) => handleChange("age", text)}
+                    />
+                  </>
+                )}
                 <CustomTextInput
                   iconName="location-outline"
                   iconType="Ionicons"
@@ -225,7 +272,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.5,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -284,6 +330,7 @@ const styles = StyleSheet.create({
   closeButtonContainer: {
     alignItems: "center",
     padding: 10,
+    marginBottom: 20,
   },
   closeButton: {
     backgroundColor: colors.primary,

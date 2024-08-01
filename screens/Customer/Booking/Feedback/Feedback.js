@@ -8,15 +8,23 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAuthStore } from "../../../../zustand/authStore";
+import axios from "axios";
+import { hostUrl } from "../../../../services";
 
-const Feedback = ({ isVisible, setIsVisible }) => {
+const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
-  const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1); // Initialize with -1 for no selection
+  const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const { name } = useAuthStore();
 
   const feedbackEmoji = [
     {
@@ -56,10 +64,29 @@ const Feedback = ({ isVisible, setIsVisible }) => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Rating:", rating);
-    console.log("Feedback:", feedback);
-    setIsVisible(false);
+  const handleSubmit = async () => {
+    setLoading(true);
+    const feedbackData = {
+      emailId: email,
+      feedback: feedback,
+      rating: rating,
+      serviceType: serviceType,
+      userName: name,
+    };
+
+    try {
+      const response = await axios.post(
+        `${hostUrl}/mazdoor/v1/addSPFeedback`,
+        feedbackData
+      );
+
+      setSuccessMessage("Feedback submitted successfully!");
+      setLoading(false);
+      setIsVisible(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,12 +136,19 @@ const Feedback = ({ isVisible, setIsVisible }) => {
                 />
               </View>
               <View style={styles.submitContainer}>
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={handleSubmit}
-                >
-                  <Text style={styles.submitButtonText}>Submit</Text>
-                </TouchableOpacity>
+                {loading ? (
+                  <ActivityIndicator size="large" color={colors.primary} />
+                ) : (
+                  <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={handleSubmit}
+                  >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                  </TouchableOpacity>
+                )}
+                {successMessage ? (
+                  <Text style={styles.successMessage}>{successMessage}</Text>
+                ) : null}
               </View>
             </View>
           </View>
@@ -203,6 +237,11 @@ const styles = StyleSheet.create({
   submitButtonText: {
     textAlign: "center",
     color: "white",
+    fontSize: 16,
+  },
+  successMessage: {
+    marginTop: 10,
+    color: colors.success,
     fontSize: 16,
   },
 });
