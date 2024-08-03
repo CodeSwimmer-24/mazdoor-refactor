@@ -73,12 +73,13 @@ const AllCategories = ({ isVisible, setIsVisible, navigation }) => {
                 <View style={styles.itemsContainer}>
                   {filteredData.map((item, index) => (
                     <TouchableOpacity
-                      onPress={() =>
+                      onPress={() => {
                         navigation.push("CategoryDetail", {
                           label: item.label,
                           subCategory: item.sub_category,
-                        })
-                      }
+                        });
+                        setIsVisible(false);
+                      }}
                       key={index}
                       style={styles.itemContainer}
                     >
