@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from "react-native";
 import { Entypo, FontAwesome6 } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
@@ -64,6 +65,17 @@ const ShopForm = ({
   };
 
   const addServiceProvider = async () => {
+    // Validation: Check if all fields in formData are filled out
+    if (
+      formData.title.trim() === "" ||
+      formData.short_description.trim() === "" ||
+      formData.serviceType === "" ||
+      formData.basePrice <= 0
+    ) {
+      Alert.alert("Error", "Please enter all the required information");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await fetch(`${hostUrl}/mazdoor/v1/addServiceProvider`, {
@@ -74,17 +86,23 @@ const ShopForm = ({
         body: JSON.stringify({
           ...formData,
           emailId: email,
-          availability: true,
+          basePrice: parseFloat(formData.basePrice), // Ensure basePrice is a number
         }),
       });
+
       if (response.ok) {
         setShopRegisterForm(false);
         setReload((prev) => !prev);
       } else {
         console.error("Failed to add ServiceProvider");
+        Alert.alert("Error", "Failed to add ServiceProvider");
       }
     } catch (error) {
       console.error("Error adding ServiceProvider:", error);
+      Alert.alert(
+        "Error",
+        "An error occurred while adding the ServiceProvider"
+      );
     } finally {
       setLoading(false);
     }

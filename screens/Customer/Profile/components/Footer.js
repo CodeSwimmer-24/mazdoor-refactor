@@ -13,6 +13,7 @@ import colors from "../../../../constants/colors";
 import { useAuthStore } from "../../../../zustand/authStore";
 import { useCustomerStore } from "../../../../zustand/customerStore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Footer = ({ logoutVisible, setLogoutVisible }) => {
   const authStore = useAuthStore();
@@ -22,7 +23,6 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
     try {
       await GoogleSignin.revokeAccess();
       await auth().signOut();
-      // setUser(null);
 
       authStore.reset();
       customerStore.reset();
@@ -33,62 +33,105 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
 
   return (
     <Modal visible={logoutVisible} transparent={true} animationType="slide">
-      <View style={styles.modalContainer}>
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          onPress={() => setLogoutVisible(false)}
-        />
-        <View style={styles.modalContent}>
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            <TouchableOpacity style={styles.confirmButton} onPress={signOut}>
-              <Text style={styles.confirmButtonText}>Confirm Logout</Text>
-            </TouchableOpacity>
-          </ScrollView>
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            onPress={() => setLogoutVisible(false)}
+          />
+          <View style={styles.modalContent}>
+            <ScrollView>
+              <View style={styles.iconContainer}>
+                <AntDesign name="warning" size={24} color={colors.primary} />
+                <Text style={styles.title}>Signout from Digimazdoor</Text>
+                <Text style={styles.message}>
+                  Are you sure you want to sign out from this Application?
+                </Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={[styles.button, styles.cancelButton]}
+                  onPress={() => setLogoutVisible(false)}
+                >
+                  <Text style={[styles.buttonText, styles.cancelButtonText]}>
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.logoutButton]}
+                  onPress={signOut}
+                >
+                  <Text style={[styles.buttonText, styles.logoutButtonText]}>
+                    Logout
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </View>
     </Modal>
   );
 };
 
-const { height } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: colors.white,
+    borderRadius: 5,
+    overflow: "hidden",
   },
   modalContent: {
-    height: height * 0.2,
-    backgroundColor: "white",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
     padding: 20,
-    overflow: "hidden",
-    borderTopWidth: 0.5,
-    borderTopColor: "lightgray",
   },
-  scrollViewContent: {
+  iconContainer: {
     alignItems: "center",
-    flex: 1,
-    justifyContent: "center",
-    marginTop: 30,
+    marginBottom: 20,
   },
-  confirmButton: {
-    width: "95%",
-    backgroundColor: colors.danger,
-    paddingVertical: 12,
-    borderRadius: 10,
-    elevation: 5,
-    marginVertical: 15,
+  title: {
+    paddingTop: 10,
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.baseColor,
   },
-  confirmButtonText: {
+  message: {
+    paddingTop: 5,
+    fontSize: 12,
+    fontWeight: "300",
+    color: "gray",
     textAlign: "center",
-    fontSize: 18,
-    color: "white",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  button: {
+    width: "48%",
+    paddingVertical: 12,
+    borderRadius: 5,
+  },
+  cancelButton: {
+    backgroundColor: colors.secondary,
+  },
+  logoutButton: {
+    backgroundColor: colors.dangerBackground,
+  },
+  buttonText: {
+    textAlign: "center",
+    fontWeight: "400",
+  },
+  cancelButtonText: {
+    color: colors.primary,
+  },
+  logoutButtonText: {
+    color: colors.danger,
   },
 });
 

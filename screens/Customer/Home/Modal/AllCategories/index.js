@@ -14,7 +14,7 @@ import colors from "../../../../../constants/colors";
 import { hostUrl } from "../../../../../services/index";
 import axios from "axios";
 
-const AllCategories = ({ isVisible, setIsVisible }) => {
+const AllCategories = ({ isVisible, setIsVisible, navigation }) => {
   const { height } = Dimensions.get("window");
   const modalHeight = height * 0.5;
 
@@ -72,7 +72,16 @@ const AllCategories = ({ isVisible, setIsVisible }) => {
                 </View>
                 <View style={styles.itemsContainer}>
                   {filteredData.map((item, index) => (
-                    <TouchableOpacity key={index} style={styles.itemContainer}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.push("CategoryDetail", {
+                          label: item.label,
+                          subCategory: item.sub_category,
+                        })
+                      }
+                      key={index}
+                      style={styles.itemContainer}
+                    >
                       <Text style={styles.itemText}>{item.label}</Text>
                     </TouchableOpacity>
                   ))}

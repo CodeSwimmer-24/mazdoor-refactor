@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
@@ -48,6 +49,18 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
   };
 
   const handleSubmit = async () => {
+    const isValid = newField.every(
+      (field) =>
+        field.serviceName.trim() !== "" &&
+        field.description.trim() !== "" &&
+        field.price.trim() !== ""
+    );
+
+    if (!isValid) {
+      Alert.alert("Error", "Please enter all the required Information");
+      return;
+    }
+
     setLoading(true);
     const payload = newField.map((field) => ({
       emailId: email,
@@ -55,9 +68,9 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
       serviceDescription: field.description,
       serviceName: field.serviceName,
     }));
+
     try {
       await axios.post(`${hostUrl}/mazdoor/v1/addService`, payload);
-
       console.log("Data submitted successfully");
       setIsFormVisible(false);
       setReload((prev) => !prev);
