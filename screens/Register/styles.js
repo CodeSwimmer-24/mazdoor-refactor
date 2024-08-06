@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "white",
     width: "100%",
-    height: "90%",
+    height: "94%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: "hidden",
@@ -61,6 +61,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: moderateScale(14),
+  },
+  checkBoxContainer: {
+    marginLeft: 5,
+    flexDirection: "row",
+    marginVertical: 10,
+  },
+  checkBoxOf: {
+    borderColor: colors.primary,
+    height: 18,
+    width: 18,
+    borderWidth: 0.6,
+    borderRadius: 5,
+  },
+  checkBoxIn: {
+    height: 20,
+    width: 20,
+    borderWidth: 1.6,
+    borderRadius: 5,
+  },
+  checkBoxText: {
+    marginLeft: -5,
+    color: "gray",
   },
 });
 
