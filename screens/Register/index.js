@@ -21,6 +21,8 @@ import { useSystemStore } from "../../zustand/systemStore";
 import { hostUrl } from "../../services";
 import colors from "../../constants/colors";
 import styles from "./styles";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Policy from "../../components/Policy";
 
 const RegisterForm = () => {
   const {
@@ -49,6 +51,7 @@ const RegisterForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
+  const [policyVisible, setPolicyVisible] = useState(false);
   const [selectedGender, setSelectedGender] = useState("M");
 
   const handleChange = (name, value) => {
@@ -241,6 +244,29 @@ const RegisterForm = () => {
               value={formData.buildingAddress}
               onChangeText={(text) => handleChange("buildingAddress", text)}
             />
+            <View style={styles.checkBoxContainer}>
+              <BouncyCheckbox
+                size={25}
+                fillColor={colors.primary}
+                unfillColor="#FFFFFF"
+                iconStyle={styles.checkBoxOf}
+                innerIconStyle={styles.checkBoxIn}
+                onPress={(isChecked) => {
+                  console.log(isChecked);
+                }}
+              />
+              <Text style={styles.checkBoxText}>
+                I agree with all{" "}
+                <Text
+                  style={{ color: colors.primary }}
+                  onPress={() => {
+                    setPolicyVisible(true);
+                  }}
+                >
+                  Tearms & Conditions
+                </Text>
+              </Text>
+            </View>
 
             <TouchableOpacity
               style={styles.googleButton}
@@ -256,6 +282,10 @@ const RegisterForm = () => {
           </ScrollView>
         </View>
       </View>
+      <Policy
+        policyVisible={policyVisible}
+        setPolicyVisible={setPolicyVisible}
+      />
     </Modal>
   );
 };
