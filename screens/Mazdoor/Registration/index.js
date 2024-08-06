@@ -17,12 +17,12 @@ import CustomTextInput from "../../../components/TextInput";
 import DropdownTextInput from "../../../components/DropdownTextInput";
 import colors from "../../../constants/colors";
 import styles from "../../Register/styles";
+import male from "../../../assets/assets/mail.png";
+import female from "../../../assets/assets/femail.png";
 
 const MazdoorRegister = () => {
   const {
     email,
-    role,
-    picture,
     setName,
     setContact,
     setGender,
@@ -176,12 +176,7 @@ const MazdoorRegister = () => {
                 ]}
                 onPress={() => selectGender("M")}
               >
-                <Image
-                  source={{
-                    uri: "https://files.stickerkade.ir/7523/19.webp",
-                  }}
-                  style={styles.pictureImage}
-                />
+                <Image source={male} style={styles.pictureImage} />
                 <Text
                   style={{
                     fontSize: 12,
@@ -204,12 +199,7 @@ const MazdoorRegister = () => {
                 ]}
                 onPress={() => selectGender("F")}
               >
-                <Image
-                  source={{
-                    uri: "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2022/02/06/962605803.png",
-                  }}
-                  style={styles.pictureImage}
-                />
+                <Image source={female} style={styles.pictureImage} />
                 <Text
                   style={{
                     fontSize: 12,

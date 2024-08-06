@@ -46,7 +46,7 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
         </View>
       )}
 
-      {/* <View style={styles.bottomTextContainer}>
+      <View style={styles.bottomTextContainer}>
         {isVisible === false ? (
           <View style={styles.bottomText}>
             <Text style={{ color: "gray" }}>
@@ -72,7 +72,7 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
             </TouchableOpacity>
           </View>
         )}
-      </View> */}
+      </View>
     </View>
   );
 };

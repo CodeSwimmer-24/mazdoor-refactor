@@ -3,7 +3,7 @@ export default {
     name: "mazdoor-app",
     slug: "mazdoor-app",
     plugins: ["@react-native-google-signin/google-signin"],
-    version: "1.0.0",
+    version: "1.1.1",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -14,6 +14,8 @@ export default {
     },
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.fahad999.mazdoorapp",
+      buildNumber: "2.0.0",
     },
     android: {
       googleServicesFile: process.env.GOOGLE_SERVICES,
@@ -22,6 +24,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.fahad999.mazdoorapp",
+      versionCode: 2,
     },
     web: {
       favicon: "./assets/favicon.png",
