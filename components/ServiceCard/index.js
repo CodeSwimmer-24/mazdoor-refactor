@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   priceContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     alignItems: "center",
   },
   priceText: {
