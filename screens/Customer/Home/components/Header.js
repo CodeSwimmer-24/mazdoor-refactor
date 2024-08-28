@@ -6,11 +6,13 @@ import { moderateScale } from "react-native-size-matters";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
 import { useAuthStore } from "../../../../zustand/authStore";
+import { useModalStore } from "../../../../zustand/modalStore";
 
 const Header = ({ name, locality, setIsDrawerVisible }) => {
   const profileImageUri = useProfileImage();
   const { exactLocation } = useAuthStore();
   const notificationCount = 0;
+  const { setIsVisible } = useModalStore();
 
   return (
     <View>
@@ -52,7 +54,10 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 {locality ? locality : "Area"}
               </Text>
             </View>
-            <TouchableOpacity style={styles.indentMoreButton}>
+            <TouchableOpacity
+              onPress={() => setIsVisible(true)}
+              style={styles.indentMoreButton}
+            >
               <Foundation
                 name="indent-more"
                 size={moderateScale(18)}
