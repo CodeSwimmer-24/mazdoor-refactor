@@ -53,11 +53,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     alignItems: "center",
+    alignItems: "center",
   },
   signIn: {
     fontSize: 14,
     fontWeight: "600",
     color: colors.primary,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "90%",
+    height: "92%",
+    backgroundColor: colors.white,
+    borderRadius: 5,
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: colors.baseColor,
+  },
+  modalText: {
+    fontSize: 14,
+    color: "gray",
+  },
+  closeButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: colors.white,
+    fontWeight: "600",
   },
 });
 
