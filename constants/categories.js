@@ -5,7 +5,7 @@ import painter from "../assets/assets/paint-roller.png";
 import chef from "../assets/assets/chef.png";
 import mechanicCar from "../assets/assets/mechanicCar.png";
 import truck from "../assets/assets/truck.png";
-import ac from "../assets/assets/ac.png";
+import ac from "../assets/assets/elec.png";
 import washing from "../assets/assets/washing.png";
 import welder from "../assets/assets/welder.png";
 import gutter from "../assets/assets/gutter.png";
@@ -50,8 +50,8 @@ const categories = [
   },
   {
     image: ac,
-    label: "AC Reapir",
-    value: "Electronics Technician",
+    label: "Electronics",
+    value: "Electronics Repair",
     subCategory: "All categories",
     backgroundColor: "#eff4f9",
   },

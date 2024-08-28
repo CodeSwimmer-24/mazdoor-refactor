@@ -43,7 +43,7 @@ const Banner = () => {
   return (
     <View style={styles.bannerContainer}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Promotions</Text>
+        <Text style={styles.headerTitle}>#Promotions</Text>
         <TouchableOpacity
           onPress={() => {
             setIsVisible(true);

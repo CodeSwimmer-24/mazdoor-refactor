@@ -13,14 +13,18 @@ import Logo from "../../../assets/assets/logo.png";
 import styles from "./styles";
 import colors from "../../../constants/colors";
 import policy from "../../../constants/policy";
+import { useAuthStore } from "../../../zustand/authStore";
 
 const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const { setRole } = useAuthStore();
+
   const handleGoogleButtonPress = (role) => {
     onGoogleButtonPress();
     setUserRole(role);
+    setRole(role);
   };
 
   return (
