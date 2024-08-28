@@ -114,7 +114,7 @@ const Subscription = ({
       currency: "INR",
       key: "rzp_test_3QzD2D63ToPhc3",
       amount: amountInPaise,
-      name: "Your App Name",
+      name: "Digimazdoor",
       prefill: {
         email: email,
         contact: contact,
@@ -153,7 +153,7 @@ const Subscription = ({
         }
       })
       .catch((error) => {
-        Alert.alert(`Error: ${error.code} | ${error.description}`);
+        Alert.alert(`Fail to subscribe, Please try again`);
       });
   };
 

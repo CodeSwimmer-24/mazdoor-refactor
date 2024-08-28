@@ -34,7 +34,7 @@ const Filter = ({
 
   const handleLocationChange = (location) => {
     setTempLocation(location);
-    setTempExactLocation({ locality: location, exact: "" });
+    setTempExactLocation({ locality: location, exact: "All" });
   };
 
   const handleExactLocationChange = (exactLocation) => {
