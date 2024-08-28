@@ -24,6 +24,11 @@ const ShopForm = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState([
+    "All categories",
+  ]);
   const { email } = useAuthStore((state) => ({ email: state.email }));
 
   const initialFormData = {
@@ -31,7 +36,7 @@ const ShopForm = ({
     short_description: "",
     serviceType: "",
     basePrice: 0,
-    subCategory: "All categories",
+    sub_category: "All categories",
     availability: true,
   };
 
@@ -40,12 +45,15 @@ const ShopForm = ({
   useEffect(() => {
     if (existingData) {
       setFormData(existingData);
+      setSelectedSubCategories(existingData.subCategory.split(", "));
     }
   }, [existingData]);
 
   useEffect(() => {
     fetchServices();
   }, []);
+
+  console.log(subCategories);
 
   const fetchServices = async () => {
     try {
@@ -58,14 +66,66 @@ const ShopForm = ({
   };
 
   const handleChange = (name, value) => {
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
+
+    if (name === "serviceType") {
+      setSelectedCategory(value);
+      setSelectedSubCategories(["All categories"]); // Reset subcategories to default
+    }
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      const selectedService = services.find(
+        (service) => service.value === selectedCategory
+      );
+      if (selectedService) {
+        const subCats = selectedService.sub_category
+          .split(", ")
+          .map((item) => item.trim());
+        setSubCategories(subCats);
+      } else {
+        setSubCategories([]);
+      }
+    }
+  }, [selectedCategory, services]);
+
+  const handleSubCategorySelect = (subCategory) => {
+    let updatedSubCategories = [...selectedSubCategories];
+
+    if (subCategory === "All categories") {
+      updatedSubCategories = ["All categories"];
+    } else {
+      if (updatedSubCategories.includes("All categories")) {
+        updatedSubCategories = updatedSubCategories.filter(
+          (item) => item !== "All categories"
+        );
+      }
+
+      if (updatedSubCategories.includes(subCategory)) {
+        updatedSubCategories = updatedSubCategories.filter(
+          (item) => item !== subCategory
+        );
+      } else {
+        updatedSubCategories.push(subCategory);
+      }
+
+      if (updatedSubCategories.length === 0) {
+        updatedSubCategories = ["All categories"];
+      }
+    }
+
+    setSelectedSubCategories(updatedSubCategories);
+    setFormData((prevData) => ({
+      ...prevData,
+      subCategory: updatedSubCategories.join(", "),
+    }));
   };
 
   const addServiceProvider = async () => {
-    // Validation: Check if all fields in formData are filled out
     if (
       formData.title.trim() === "" ||
       formData.short_description.trim() === "" ||
@@ -86,7 +146,7 @@ const ShopForm = ({
         body: JSON.stringify({
           ...formData,
           emailId: email,
-          basePrice: parseFloat(formData.basePrice), // Ensure basePrice is a number
+          basePrice: parseFloat(formData.basePrice),
         }),
       });
 
@@ -94,7 +154,6 @@ const ShopForm = ({
         setShopRegisterForm(false);
         setReload((prev) => !prev);
       } else {
-        console.error("Failed to add ServiceProvider");
         Alert.alert("Error", "Failed to add ServiceProvider");
       }
     } catch (error) {
@@ -138,7 +197,7 @@ const ShopForm = ({
               <Dropdown
                 style={styles.dropdownButton}
                 placeholderStyle={{ color: "#D0D0D0" }}
-                selectedTextStyle={{ color: colors.baseColor }}
+                selectedTextStyle={{ color: colors.primary }}
                 iconStyle={{ color: "gray" }}
                 data={services}
                 search
@@ -146,11 +205,7 @@ const ShopForm = ({
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={
-                  formData.serviceType
-                    ? formData.serviceType
-                    : "Select Category"
-                }
+                placeholder={formData.serviceType || "Select Category"}
                 value={formData.serviceType}
                 onChange={(item) => handleChange("serviceType", item.value)}
                 renderLeftIcon={() => (
@@ -170,7 +225,40 @@ const ShopForm = ({
                   />
                 )}
               />
-              <Text style={styles.textLabel}>Enter Short Discription</Text>
+
+              {subCategories.length > 0 && (
+                <View>
+                  <Text style={styles.textLabel}>Sub Categories</Text>
+                  <View style={styles.subCategoryContainer}>
+                    {["All categories", ...subCategories].map((item, index) => {
+                      const isSelected = selectedSubCategories.includes(item);
+                      return (
+                        <TouchableOpacity
+                          key={index}
+                          style={[
+                            styles.subCategoryButton,
+                            isSelected
+                              ? styles.subCategorySelected
+                              : styles.subCategoryUnselected,
+                          ]}
+                          onPress={() => handleSubCategorySelect(item)}
+                        >
+                          <Text
+                            style={[
+                              styles.subCategoryText,
+                              isSelected && styles.subCategoryTextSelected,
+                            ]}
+                          >
+                            {item}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </View>
+              )}
+
+              <Text style={styles.textLabel}>Enter Short Description</Text>
               <CustomTextInput
                 iconType="Ionicons"
                 iconName="paper-plane-outline"
@@ -217,7 +305,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.5,
+    height: height * 0.7,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -253,6 +341,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 40,
   },
   button: {
     width: "100%",
@@ -281,6 +370,37 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  subCategoryContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+  },
+  subCategoryButton: {
+    width: "48%",
+    paddingVertical: 10,
+    alignItems: "center",
+    marginHorizontal: 5,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  subCategorySelected: {
+    backgroundColor: colors.primary,
+  },
+  subCategoryUnselected: {
+    borderWidth: 0.5,
+    borderColor: colors.primary,
+  },
+  subCategoryText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: colors.primary,
+  },
+  subCategoryTextSelected: {
+    color: "white",
+  },
+  subCategoryTextUnselected: {
+    color: colors.primary,
   },
 });
 
