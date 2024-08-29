@@ -8,17 +8,15 @@ import {
   ScrollView,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { moderateScale } from "react-native-size-matters";
 import Logo from "../../../assets/assets/logo.png";
 import styles from "./styles";
-import colors from "../../../constants/colors";
 import policy from "../../../constants/policy";
 import { useAuthStore } from "../../../zustand/authStore";
+import { moderateScale } from "react-native-size-matters";
+import colors from "../../../constants/colors";
 
-const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
-  const [isVisible, setIsVisible] = useState(false);
+const LoginUi = ({ onGoogleButtonPress, setUserRole }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const { setRole } = useAuthStore();
 
   const handleGoogleButtonPress = (role) => {
@@ -31,10 +29,19 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
     <View style={styles.container}>
       <Image source={Logo} style={styles.logo} />
 
-      {isVisible ? (
-        <View style={[styles.buttonContainer, { marginTop: 25 }]}>
+      <View style={styles.bottomTextContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={[styles.googleButton, { backgroundColor: "white" }]}
+            style={styles.googleButton}
+            onPress={() => handleGoogleButtonPress("customer")}
+          >
+            <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
+            <Text style={styles.buttonText}>SignIn with User Account</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.googleButton, styles.mazdoorButton]}
             onPress={() => handleGoogleButtonPress("mazdoor")}
           >
             <FontAwesome
@@ -42,68 +49,29 @@ const LoginUi = ({ onGoogleButtonPress, setUserRole, userRole }) => {
               size={moderateScale(18)}
               color={colors.baseColor}
             />
-            <Text style={[styles.buttonText, { color: colors.baseColor }]}>
+            <Text style={[styles.buttonText, styles.mazdoorButtonText]}>
               SignIn with Mazdoor Account
             </Text>
           </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.googleButton}
-            onPress={() => handleGoogleButtonPress("customer")}
-          >
-            <FontAwesome name="google" size={moderateScale(18)} color="#fff" />
-            <Text style={styles.buttonText}>SignIn with Customer Account</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <View style={{ marginTop: 15 }}>
-        {isVisible === false ? (
-          <View style={styles.bottomText}>
-            <Text style={{ color: "gray" }}>
-              If you are a Worker, please do!{" "}
+        <View style={styles.policyTextContainer}>
+          <Text style={styles.policyText}>
+            By continuing, you agree that you have read and accept our{" "}
+            <Text
+              onPress={() => setIsModalVisible(true)}
+              style={styles.policyLink}
+            >
+              T&Cs
+            </Text>{" "}
+            and{" "}
+            <Text
+              onPress={() => setIsModalVisible(true)}
+              style={styles.policyLink}
+            >
+              Privacy Policy
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(!isVisible);
-              }}
-            >
-              <Text style={styles.signIn}>Mazdoor SignUp</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.bottomText}>
-            <Text style={{ color: "gray" }}>SignIn as customer! </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(!isVisible);
-              }}
-            >
-              <Text style={styles.signIn}>Customer SignUp</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
-
-      <View style={styles.bottomTextContainer}>
-        <View>
-          <Text style={{ color: "gray", alignItems: "center" }}>
-            Please check our policy{" "}
           </Text>
         </View>
-        <TouchableOpacity>
-          <Text
-            style={{
-              fontWeight: "600",
-              color: colors.primary,
-            }}
-            onPress={() => setIsModalVisible(true)}
-          >
-            Terms and Conditions
-          </Text>
-        </TouchableOpacity>
       </View>
 
       <Modal
