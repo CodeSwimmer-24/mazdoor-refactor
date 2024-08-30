@@ -15,13 +15,13 @@ import { useAuthStore } from "../../../zustand/authStore";
 import { moderateScale } from "react-native-size-matters";
 import colors from "../../../constants/colors";
 
-const LoginUi = ({ onGoogleButtonPress, setUserRole }) => {
+const LoginUi = ({ onGoogleButtonPress }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { setRole } = useAuthStore();
 
   const handleGoogleButtonPress = (role) => {
-    onGoogleButtonPress();
-    setUserRole(role);
+    onGoogleButtonPress(role);
+    // setUserRole(role);
     setRole(role);
   };
 
