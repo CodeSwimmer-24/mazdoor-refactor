@@ -148,6 +148,7 @@ const CategoryDetail = ({ route, navigation }) => {
                       category={label}
                       rating={item.rating}
                       location={item.short_description}
+                      availability={item.availability}
                       price={item.basePrice}
                       onPress={() =>
                         navigation.push("ServiceDetail", {
