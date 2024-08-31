@@ -10,7 +10,7 @@ import { useModalStore } from "../../../../zustand/modalStore";
 
 const Header = ({ name, locality, setIsDrawerVisible }) => {
   const profileImageUri = useProfileImage();
-  const { exactLocation } = useAuthStore();
+  const { exactLocation, role } = useAuthStore();
   const notificationCount = 0;
   const { setIsVisible } = useModalStore();
 
@@ -43,7 +43,14 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.locationContainer}>
-            <View style={styles.locationContent}>
+            <View
+              style={[
+                styles.locationContent,
+                {
+                  width: role === "mazdoor" ? "90%" : "75%",
+                },
+              ]}
+            >
               <SimpleLineIcons
                 name="location-pin"
                 size={moderateScale(20)}
@@ -54,16 +61,18 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 {locality ? locality : "Area"}
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={() => setIsVisible(true)}
-              style={styles.indentMoreButton}
-            >
-              <Foundation
-                name="indent-more"
-                size={moderateScale(18)}
-                color={colors.primary}
-              />
-            </TouchableOpacity>
+            {role === "customer" && (
+              <TouchableOpacity
+                onPress={() => setIsVisible(true)}
+                style={styles.indentMoreButton}
+              >
+                <Foundation
+                  name="indent-more"
+                  size={moderateScale(18)}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

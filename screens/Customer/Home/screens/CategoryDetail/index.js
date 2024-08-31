@@ -147,6 +147,7 @@ const CategoryDetail = ({ route, navigation }) => {
                       name={item.title}
                       category={label}
                       rating={item.rating}
+                      verified={item.verified}
                       location={item.short_description}
                       availability={item.availability}
                       price={item.basePrice}

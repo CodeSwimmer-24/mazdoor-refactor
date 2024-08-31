@@ -7,7 +7,7 @@ import { Dropdown } from "react-native-element-dropdown";
 
 const DropdownTextInput = ({
   iconName,
-  list = [], // Default value for list
+  list = [],
   iconType,
   placeholder,
   value,

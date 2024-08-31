@@ -37,8 +37,6 @@ const Status = () => {
 
         if (response.ok) {
           setCurrentStatus(result.serviceProvider.availability);
-        } else {
-          Alert.alert("Error", "Failed to fetch current status.");
         }
       } catch (error) {
         Alert.alert("Error", "Failed to fetch current status.");
@@ -77,10 +75,9 @@ const Status = () => {
         setCurrentStatus(value); // Update the current status
       } else {
         const errorData = await response.json();
-        Alert.alert("Error updating status", errorData.message);
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to update status. Please try again later.");
+      console.log(error);
     } finally {
       setLoading(false);
     }

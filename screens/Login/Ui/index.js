@@ -4,25 +4,28 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  Modal,
   ScrollView,
+  Linking,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import Logo from "../../../assets/assets/logo.png";
 import styles from "./styles";
-import policy from "../../../constants/policy";
 import { useAuthStore } from "../../../zustand/authStore";
 import { moderateScale } from "react-native-size-matters";
 import colors from "../../../constants/colors";
 
 const LoginUi = ({ onGoogleButtonPress }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const { setRole } = useAuthStore();
 
   const handleGoogleButtonPress = (role) => {
     onGoogleButtonPress(role);
-    // setUserRole(role);
     setRole(role);
+  };
+
+  const openLink = (url) => {
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open URL:", err)
+    );
   };
 
   return (
@@ -58,14 +61,18 @@ const LoginUi = ({ onGoogleButtonPress }) => {
           <Text style={styles.policyText}>
             By continuing, you agree that you have read and accept our{" "}
             <Text
-              onPress={() => setIsModalVisible(true)}
+              onPress={() =>
+                openLink("https://mazdoor-website.pages.dev/term&condition")
+              }
               style={styles.policyLink}
             >
               T&Cs
-            </Text>{" "}
+            </Text>
             and{" "}
             <Text
-              onPress={() => setIsModalVisible(true)}
+              onPress={() =>
+                openLink("https://mazdoor-website.pages.dev/Privacypolicy")
+              }
               style={styles.policyLink}
             >
               Privacy Policy
@@ -73,28 +80,6 @@ const LoginUi = ({ onGoogleButtonPress }) => {
           </Text>
         </View>
       </View>
-
-      <Modal
-        visible={isModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <ScrollView>
-              <Text style={styles.modalTitle}>Terms and Conditions</Text>
-              <Text style={styles.modalText}>{policy.policy}</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setIsModalVisible(false)}
-              >
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };

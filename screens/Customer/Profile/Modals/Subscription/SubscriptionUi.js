@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     flexDirection: "row",
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     alignItems: "center",
   },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
   planContainer: {
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 20,
   },
   planTitle: {

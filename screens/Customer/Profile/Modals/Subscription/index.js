@@ -56,8 +56,7 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${
-            role === "customer" ? true : false
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false
           }`
         );
         const subscriptionData = response.data.map((item) => ({
@@ -181,10 +180,10 @@ const Subscription = ({
             />
           </ScrollView>
           <View style={styles.closeButtonContainer}>
-            {isSubscribed ? (
+            {isSubscribed?.isSubscribed ? (
               <View style={styles.alreadySubs}>
                 <Text style={styles.closeButtonText}>
-                  You are a Subscriber 🎉
+                  You {isSubscribed?.subscriptionDuration} will expire on {isSubscribed.subscriptionExpiryDate} 🎉
                 </Text>
               </View>
             ) : (
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   closeButtonText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "white",
   },
   alreadySubs: {

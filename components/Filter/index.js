@@ -89,7 +89,7 @@ const Filter = ({
                   width: "95%",
                 }}
               >
-                <Text style={styles.label}>Search by locality</Text>
+                <Text style={styles.label}>Search by Locality</Text>
                 <DropdownTextInput
                   iconName="map"
                   iconType="Ionicons"

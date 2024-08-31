@@ -1,13 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import colors from "../../constants/colors";
-import { MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Fontisto, MaterialIcons } from "@expo/vector-icons";
 
 const ServiceCard = ({
   id,
   name,
   location,
-  category,
+  verified,
   rating,
   price,
   onPress,
@@ -16,7 +16,13 @@ const ServiceCard = ({
   return (
     <TouchableOpacity onPress={onPress} key={id} style={styles.item}>
       <View>
-        <Text style={styles.name}>{name}</Text>
+        <View style={{
+          flexDirection: "row",
+          alignItems: "center"
+        }}>
+          <Text style={styles.name}>{name}</Text>
+          {verified && <MaterialIcons name="verified" size={20} color={colors.primary} />}
+        </View>
         <View style={styles.locationContainer}>
           <MaterialCommunityIcons
             name="account-details"
@@ -42,7 +48,9 @@ const ServiceCard = ({
               {availability ? "Available" : "Not Available"}
             </Text>
           </View>
-
+          <Text style={{ marginLeft: 10, fontWeight: "600", color: colors.primary }}>
+            {rating}
+          </Text>
           <View style={styles.ratingContainer}>
             {[...Array(rating)].map((_, index) => (
               <Fontisto
