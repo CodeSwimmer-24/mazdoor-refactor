@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  Clipboard,
   ToastAndroid,
+  Share,
+  Clipboard,
+  Linking
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import { Linking } from "react-native";
 import colors from "../../../../../constants/colors";
 
 const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
@@ -28,15 +29,21 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
   };
 
   const openInstagram = () => {
-    Linking.openURL("https://www.instagram.com/");
+    Linking.openURL("https://www.instagram.com/").catch((err) =>
+      console.error("Failed to open URL:", err)
+    );
   };
 
   const openTelegram = () => {
-    Linking.openURL("https://facebook.com/");
+    Linking.openURL("https://facebook.com/").catch((err) =>
+      console.error("Failed to open URL:", err)
+    );
   };
 
-  const x = () => {
-    Linking.openURL("https://x.com/");
+  const openX = () => {
+    Linking.openURL("https://x.com/").catch((err) =>
+      console.error("Failed to open URL:", err)
+    );
   };
 
   const copyLink = () => {
@@ -91,7 +98,7 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
                     style={styles.icon}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={x} style={styles.iconWrapper}>
+                <TouchableOpacity onPress={openX} style={styles.iconWrapper}>
                   <Image
                     source={require("../../../../../assets/assets/x.png")}
                     style={styles.icon}
@@ -107,7 +114,7 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
                 <View style={styles.copyLinkContent}>
                   <Entypo name="link" size={24} color={colors.primary} />
                   <Text style={styles.copyLinkText}>
-                    https://digimazdoor.tech/playstore
+                    https://play.google.com/store/apps/details?id=com.fahad999.mazdoorapp&pcampaignid=web_share
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -136,7 +143,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
   },

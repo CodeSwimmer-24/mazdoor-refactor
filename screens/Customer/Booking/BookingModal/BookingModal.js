@@ -96,7 +96,7 @@ const BookingModal = ({
         }
         const result = await response.json();
 
-        if (result === true) {
+        if (result.isSubscribed === true) {
           setSubscribe(true);
         } else {
           setSubscribe(false);

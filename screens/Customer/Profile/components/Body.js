@@ -41,7 +41,7 @@ const Body = ({
       onPress={() => {
         if (title === "Your Feedback") {
           Linking.openURL(
-            "https://play.google.com/store/apps/details?id=YOUR_APP_ID"
+            "https://play.google.com/store/apps/details?id=com.fahad999.mazdoorapp&pcampaignid=web_share"
           );
         } else {
           stateSetter(true);
@@ -93,7 +93,7 @@ const Body = ({
           "Your Feedback",
           "Share your feedback in playstore.",
           "message-circle",
-          () => {} // No state setter needed for opening URL
+          () => { } // No state setter needed for opening URL
         )}
         {renderRow(
           "Share",

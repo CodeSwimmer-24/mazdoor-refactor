@@ -1,4 +1,4 @@
-rootProject.name = 'mazdoor-app'
+rootProject.name = 'Digimazdoor'
 
 dependencyResolutionManagement {
   versionCatalogs {

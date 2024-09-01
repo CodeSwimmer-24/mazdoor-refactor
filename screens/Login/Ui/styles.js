@@ -3,18 +3,24 @@ import { moderateScale } from "react-native-size-matters";
 import colors from "../../../constants/colors";
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover", // Ensures the image covers the whole view
+    justifyContent: "center",
+  },
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
     height: "100%",
     width: "100%",
+    // backgroundColor: "white", // Remove this to make the background image visible
   },
   logo: {
     height: moderateScale(100),
     width: "100%",
     marginLeft: moderateScale(40),
     resizeMode: "cover",
+    marginBottom: moderateScale(100)
   },
   buttonContainer: {
     justifyContent: "center",
@@ -23,29 +29,30 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     width: "100%",
-    backgroundColor: colors.baseColor,
+    backgroundColor: colors.primary,
     paddingVertical: moderateScale(15),
     borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colors.baseColor,
+    borderColor: colors.primary,
   },
   mazdoorButton: {
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: colors.baseColor,
+    borderColor: colors.primary,
   },
   buttonText: {
     textAlign: "center",
     color: "white",
     fontSize: moderateScale(14),
     marginLeft: moderateScale(12),
-    fontWeight: "400",
+    fontWeight: "500",
   },
   mazdoorButtonText: {
-    color: colors.baseColor,
+    color: colors.primary,
+    fontWeight: "500",
   },
   bottomTextContainer: {
     position: "absolute",

@@ -1,7 +1,7 @@
 export default {
   expo: {
-    name: "mazdoor-app",
-    slug: "mazdoor-app",
+    name: "Digimazdoor",
+    slug: "Digimazdoor",
     plugins: ["@react-native-google-signin/google-signin"],
     version: "1.1.1",
     orientation: "portrait",
