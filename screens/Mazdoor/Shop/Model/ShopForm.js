@@ -14,7 +14,7 @@ import colors from "../../../../constants/colors";
 import { useAuthStore } from "../../../../zustand/authStore";
 import CustomTextInput from "../../../../components/TextInput";
 import { hostUrl } from "../../../../services";
-import { Dropdown } from "react-native-element-dropdown"; // Assuming you're using this dropdown library
+import { Dropdown } from "react-native-element-dropdown";
 
 const ShopForm = ({
   shopRegisterForm,
@@ -27,7 +27,7 @@ const ShopForm = ({
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([
-    "All categories",
+    "All Categories",
   ]);
   const { email } = useAuthStore((state) => ({ email: state.email }));
 
@@ -36,7 +36,7 @@ const ShopForm = ({
     short_description: "",
     serviceType: "",
     basePrice: 0,
-    sub_category: "All categories",
+    sub_category: "All Categories",
     availability: true,
   };
 
@@ -52,8 +52,6 @@ const ShopForm = ({
   useEffect(() => {
     fetchServices();
   }, []);
-
-  console.log(subCategories);
 
   const fetchServices = async () => {
     try {
@@ -73,7 +71,7 @@ const ShopForm = ({
 
     if (name === "serviceType") {
       setSelectedCategory(value);
-      setSelectedSubCategories(["All categories"]); // Reset subcategories to default
+      setSelectedSubCategories(["All Categories"]);
     }
   };
 
@@ -85,7 +83,8 @@ const ShopForm = ({
       if (selectedService) {
         const subCats = selectedService.sub_category
           .split(", ")
-          .map((item) => item.trim());
+          .map((item) => item.trim())
+          .filter((item) => item !== "All Categories"); // Exclude "All Categories" from UI
         setSubCategories(subCats);
       } else {
         setSubCategories([]);
@@ -96,12 +95,12 @@ const ShopForm = ({
   const handleSubCategorySelect = (subCategory) => {
     let updatedSubCategories = [...selectedSubCategories];
 
-    if (subCategory === "All categories") {
-      updatedSubCategories = ["All categories"];
+    if (subCategory === "All Categories") {
+      updatedSubCategories = ["All Categories"];
     } else {
-      if (updatedSubCategories.includes("All categories")) {
+      if (updatedSubCategories.includes("All Categories")) {
         updatedSubCategories = updatedSubCategories.filter(
-          (item) => item !== "All categories"
+          (item) => item !== "All Categories"
         );
       }
 
@@ -114,7 +113,7 @@ const ShopForm = ({
       }
 
       if (updatedSubCategories.length === 0) {
-        updatedSubCategories = ["All categories"];
+        updatedSubCategories = ["All Categories"];
       }
     }
 
@@ -138,6 +137,13 @@ const ShopForm = ({
 
     try {
       setLoading(true);
+
+      // Ensure "All Categories" is included in the sub_category string
+      const subCategoryString = [
+        "All Categories",
+        ...selectedSubCategories.filter((item) => item !== "All Categories"),
+      ].join(", ");
+
       const response = await fetch(`${hostUrl}/mazdoor/v1/addServiceProvider`, {
         method: "POST",
         headers: {
@@ -145,6 +151,7 @@ const ShopForm = ({
         },
         body: JSON.stringify({
           ...formData,
+          subCategory: subCategoryString,
           emailId: email,
           basePrice: parseFloat(formData.basePrice),
         }),
@@ -158,10 +165,7 @@ const ShopForm = ({
       }
     } catch (error) {
       console.error("Error adding ServiceProvider:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred while adding the ServiceProvider"
-      );
+      Alert.alert("Error", "An error occurred while adding the ServiceProvider");
     } finally {
       setLoading(false);
     }
@@ -230,7 +234,7 @@ const ShopForm = ({
                 <View>
                   <Text style={styles.textLabel}>Sub Categories</Text>
                   <View style={styles.subCategoryContainer}>
-                    {["All categories", ...subCategories].map((item, index) => {
+                    {subCategories.map((item, index) => {
                       const isSelected = selectedSubCategories.includes(item);
                       return (
                         <TouchableOpacity
@@ -264,7 +268,9 @@ const ShopForm = ({
                 iconName="paper-plane-outline"
                 placeholder="Enter Short Description"
                 value={formData.short_description}
-                onChangeText={(text) => handleChange("short_description", text)}
+                onChangeText={(text) =>
+                  handleChange("short_description", text)
+                }
               />
               <Text style={styles.textLabel}>Enter Base Price</Text>
               <CustomTextInput
@@ -310,97 +316,76 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    overflow: "hidden",
-    borderTopWidth: 0.5,
-    borderTopColor: "lightgray",
+    elevation: 10,
   },
   header: {
-    padding: 10,
-    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   headerText: {
     fontSize: 18,
-    color: "gray",
-  },
-  textLabel: {
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    fontWeight: "500",
-    fontSize: 13,
+    fontWeight: "600",
     color: colors.primary,
   },
   closeButton: {
-    backgroundColor: colors.dangerBackground,
     padding: 5,
-    borderRadius: 50,
   },
-  buttonContainer: {
-    alignItems: "center",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 40,
-  },
-  button: {
-    width: "100%",
-    alignItems: "center",
-    paddingVertical: 12,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  confirmButton: {
-    backgroundColor: colors.primary,
-    elevation: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "400",
+  textLabel: {
+    fontSize: 14,
+    marginBottom: 5,
+    color: colors.primary,
   },
   dropdownButton: {
+    height: 50,
+    borderColor: colors.primary,
     borderWidth: 1,
-    borderColor: "#D0D0D0",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    borderRadius: 8,
+    paddingHorizontal: 10,
     marginBottom: 20,
-  },
-  icon: {
-    marginRight: 10,
   },
   subCategoryContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start",
   },
   subCategoryButton: {
-    width: "48%",
-    paddingVertical: 10,
-    alignItems: "center",
-    marginHorizontal: 5,
-    marginVertical: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 5,
-  },
-  subCategorySelected: {
-    backgroundColor: colors.primary,
-  },
-  subCategoryUnselected: {
-    borderWidth: 0.5,
-    borderColor: colors.primary,
+    borderWidth: 1.5,
+    margin: 5,
   },
   subCategoryText: {
     fontSize: 12,
-    fontWeight: "600",
-    color: colors.primary,
+    color: colors.primary
+
+  },
+  subCategorySelected: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  subCategoryUnselected: {
+    backgroundColor: "white",
+    borderColor: colors.primary,
   },
   subCategoryTextSelected: {
     color: "white",
   },
-  subCategoryTextUnselected: {
-    color: colors.primary,
+  buttonContainer: {
+    marginTop: 20,
+  },
+  button: {
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  confirmButton: {
+    backgroundColor: colors.primary,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16,
   },
 });
 

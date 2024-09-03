@@ -39,7 +39,7 @@ const Status = () => {
           setCurrentStatus(result.serviceProvider.availability);
         }
       } catch (error) {
-        Alert.alert("Error", "Failed to fetch current status.");
+        console.log(error)
       } finally {
         setStatusLoading(false);
       }
