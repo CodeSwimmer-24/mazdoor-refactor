@@ -1,7 +1,7 @@
 export default {
   expo: {
     name: "Digimazdoor",
-    slug: "Digimazdoor",
+    slug: "Digimazdoor-App",
     plugins: ["@react-native-google-signin/google-signin"],
     version: "1.1.2",
     orientation: "portrait",
@@ -14,24 +14,24 @@ export default {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.fahad999.mazdoorapp",
-      buildNumber: "3.0.0",
+      bundleIdentifier: "com.mazdoor.digimazdoor",
+      buildNumber: "1.1.1",
     },
     android: {
-      googleServicesFile: process.env.GOOGLE_SERVICES,
+      googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
-      package: "com.fahad999.mazdoorapp",
-      versionCode: 3,
+      package: "com.mazdoor.digimazdoor",
+      versionCode: 2,
     },
     web: {
       favicon: "./assets/favicon.png",
     },
     extra: {
       eas: {
-        projectId: "482e2f36-fc4e-4ca9-8561-8d15aa69eb55",
+        projectId: "4bcb0cdf-acf8-4008-9ca4-6d0f5fdd51b1",
       },
     },
   },

@@ -1,4 +1,4 @@
-package com.fahad999.mazdoorapp
+package com.mazdoor.digimazdoor
 
 import android.app.Application
 import android.content.res.Configuration

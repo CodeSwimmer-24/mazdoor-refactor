@@ -68,7 +68,7 @@ const Login = () => {
 
   GoogleSignin.configure({
     webClientId:
-      "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
+      "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
   });
 
   const onGoogleButtonPress = async (role) => {
