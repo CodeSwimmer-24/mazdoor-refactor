@@ -111,7 +111,7 @@ const Subscription = ({
       description: "Subscription payment",
       image: rzp_logo,
       currency: "INR",
-      key: "rzp_test_3QzD2D63ToPhc3",
+      key: "rzp_live_nzAzY4QSbVoO8Q",
       amount: amountInPaise,
       name: "Digimazdoor",
       prefill: {

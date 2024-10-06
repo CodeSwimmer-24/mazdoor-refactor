@@ -41,7 +41,7 @@ const Body = ({
       onPress={() => {
         if (title === "Your Feedback") {
           Linking.openURL(
-            "https://play.google.com/store/apps/details?id=com.fahad999.mazdoorapp&pcampaignid=web_share"
+            "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor&pcampaignid=web_share"
           );
         } else {
           stateSetter(true);
