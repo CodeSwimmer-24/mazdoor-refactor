@@ -17,6 +17,7 @@ import SubscriptionUi from "./SubscriptionUi";
 import colors from "../../../../../constants/colors";
 import RazorpayCheckout from "react-native-razorpay";
 import { rzp_logo } from "../../../../../constants/UpiPayments";
+import { RAZORPAY_KEY } from "@env"; // Import Razorpay key from .env
 
 const benefits = [
   "Access to all service providers",
@@ -29,13 +30,12 @@ const Subscription = ({
   subscriptionModalVisible,
   setSubscriptionModalVisible,
   name,
-  role,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [subscriptions, setSubscriptions] = useState([]);
   const [reload, setReload] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { email, contact } = useAuthStore();
+  const { email, contact, role } = useAuthStore();
 
   useEffect(() => {
     const fetchUserSubscription = async () => {
@@ -56,8 +56,7 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false
-          }`
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false}`
         );
         const subscriptionData = response.data.map((item) => ({
           subscriptionId: item.subscriptionId,
@@ -111,15 +110,15 @@ const Subscription = ({
       description: "Subscription payment",
       image: rzp_logo,
       currency: "INR",
-      key: "rzp_live_nzAzY4QSbVoO8Q",
+      key: RAZORPAY_KEY, // Use the key from the .env file
       amount: amountInPaise,
-      name: "Digimazdoor",
+      name: "DigiMazdoor",
       prefill: {
         email: email,
         contact: contact,
         name: name,
       },
-      theme: { color: colors.baseColor },
+      theme: { color: colors.primary },
       method: "upi",
       upi: {
         vpa: "success@razorpay",
@@ -148,11 +147,11 @@ const Subscription = ({
             setReload(true);
           }
         } catch (error) {
-          console.error("Error adding user subscription:", error);
+          console.error("Subscription Fail, Please try again", error);
         }
       })
       .catch((error) => {
-        Alert.alert(`Fail to subscribe, Please try again`);
+        Alert.alert("Fail to subscribe, Please try again");
       });
   };
 
@@ -183,14 +182,12 @@ const Subscription = ({
             {isSubscribed?.isSubscribed ? (
               <View style={styles.alreadySubs}>
                 <Text style={styles.closeButtonText}>
-                  You {isSubscribed?.subscriptionDuration} will expire on {isSubscribed.subscriptionExpiryDate} 🎉
+                  Your {isSubscribed?.subscriptionDuration} plan will expire on{" "}
+                  {isSubscribed.subscriptionExpiryDate} 🎉
                 </Text>
               </View>
             ) : (
-              <TouchableOpacity
-                onPress={handlePayment}
-                style={styles.closeButton}
-              >
+              <TouchableOpacity onPress={handlePayment} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>Go to payment</Text>
               </TouchableOpacity>
             )}
