@@ -20,9 +20,6 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Profile</Text>
-      </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Header
           contact={contact}
