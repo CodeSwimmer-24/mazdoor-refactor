@@ -74,7 +74,7 @@ const Booking = () => {
             <Text
               style={[styles.tabText, screens === 3 && styles.activeTabText]}
             >
-              Compleated
+              Completed
             </Text>
           </TouchableOpacity>
         </View>

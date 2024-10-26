@@ -1,5 +1,5 @@
-// const merchantVPA = "paytmqr3vzc0xmpa8@paytm";
-// const merchantName = "MOHAMMAD NAZISH AKHTAR";
+// const merchantVPA = "digitrack214556.rzp@axisbank";
+// const merchantName = "DigiTrack";
 // const transactionNote = "Purchase in Merchant";
 // const transactionAmount = "1.00";
 // const currencyCode = "INR";

@@ -127,41 +127,45 @@ const CategoryDetail = ({ route, navigation }) => {
           </View>
         </ScrollView>
       </View>
-      <View style={styles.content}>
-        {loading ? (
-          <ActivityIndicator
-            style={{
-              marginTop: "50%",
-            }}
-            size="large"
-            color={colors.primary}
-          />
-        ) : (
-          <ScrollView style={styles.scrollView}>
-            {serviceProviders.length > 0 ? (
-              serviceProviders.map((item, index) => (
-                <View key={index} style={styles.cardContainer}>
-                  <ServiceCard
-                    id={index}
-                    name={item.title}
-                    category={label}
-                    rating={item.rating}
-                    location={item.short_description}
-                    price={item.basePrice}
-                    onPress={() =>
-                      navigation.push("ServiceDetail", {
-                        emailId: item.emailId,
-                      })
-                    }
-                  />
-                </View>
-              ))
-            ) : (
-              <NotFound />
-            )}
-          </ScrollView>
-        )}
-      </View>
+      <ScrollView>
+        <View style={styles.content}>
+          {loading ? (
+            <ActivityIndicator
+              style={{
+                marginTop: "50%",
+              }}
+              size="large"
+              color={colors.primary}
+            />
+          ) : (
+            <ScrollView style={styles.scrollView}>
+              {serviceProviders.length > 0 ? (
+                serviceProviders.map((item, index) => (
+                  <View key={index} style={styles.cardContainer}>
+                    <ServiceCard
+                      id={index}
+                      name={item.title}
+                      category={label}
+                      rating={item.rating}
+                      verified={item.verified}
+                      location={item.short_description}
+                      availability={item.availability}
+                      price={item.basePrice}
+                      onPress={() =>
+                        navigation.push("ServiceDetail", {
+                          emailId: item.emailId,
+                        })
+                      }
+                    />
+                  </View>
+                ))
+              ) : (
+                <NotFound />
+              )}
+            </ScrollView>
+          )}
+        </View>
+      </ScrollView>
       <Filter
         filterLocation={filterLocation}
         filterExactLocation={filterExactLocation}

@@ -1,34 +1,56 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import colors from "../../constants/colors";
-import { MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Fontisto, MaterialIcons } from "@expo/vector-icons";
 
 const ServiceCard = ({
   id,
   name,
   location,
-  category,
+  verified,
   rating,
   price,
   onPress,
+  availability,
 }) => {
   return (
     <TouchableOpacity onPress={onPress} key={id} style={styles.item}>
       <View>
-        <Text style={styles.name}>{name}</Text>
+        <View style={{
+          flexDirection: "row",
+          alignItems: "center"
+        }}>
+          <Text style={styles.name}>{name}</Text>
+          {verified && <MaterialIcons name="verified" size={20} color={colors.primary} />}
+        </View>
         <View style={styles.locationContainer}>
           <MaterialCommunityIcons
             name="account-details"
             size={20}
             color="#A9A9A9"
-            style={{ marginRight: 5 }}
+            style={styles.icon}
           />
           <Text style={styles.locationText}>{location.slice(0, 40)}...</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{category}</Text>
+          <View
+            style={[
+              styles.availabilityBadge,
+              availability ? styles.available : styles.notAvailable,
+            ]}
+          >
+            <Text
+              style={[
+                styles.availabilityText,
+                availability ? styles.availableText : styles.notAvailableText,
+              ]}
+            >
+              {availability ? "Available" : "Not Available"}
+            </Text>
           </View>
+          <Text style={{ marginLeft: 10, fontWeight: "600", color: colors.primary }}>
+            {rating}
+          </Text>
           <View style={styles.ratingContainer}>
             {[...Array(rating)].map((_, index) => (
               <Fontisto
@@ -76,6 +98,9 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     width: "80%",
   },
+  icon: {
+    marginRight: 5,
+  },
   locationText: {
     color: "#A9A9A9",
   },
@@ -84,18 +109,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 5,
   },
-  categoryBadge: {
-    paddingHorizontal: 12,
-    backgroundColor: "#673de71a",
-    width: "auto",
+  availabilityBadge: {
     paddingVertical: 4,
-    borderRadius: 100,
-    alignItems: "center",
+    paddingHorizontal: 8,
+    borderRadius: 5,
   },
-  categoryText: {
-    fontSize: 12,
+  available: {
+    backgroundColor: "#4caf501a",
+  },
+  notAvailable: {
+    backgroundColor: colors.dangerBackground,
+  },
+  availabilityText: {
+    fontSize: 10,
     fontWeight: "600",
-    color: colors.primary,
+  },
+  availableText: {
+    color: "#4caf50",
+  },
+  notAvailableText: {
+    color: colors.danger,
   },
   ratingContainer: {
     flexDirection: "row",
@@ -105,7 +138,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   priceContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     alignItems: "center",
   },
   priceText: {

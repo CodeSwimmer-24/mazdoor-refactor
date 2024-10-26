@@ -17,6 +17,7 @@ export const useAuthStore = create(
       locality: "",
       exactLocation: "",
       isNewUser: false,
+      isValidUser: null,
       // state to know that whether the apis at login time were called or not
       startupApisCalled: false,
 
@@ -35,6 +36,8 @@ export const useAuthStore = create(
       setExactLocation: (exactLocation) =>
         set((state) => ({ ...state, exactLocation })),
       setIsNewUser: (isNewUser) => set((state) => ({ ...state, isNewUser })),
+      setIsValidUser: (isValidUser) =>
+        set((state) => ({ ...state, isValidUser })),
       setStartupApisCalled: (called) =>
         set((state) => ({ ...state, startupApisCalled: called })),
 
@@ -52,6 +55,7 @@ export const useAuthStore = create(
           locality: "",
           exactLocation: "",
           isNewUser: false,
+          isValidUser: null,
           startupApisCalled: false,
         }),
     }),

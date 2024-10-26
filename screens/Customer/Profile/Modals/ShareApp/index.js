@@ -8,39 +8,62 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  Clipboard,
   ToastAndroid,
+  Share,
+  Clipboard,
+  Linking
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import { Linking } from "react-native";
 import colors from "../../../../../constants/colors";
 
 const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
+  const playStoreUrl =
+    "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor&pcampaignid=web_share";
+
   const shareToWhatsApp = async () => {
+    const url = `whatsapp://send?text=${encodeURIComponent(playStoreUrl)}`;
     try {
-      await Share.share({
-        message: "Check out this cool app!",
-        url: "https://your-app-url.com",
-      });
+      Linking.openURL(url);
     } catch (error) {
-      console.log(error.message);
+      console.error("Error sharing on WhatsApp:", error);
     }
   };
 
-  const openInstagram = () => {
-    Linking.openURL("https://www.instagram.com/");
+  const openInstagram = async () => {
+    const url = `https://www.instagram.com/`; // Instagram doesn't provide native sharing like WhatsApp
+    const message = `Check out this cool app on Play Store: ${playStoreUrl}`;
+    try {
+      await Share.share({
+        message,
+        url: playStoreUrl, // iOS only; ignored in Android
+      });
+    } catch (error) {
+      console.error("Error sharing on Instagram:", error);
+    }
   };
 
-  const openTelegram = () => {
-    Linking.openURL("https://facebook.com/");
+  const openTelegram = async () => {
+    const url = `https://telegram.me/share/url?url=${encodeURIComponent(playStoreUrl)}`;
+    try {
+      Linking.openURL(url);
+    } catch (error) {
+      console.error("Error sharing on Telegram:", error);
+    }
   };
 
-  const x = () => {
-    Linking.openURL("https://x.com/");
+  const openX = async () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      `Check out this cool app: ${playStoreUrl}`
+    )}`;
+    try {
+      Linking.openURL(url);
+    } catch (error) {
+      console.error("Error sharing on X:", error);
+    }
   };
 
   const copyLink = () => {
-    Clipboard.setString("https://your-app-url.com"); // Replace with your app's URL
+    Clipboard.setString(playStoreUrl); // Replace with your app's URL
     ToastAndroid.show("Link copied to clipboard!", ToastAndroid.SHORT); // Android only
   };
 
@@ -91,7 +114,7 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
                     style={styles.icon}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={x} style={styles.iconWrapper}>
+                <TouchableOpacity onPress={openX} style={styles.iconWrapper}>
                   <Image
                     source={require("../../../../../assets/assets/x.png")}
                     style={styles.icon}
@@ -107,7 +130,7 @@ const ShareApp = ({ shareAppVisible, setShareAppVisible }) => {
                 <View style={styles.copyLinkContent}>
                   <Entypo name="link" size={24} color={colors.primary} />
                   <Text style={styles.copyLinkText}>
-                    https://digimazdoor.tech/playstore
+                    {playStoreUrl}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -136,7 +159,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
   },
@@ -174,9 +196,11 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   copyLinkButton: {
-    backgroundColor: "#f8f8f8",
-    width: "90%",
-    borderRadius: 50,
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+    borderRadius: 10,
+    elevation: 1,
+    marginBottom: 15
   },
   copyLinkContent: {
     alignItems: "center",

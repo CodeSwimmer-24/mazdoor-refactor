@@ -6,6 +6,7 @@ const colors = {
   danger: "#f44336",
   dangerBackground: "#f443361a",
   white: "#fff",
+  success: "#4caf50",
 };
 
 export default colors;

@@ -5,10 +5,10 @@ import painter from "../assets/assets/paint-roller.png";
 import chef from "../assets/assets/chef.png";
 import mechanicCar from "../assets/assets/mechanicCar.png";
 import truck from "../assets/assets/truck.png";
-import ac from "../assets/assets/ac.png";
+import ac from "../assets/assets/elec.png";
 import washing from "../assets/assets/washing.png";
 import welder from "../assets/assets/welder.png";
-import gutter from "../assets/assets/gutter.png";
+import gutter from "../assets/assets/cleaning.png";
 import tile from "../assets/assets/tile.png";
 import more from "../assets/assets/more.png";
 
@@ -24,7 +24,7 @@ const categories = [
     image: plumber,
     value: "Plumber",
     label: "Plumber",
-    subCategory: "All categories",
+    subCategory: "All Categories, General Services, Boring, Tank Cleaning",
     backgroundColor: "rgb(249, 220, 220)",
   },
   {
@@ -45,14 +45,14 @@ const categories = [
     image: mechanicCar,
     label: "Mechanic",
     value: "Mechanic",
-    subCategory: "All categories",
+    subCategory: "All Categories, Car Mechanic, Bike Mechanic, Cycle Mechanic",
     backgroundColor: "#e3e4ef",
   },
   {
     image: ac,
-    label: "AC Reapir",
-    value: "Electronics Technician",
-    subCategory: "All categories",
+    label: "Electronics",
+    value: "Electronics Repair",
+    subCategory: "All Categories, AC, Washing Machine, Fridge",
     backgroundColor: "#eff4f9",
   },
   {
@@ -79,16 +79,16 @@ const categories = [
   },
   {
     image: gutter,
-    label: "Gutter Cleaner",
-    value: "Gutter Cleaner",
-    subCategory: "All categories",
+    label: "Cleaning",
+    value: "Cleaning",
+    subCategory: "All Categories, House Cleaning, Bathroom Cleaning, Sofa/Carpet Cleaning, Parking/Stairs Cleaning, Shop Cleaning",
     backgroundColor: "#fef7e8",
   },
   {
     image: tile,
-    label: "Tile/Marble",
-    value: "Tile/Marble",
-    subCategory: "All categories",
+    label: "Mistiri",
+    value: "Mistiri",
+    subCategory: "All Categories, Tile Mistri, Marble Mistri, Raj Mistri, Glass Mistri",
     backgroundColor: "#edf9ed",
   },
   {

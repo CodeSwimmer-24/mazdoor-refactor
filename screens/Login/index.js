@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -13,6 +20,7 @@ import { useAuthStore } from "../../zustand/authStore";
 import { useCustomerStore } from "../../zustand/customerStore";
 import MazdoorRegister from "../Mazdoor/Registration";
 import Mazdoor from "../Mazdoor";
+import InvalidUser from "../../global/InValidUser";
 
 const Login = () => {
   const [initializing, setInitializing] = useState(true);
@@ -24,7 +32,7 @@ const Login = () => {
   const { email, startupApisCalled, setStartupApisCalled } = authStore;
   const { favoriteSps, setFavoriteSps } = customerStore;
 
-  const [userRole, setUserRole] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const { role } = useAuthStore();
 
@@ -36,6 +44,14 @@ const Login = () => {
 
     return subscriber; // unsubscribe on unmount
   }, []);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    GoogleSignin.revokeAccess();
+    auth().signOut();
+
+    authStore.reset();
+  };
 
   useEffect(() => {
     if (user && email) {
@@ -52,10 +68,10 @@ const Login = () => {
 
   GoogleSignin.configure({
     webClientId:
-      "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
+      "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
   });
 
-  const onGoogleButtonPress = async () => {
+  const onGoogleButtonPress = async (role) => {
     setLoading(true); // Set loading to true when starting login process
 
     await GoogleSignin.hasPlayServices({
@@ -72,16 +88,19 @@ const Login = () => {
 
       const response = await axios.post(apiUrl, {
         emailId: email,
-        role: userRole,
+        role: role,
         name: displayName,
       });
 
       if (response.status === 200) {
         const responseData = response.data;
-
+        authStore.setIsValidUser(responseData.isValidUser);
+        if (responseData.isValidUser === false) {
+          setShowModal(true);
+        }
         authStore.setName(displayName);
         authStore.setEmail(email);
-        authStore.setRole(userRole);
+        authStore.setRole(role);
         authStore.setPicture(result.additionalUserInfo.profile.picture);
         authStore.setIsNewUser(responseData.isNewUser);
         if (!responseData.isNewUser) {
@@ -143,37 +162,15 @@ const Login = () => {
       </View>
     );
   } else if (!user) {
+    return <LoginUi onGoogleButtonPress={onGoogleButtonPress} />;
+  } else if (authStore.isValidUser === false) {
     return (
-      <LoginUi
-        onGoogleButtonPress={onGoogleButtonPress}
-        setUserRole={setUserRole}
-        userRole={userRole}
-      />
+      <InvalidUser showModal={showModal} handleCloseModal={handleCloseModal} />
     );
   } else if (authStore.isNewUser) {
-    return !role ? (
-      userRole === "customer" ? (
-        <RegisterForm />
-      ) : (
-        <MazdoorRegister />
-      )
-    ) : role === "customer" ? (
-      <RegisterForm />
-    ) : (
-      <MazdoorRegister />
-    );
+    return role === "customer" ? <RegisterForm /> : <MazdoorRegister />;
   } else {
-    return !role ? (
-      userRole === "customer" ? (
-        <Customer />
-      ) : (
-        <Mazdoor />
-      )
-    ) : role === "customer" ? (
-      <Customer />
-    ) : (
-      <Mazdoor />
-    );
+    return role === "customer" ? <Customer /> : <Mazdoor />;
   }
 };
 

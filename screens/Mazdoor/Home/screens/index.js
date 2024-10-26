@@ -3,11 +3,12 @@ import React from "react";
 import Header from "../../../Customer/Home/components/Header";
 import { useAuthStore } from "../../../../zustand/authStore";
 import colors from "../../../../constants/colors";
-import Banner from "../../../Customer/Home/components/Banner";
-import Graph from "../components/Graph";
+import Status from "../components/Status";
+import Verification from "../components/Verification";
+import ViewSubscription from "../components/ViewSubscription";
 
 const MazdoorHome = () => {
-  const { name, locality, buildingAddress } = useAuthStore();
+  const { name, locality, buildingAddress, role } = useAuthStore();
 
   return (
     <View
@@ -21,8 +22,9 @@ const MazdoorHome = () => {
         buildingAddress={buildingAddress}
         locality={locality}
       />
-      <Banner />
-      {/* <Graph /> */}
+      <ViewSubscription />
+      <Status />
+      <Verification />
     </View>
   );
 };

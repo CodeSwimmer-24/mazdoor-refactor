@@ -7,6 +7,7 @@ import {
 
 import categories from "../../../../constants/categories";
 import AllCategories from "../Modal/AllCategories";
+import { useModalStore } from "../../../../zustand/modalStore";
 
 const CategoryItem = ({
   imageSource,
@@ -50,7 +51,7 @@ const CategoryItem = ({
   }
 };
 const Category = ({ navigation }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const { isVisible, setIsVisible } = useModalStore();
 
   return (
     <View style={styles.container}>

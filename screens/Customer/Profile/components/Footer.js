@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
 import colors from "../../../../constants/colors";
@@ -16,10 +17,12 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Footer = ({ logoutVisible, setLogoutVisible }) => {
+  const [loading, setLoading] = useState(false);
   const authStore = useAuthStore();
   const customerStore = useCustomerStore();
 
   const signOut = async () => {
+    setLoading(true);
     try {
       await GoogleSignin.revokeAccess();
       await auth().signOut();
@@ -28,6 +31,9 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
       customerStore.reset();
     } catch (error) {
       console.error("Failed to sign out user.", error);
+    } finally {
+      setLoading(false);
+      setLogoutVisible(false);
     }
   };
 
@@ -38,6 +44,7 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
           <TouchableOpacity
             style={styles.modalOverlay}
             onPress={() => setLogoutVisible(false)}
+            disabled={loading}
           />
           <View style={styles.modalContent}>
             <ScrollView>
@@ -52,6 +59,7 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
                 <TouchableOpacity
                   style={[styles.button, styles.cancelButton]}
                   onPress={() => setLogoutVisible(false)}
+                  disabled={loading}
                 >
                   <Text style={[styles.buttonText, styles.cancelButtonText]}>
                     Cancel
@@ -60,10 +68,15 @@ const Footer = ({ logoutVisible, setLogoutVisible }) => {
                 <TouchableOpacity
                   style={[styles.button, styles.logoutButton]}
                   onPress={signOut}
+                  disabled={loading}
                 >
-                  <Text style={[styles.buttonText, styles.logoutButtonText]}>
-                    Logout
-                  </Text>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="red" />
+                  ) : (
+                    <Text style={[styles.buttonText, styles.logoutButtonText]}>
+                      Logout
+                    </Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -131,7 +144,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   logoutButtonText: {
-    color: colors.danger,
+    color: "red",
   },
 });
 

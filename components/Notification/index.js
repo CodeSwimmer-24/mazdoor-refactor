@@ -111,7 +111,7 @@ const Notification = ({ isVisible, setIsVisible }) => {
                 paddingVertical: 5,
               }}
             >
-              Thanks for been a part of this applicayions.
+              Thanks for been a part of this application.
             </Text>
           </View>
         </View>

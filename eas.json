@@ -1,5 +1,9 @@
 {
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
       "android": {
         "buildType": "apk"
@@ -17,9 +21,6 @@
       "distribution": "internal"
     },
     "production": {
-      "ios": {
-        "resourceClass": "m1-medium"
-      },
       "android": {
         "buildType": "app-bundle"
       }

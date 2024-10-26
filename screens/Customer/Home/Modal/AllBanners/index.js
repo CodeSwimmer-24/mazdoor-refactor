@@ -8,8 +8,9 @@ import {
   Dimensions,
   Text,
   Image,
+  Linking,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons"; // Added missing imports
 import colors from "../../../../../constants/colors";
 
 const AllBanners = ({ isVisible, setIsVisible }) => {
@@ -17,10 +18,26 @@ const AllBanners = ({ isVisible, setIsVisible }) => {
   const modalHeight = height * 0.65;
 
   const offerList = [
-    "https://img.freepik.com/free-vector/asbtract-colorful-sales-background_23-2148388643.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721001600&semt=ais_user",
-    "https://www.shutterstock.com/image-vector/weekend-sale-special-offer-banner-260nw-794599204.jpg",
-    "https://static.vecteezy.com/system/resources/thumbnails/002/038/675/small_2x/flash-sale-discount-banner-promotion-background-vector.jpg",
+    "https://ceoptions.com/wp-content/uploads/2017/10/Promotional-Marketing-Strategies-to-Boost-Sales.jpg",
   ];
+
+  // Example contact number, replace with actual data
+  const contactNumber = "+91 7272977850";
+
+  // Function to make a phone call
+  const makeCall = (phoneNumber) => {
+    Linking.openURL(`tel:${phoneNumber}`).catch((err) =>
+      console.error("Failed to make a call:", err)
+    );
+  };
+
+  // Function to open WhatsApp chat
+  const openWhatsApp = (phoneNumber) => {
+    let url = `whatsapp://send?phone=${phoneNumber}`;
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open WhatsApp:", err)
+    );
+  };
 
   return (
     <Modal visible={isVisible} transparent={true} animationType="slide">
@@ -44,6 +61,63 @@ const AllBanners = ({ isVisible, setIsVisible }) => {
               {offerList.map((url, index) => (
                 <Image key={index} source={{ uri: url }} style={styles.image} />
               ))}
+            </View>
+            <View>
+              <Text
+                style={{
+                  marginVertical: 20,
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#505050",
+                }}
+              >
+                Contact for Promotions
+              </Text>
+              <View
+                style={[
+                  styles.buttonContainer,
+                  {
+                    marginBottom: 20,
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  onPress={() => makeCall(contactNumber)}
+                  style={[
+                    styles.button,
+                    styles.callButton,
+                    { width: "48%", borderRadius: 10, elevation: 0 },
+                  ]}
+                >
+                  <Ionicons name="call-outline" size={20} color="#4782da" />
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      { color: "#4782da", fontSize: 14 },
+                    ]}
+                  >
+                    Audio Call
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => openWhatsApp(contactNumber)}
+                  style={[
+                    styles.button,
+                    styles.whatsappButton,
+                    { width: "48%", borderRadius: 10, elevation: 0 },
+                  ]}
+                >
+                  <FontAwesome name="whatsapp" size={20} color="#4caf50" />
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      { color: "#4caf50", fontSize: 14 },
+                    ]}
+                  >
+                    WhatsApp
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </ScrollView>
         </View>
@@ -97,6 +171,35 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 20,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    // padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  button: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 2,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  callButton: {
+    backgroundColor: "#4782da1a",
+  },
+  whatsappButton: {
+    backgroundColor: "#4caf501a",
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "400",
+    marginLeft: 8,
+  },
+  oppsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

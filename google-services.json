@@ -1,49 +1,49 @@
 {
   "project_info": {
-    "project_number": "449128747140",
-    "project_id": "digimazdoor-2893d",
-    "storage_bucket": "digimazdoor-2893d.appspot.com"
+    "project_number": "659599005965",
+    "project_id": "digimazdoor-app",
+    "storage_bucket": "digimazdoor-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:449128747140:android:f212840aa9e3a6a96772d1",
+        "mobilesdk_app_id": "1:659599005965:android:268e0f882cf410ed177844",
         "android_client_info": {
-          "package_name": "com.fahad999.mazdoorapp"
+          "package_name": "com.mazdoor.digimazdoor"
         }
       },
       "oauth_client": [
         {
-          "client_id": "449128747140-47iqkjaep36vnve4mcufusr3c4f76col.apps.googleusercontent.com",
+          "client_id": "659599005965-5kut5dbcb2vqcriqh1m2173vgs56d4bp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fahad999.mazdoorapp",
-            "certificate_hash": "966e9563f69093bf55a5554b5d32b42c2f9969c2"
+            "package_name": "com.mazdoor.digimazdoor",
+            "certificate_hash": "19f639141e24370fa0804c580ce4917deaad8e9c"
           }
         },
         {
-          "client_id": "449128747140-eaev93gu0dthv7qlqn33qhpg4j816tm7.apps.googleusercontent.com",
+          "client_id": "659599005965-8uqahhl6tfqlad0807stnembltu6a1ng.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fahad999.mazdoorapp",
-            "certificate_hash": "8f89c20cc4a90f41be9b6537113b58b9769ac518"
+            "package_name": "com.mazdoor.digimazdoor",
+            "certificate_hash": "fd7c45674aa5fdc00dd5c13def4825c34969ea49"
           }
         },
         {
-          "client_id": "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
+          "client_id": "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATEG83WzMxluraC5mh4cwYNjvSaTUhKac"
+          "current_key": "AIzaSyDR0OG0PxFUVQMdemu-9pcX8cabJupKsws"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "449128747140-a76sguajpt6nrserom41uplums24tk11.apps.googleusercontent.com",
+              "client_id": "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
