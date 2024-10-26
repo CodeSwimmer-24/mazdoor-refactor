@@ -37,9 +37,10 @@ const Status = () => {
 
         if (response.ok) {
           setCurrentStatus(result.serviceProvider.availability);
+          setValue(result.serviceProvider.availability); // Initialize value with the fetched status
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
         setStatusLoading(false);
       }
@@ -110,7 +111,7 @@ const Status = () => {
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? "Select Status" : "..."}
-        value={currentStatus}
+        value={value} // Bind directly to value for immediate display
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
