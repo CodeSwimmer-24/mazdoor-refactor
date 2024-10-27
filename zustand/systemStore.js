@@ -6,10 +6,10 @@ export const useSystemStore = create(
   persist(
     (set) => ({
       locations: [],
-      setLocations: (locationsData) => set((state) => {
-        return { ...state, locations: locationsData }
-      }),
-
+      setLocations: (locationsData) =>
+        set((state) => {
+          return { ...state, locations: locationsData };
+        }),
     }),
     {
       name: "system-storage", // unique name

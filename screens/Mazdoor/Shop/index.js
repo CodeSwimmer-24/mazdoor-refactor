@@ -17,15 +17,18 @@ import ShopForm from "./Model/ShopForm";
 import { hostUrl } from "../../../services";
 import Services from "./components/Services";
 import EditShopDetails from "./Model/EditShopDetails";
+import { useServiceProviderStore } from "../../../zustand/serviceProviderStore";
 
 const Shop = () => {
-  const [serviceProvider, setServiceProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shopRegisterForm, setShopRegisterForm] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [existingData, setExistingData] = useState(null);
   const [reload, setReload] = useState(false);
   const { email } = useAuthStore();
+
+  // Zustand state
+  const { serviceProvider, setServiceProvider } = useServiceProviderStore();
 
   useEffect(() => {
     const fetchData = async () => {
