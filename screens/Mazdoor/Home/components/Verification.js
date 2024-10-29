@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     marginTop: 20,
+    marginBottom: 100,
   },
   verifyButton: {
     width: "85%",

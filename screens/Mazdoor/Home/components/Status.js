@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,28 +8,58 @@ import {
   StyleSheet,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import colors from "../../../../constants/colors";
 import { hostUrl } from "../../../../services";
 import { useServiceProviderStore } from "../../../../zustand/serviceProviderStore";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Status = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState(null);
+  const [statusLoading, setStatusLoading] = useState(true);
+  const { serviceProvider } = useServiceProviderStore();
   const navigation = useNavigation();
 
-  const { serviceProvider } = useServiceProviderStore();
+  const [showAvailability, setshowAvailability] = useState(false);
 
-  const handleRegisterPress = () => {
-    // Navigate to the Shop tab
-    navigation.navigate("Shop");
-  };
+  const { email } = useAuthStore();
 
   const data = [
     { label: "Available", value: true },
     { label: "Not Available", value: false },
   ];
+
+  useEffect(() => {
+    if (serviceProvider) {
+      setCurrentStatus(serviceProvider.availability);
+      setStatusLoading(false);
+    }
+  }, [serviceProvider]);
+
+  const handleRegisterPress = () => {
+    navigation.navigate("Shop");
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
+        );
+        const data = await response.json();
+        setshowAvailability(data.serviceProvider.availability);
+      } catch (error) {
+        console.error("Error fetching service provider details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [email]);
 
   const updateStatus = async () => {
     if (value === null) {
@@ -41,25 +71,23 @@ const Status = () => {
 
     try {
       const response = await fetch(
-        `${hostUrl}/mazdoor/v1/updateServiceProvider/${serviceProvider.email}`,
+        `${hostUrl}/mazdoor/v1/updateSPStatus?availability=${value}&emailId=${email}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            availability: value,
-          }),
         }
       );
 
       if (response.ok) {
         Alert.alert("Status Updated Successfully");
+        setCurrentStatus(value);
       } else {
         Alert.alert("Failed to update status.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Alert.alert("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -71,7 +99,7 @@ const Status = () => {
       <View style={styles.registrationContainer}>
         <Text style={styles.registrationTitle}>Service Registration</Text>
         <Text style={styles.registrationText}>
-          कृपया अपनी दुकान को DigiMazdoor पर रजिस्टर करें।
+          कृपया अपनी दुकान/काम को DigiMazdoor पर रजिस्टर करें।
         </Text>
         <TouchableOpacity
           onPress={handleRegisterPress}
@@ -87,90 +115,139 @@ const Status = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.statusLabel}>Your Status</Text>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={styles.label}>Your Status</Text>
+        {statusLoading ? (
+          <ActivityIndicator size="small" color={colors.primary} />
+        ) : (
+          <Text
+            style={[
+              styles.currentStatusText,
+              { color: showAvailability ? "#4caf50" : colors.danger },
+            ]}
+          >
+            {showAvailability ? "Available" : "Not Available"}
+          </Text>
+        )}
+      </View>
       <Dropdown
+        style={[styles.dropdown, isFocus && { borderColor: colors.primary }]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
         data={data}
         labelField="label"
         valueField="value"
-        placeholder="Select Status"
+        placeholder={!isFocus ? "Select Status" : "..."}
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={(item) => setValue(item.value)}
-        style={styles.dropdown}
+        onChange={(item) => {
+          setValue(item.value);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={() => (
+          <MaterialIcons
+            style={styles.icon}
+            color={isFocus ? colors.primary : colors.primary}
+            name="assignment"
+            size={20}
+          />
+        )}
       />
       <TouchableOpacity
+        style={styles.button}
         onPress={updateStatus}
         disabled={loading}
-        style={[styles.updateButton, loading && styles.disabledButton]}
       >
         {loading ? (
-          <ActivityIndicator size="small" color="white" />
+          <ActivityIndicator size="small" color={colors.white} />
         ) : (
-          <Text style={styles.updateButtonText}>Update</Text>
+          <Text style={styles.buttonText}>Update</Text>
         )}
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Status;
-
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 16,
+  },
+  label: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.baseColor,
+  },
+  currentStatusText: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  dropdown: {
+    height: 50,
+    borderColor: "lightgray",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    marginHorizontal: 10,
+    paddingHorizontal: 12,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: "gray",
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: colors.primary,
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: colors.primary,
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    marginHorizontal: 10,
+    elevation: 5,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: "400",
   },
   registrationContainer: {
     alignItems: "center",
     marginTop: 20,
-    marginBottom: 20,
   },
   registrationTitle: {
-    paddingTop: 10,
     fontSize: 32,
-    color: colors.primary,
     fontWeight: "400",
+    color: colors.baseColor,
+    marginBottom: 10,
   },
   registrationText: {
-    paddingVertical: 10,
     fontSize: 14,
-    color: colors.primary,
-    fontWeight: "400",
-    paddingHorizontal: 20,
+    textAlign: "center",
+    marginBottom: 10,
+    color: "gray",
   },
   registerButton: {
+    marginTop: 20,
     backgroundColor: colors.primary,
-    paddingHorizontal: 80,
-    paddingVertical: 10,
-    marginTop: 10,
-    borderRadius: 10,
+    width: "80%",
+    paddingVertical: 12,
+    borderRadius: 8,
     elevation: 5,
   },
   registerButtonText: {
-    color: "white",
-  },
-  statusLabel: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: colors.primary,
-  },
-  dropdown: {
-    marginBottom: 20,
-    borderColor: colors.primary,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  updateButton: {
-    backgroundColor: colors.primary,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  updateButtonText: {
-    color: "white",
-    fontWeight: "600",
-  },
-  disabledButton: {
-    opacity: 0.7,
+    color: colors.white,
+    fontSize: 14,
+    textAlign: "center",
   },
 });
+
+export default Status;
