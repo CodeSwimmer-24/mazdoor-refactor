@@ -21,7 +21,7 @@ import { useServiceProviderStore } from "../../../zustand/serviceProviderStore";
 
 const Shop = () => {
   const [loading, setLoading] = useState(true);
-  const [shopRegisterForm, setShopRegisterForm] = useState(false); 
+  const [shopRegisterForm, setShopRegisterForm] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [existingData, setExistingData] = useState(null);
   const [reload, setReload] = useState(false);
@@ -116,9 +116,9 @@ const Shop = () => {
                     {serviceProvider.basePrice}/-
                   </Text>
                 </Text>
-                <Text style={styles.availability}>
+                {/* <Text style={styles.availability}>
                   {serviceProvider.availability ? "Available" : "Not Available"}
-                </Text>
+                </Text> */}
               </View>
               <View style={styles.editIconContainer}>
                 <TouchableOpacity
