@@ -56,7 +56,9 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false}`
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${
+            role === "customer" ? true : false
+          }`
         );
         const subscriptionData = response.data.map((item) => ({
           subscriptionId: item.subscriptionId,
@@ -187,7 +189,10 @@ const Subscription = ({
                 </Text>
               </View>
             ) : (
-              <TouchableOpacity onPress={handlePayment} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={handlePayment}
+                style={styles.closeButton}
+              >
                 <Text style={styles.closeButtonText}>Go to payment</Text>
               </TouchableOpacity>
             )}
