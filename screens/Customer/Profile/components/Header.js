@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import colors from "../../../../constants/colors";
@@ -17,6 +18,7 @@ const Header = ({ name, email }) => {
   const profileImageUri = useProfileImage();
   const [subscriptionData, setSubscriptionData] = useState(null); // Store subscription data
   const [loading, setLoading] = useState(true); // Track loading state
+  const [reload, setReload] = useState(false); // Track reload state
 
   useEffect(() => {
     const fetchUserSubscription = async () => {
@@ -34,7 +36,14 @@ const Header = ({ name, email }) => {
     };
 
     fetchUserSubscription();
-  }, [email]);
+  }, [email, reload]); // Dependency includes email and reload
+
+  // Function to reload data
+  const handleReload = () => setReload((prev) => !prev); // Toggle reload state
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>

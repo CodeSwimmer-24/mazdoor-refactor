@@ -19,14 +19,14 @@ const SubscriptionUi = ({
         onPress={() => setSubscriptionModalVisible(false)}
         style={styles.iconContainer}
       >
-        <AntDesign name="left" size={22} color="black" />
+        {/* <AntDesign name="left" size={22} color="black" /> */}
       </TouchableOpacity>
       <View style={styles.profileContainer}>
-        <Image source={profileImageUri} style={styles.profileImage} />
-        <View style={styles.profileTextContainer}>
+        {/* <Image source={profileImageUri} style={styles.profileImage} /> */}
+        {/* <View style={styles.profileTextContainer}>
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.subscriptionType}>Full access Subscription</Text>
-        </View>
+        </View> */}
       </View>
       <View style={styles.planContainer}>
         <Text style={styles.planTitle}>Choose a plan</Text>
@@ -51,13 +51,10 @@ const SubscriptionUi = ({
                 <View style={styles.cardInnerContainer}>
                   <View>
                     <Text style={styles.cardTitle}>
-                      {subscription.subscriptionDuration}
+                      For {subscription.subscriptionDesc}
                     </Text>
                     <Text style={styles.cardPrice}>
                       ₹ {subscription.price}{" "}
-                      <Text style={styles.cardPriceFrequency}>
-                        /{subscription.subscriptionDuration}
-                      </Text>
                     </Text>
                   </View>
                   <View
@@ -79,7 +76,7 @@ const SubscriptionUi = ({
             <Text>Loading subscriptions...</Text>
           )}
         </View>
-        <View style={{ marginTop: 20 }}>
+        {/* <View style={{ marginTop: 20 }}>
           {benefits.map((benefit, index) => (
             <View key={index} style={styles.benefitContainer}>
               <AntDesign name="checkcircle" size={18} color={colors.primary} />
@@ -88,7 +85,7 @@ const SubscriptionUi = ({
               </View>
             </View>
           ))}
-        </View>
+        </View> */}
       </View>
     </>
   );
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-end",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   profileContainer: {
     flexDirection: "row",
@@ -127,7 +124,7 @@ const styles = StyleSheet.create({
   },
   planContainer: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 26,
   },
   planTitle: {
     fontSize: 20,

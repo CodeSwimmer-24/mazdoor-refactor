@@ -9,21 +9,17 @@ import {
   Dimensions,
   BackHandler,
   Alert,
+  Linking,
 } from "react-native";
 import axios from "axios";
 import { hostUrl } from "../../../../../services";
 import { useAuthStore } from "../../../../../zustand/authStore";
 import SubscriptionUi from "./SubscriptionUi";
 import colors from "../../../../../constants/colors";
-import RazorpayCheckout from "react-native-razorpay";
-import { rzp_logo } from "../../../../../constants/UpiPayments";
-import { RAZORPAY_KEY } from "@env"; // Import Razorpay key from .env
 
 const benefits = [
   "Access to all service providers",
   "Book unlimited services of your choice",
-  "Large collection of service providers",
-  "Find service near your location",
 ];
 
 const Subscription = ({
@@ -56,7 +52,9 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false}`
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${
+            role === "customer" ? true : false
+          }`
         );
         const subscriptionData = response.data.map((item) => ({
           subscriptionId: item.subscriptionId,
@@ -94,7 +92,7 @@ const Subscription = ({
     setSelectedPlan(plan);
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     const selectedSubscription = subscriptions.find(
       (subscription) => subscription.subscriptionDuration === selectedPlan
     );
@@ -104,57 +102,46 @@ const Subscription = ({
       return;
     }
 
-    const amountInPaise = selectedSubscription.price * 100;
+    // Construct the UPI link
+    const upiId = "digitracktui.rzp@mairtel"; // Replace with actual UPI ID
+    const upiUrl = `upi://pay?pa=${upiId}&pn=DigiMazdoor&am=${selectedSubscription.price}&cu=INR&tn=Subscription payment`;
 
-    const options = {
-      description: "Subscription payment",
-      image: rzp_logo,
-      currency: "INR",
-      key: RAZORPAY_KEY, // Use the key from the .env file
-      amount: amountInPaise,
-      name: "DigiMazdoor",
-      prefill: {
-        email: email,
-        contact: contact,
-        name: name,
-      },
-      theme: { color: colors.primary },
-      method: "upi",
-      upi: {
-        vpa: "success@razorpay",
-      },
-    };
+    // Open UPI payment link
+    try {
+      await Linking.openURL(upiUrl);
+      Alert.alert(
+        "Payment Initiated",
+        "Please complete the payment in the UPI app."
+      );
 
-    RazorpayCheckout.open(options)
-      .then(async (data) => {
-        Alert.alert("Payment Successful", "Thanks for subscribing");
+      // Confirm the payment success
+      // (You might want to add further validation here based on your requirements)
+      const payload = {
+        emailId: email,
+        selectedSubscriptionId: selectedSubscription.subscriptionId,
+        subscriptionDesc: selectedSubscription.subscriptionDesc,
+        subscriptionDuration: selectedSubscription.subscriptionDuration,
+        subscriptionStatus: true,
+      };
 
-        const payload = {
-          emailId: email,
-          selectedSubscriptionId: selectedSubscription.subscriptionId,
-          subscriptionDesc: selectedSubscription.subscriptionDesc,
-          subscriptionDuration: selectedSubscription.subscriptionDuration,
-          subscriptionStatus: true,
-        };
-
-        try {
-          const response = await axios.post(
-            `${hostUrl}/mazdoor/v1/addUserSubscription`,
-            payload
-          );
-          if (response.status === 200) {
-            setIsSubscribed(true);
-            setReload(true);
-          }
-        } catch (error) {
-          console.error("Subscription Fail, Please try again", error);
+      try {
+        const response = await axios.post(
+          `${hostUrl}/mazdoor/v1/addUserSubscription`,
+          payload
+        );
+        if (response.status === 200) {
+          Alert.alert("Payment Successful", "Thanks for subscribing");
+          setIsSubscribed(true);
+          setReload(true);
         }
-      })
-      .catch((error) => {
-        Alert.alert("Fail to subscribe, Please try again");
-      });
+      } catch (error) {
+        console.error("Error adding subscription:", error);
+        Alert.alert("Error", "Subscription failed, please try again.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to initiate UPI payment.");
+    }
   };
-
   return (
     <Modal
       visible={subscriptionModalVisible}
@@ -187,7 +174,10 @@ const Subscription = ({
                 </Text>
               </View>
             ) : (
-              <TouchableOpacity onPress={handlePayment} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={handlePayment}
+                style={styles.closeButton}
+              >
                 <Text style={styles.closeButtonText}>Go to payment</Text>
               </TouchableOpacity>
             )}
@@ -210,22 +200,27 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 1,
+    height: height * 0.7,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 10,
+    // padding: 10,
     overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
+    // paddingBottom: 60, // Add padding to prevent overlap with button
   },
   closeButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
     alignItems: "center",
-    padding: 10,
+    paddingVertical: 10,
+    backgroundColor: "white",
   },
   closeButton: {
     backgroundColor: colors.baseColor,
-    width: "95%",
+    width: "100%",
     alignItems: "center",
     paddingVertical: 15,
     borderRadius: 10,
@@ -237,10 +232,10 @@ const styles = StyleSheet.create({
   },
   alreadySubs: {
     backgroundColor: "#4caf50",
-    width: "95%",
+    width: "100%",
     alignItems: "center",
     paddingVertical: 15,
-    borderRadius: 10,
+    // borderRadius: 10,
     elevation: 5,
   },
 });
