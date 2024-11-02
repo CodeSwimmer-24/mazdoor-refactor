@@ -96,65 +96,88 @@ const Subscription = ({
     setSelectedPlan(plan);
   };
 
-  const handlePayment = () => {
+  // Function to initiate the order and payment
+  const [loading, setLoading] = useState(false);
+
+  const handlePayment = async () => {
+    setLoading(true); // Start loading spinner
     const selectedSubscription = subscriptions.find(
       (subscription) => subscription.subscriptionDuration === selectedPlan
     );
 
     if (!selectedSubscription) {
       Alert.alert("Error", "Selected plan not found");
+      setLoading(false);
       return;
     }
 
-    const amountInPaise = selectedSubscription.price * 100;
+    const amountInPaise = selectedSubscription.price;
 
-    const options = {
-      description: "Subscription payment",
-      image: rzp_logo,
-      currency: "INR",
-      key: RAZORPAY_KEY, // Use the key from the .env file
-      amount: amountInPaise,
-      name: "DigiMazdoor",
-      prefill: {
-        email: email,
-        contact: contact,
-        name: name,
-      },
-      theme: { color: colors.primary },
-      method: "upi",
-      upi: {
-        vpa: "success@razorpay",
-      },
-    };
+    try {
+      // Step 1: Create the order on your backend
+      const orderResponse = await axios.post(
+        `https://digimazdoor.tech/api/payment/create-order?amount=${amountInPaise}`,
+        { amount: amountInPaise }
+      );
 
-    RazorpayCheckout.open(options)
-      .then(async (data) => {
-        Alert.alert("Payment Successful", "Thanks for subscribing");
+      const { id: order_id } = orderResponse.data;
 
-        const payload = {
-          emailId: email,
-          selectedSubscriptionId: selectedSubscription.subscriptionId,
-          subscriptionDesc: selectedSubscription.subscriptionDesc,
-          subscriptionDuration: selectedSubscription.subscriptionDuration,
-          subscriptionStatus: true,
-        };
+      const options = {
+        description: "Subscription payment",
+        image: rzp_logo,
+        currency: "INR",
+        key: "rzp_live_RMYwcPK8bcsyU6", // Make sure the key is imported correctly
+        amount: amountInPaise,
+        order_id: order_id,
+        name: "DigiMazdoor",
+        prefill: {
+          email: email,
+          contact: contact,
+          name: name,
+        },
+        theme: { color: colors.primary },
+      };
 
-        try {
-          const response = await axios.post(
+      // Step 2: Open Razorpay Checkout
+      RazorpayCheckout.open(options)
+        .then(async (data) => {
+          // Payment successful
+          Alert.alert("Payment Successful", "Thanks for subscribing");
+
+          // Step 3: Send confirmation to backend
+          const payload = {
+            emailId: email,
+            selectedSubscriptionId: selectedSubscription.subscriptionId,
+            subscriptionDesc: selectedSubscription.subscriptionDesc,
+            subscriptionDuration: selectedSubscription.subscriptionDuration,
+            subscriptionStatus: true,
+            paymentId: data.razorpay_payment_id, // Razorpay Payment ID
+            orderId: order_id, // Order ID from backend
+          };
+
+          await axios.post(
             `${hostUrl}/mazdoor/v1/addUserSubscription`,
             payload
           );
-          if (response.status === 200) {
-            setIsSubscribed(true);
-            setReload(true);
-          }
-        } catch (error) {
-          console.error("Subscription Fail, Please try again", error);
-        }
-      })
-      .catch((error) => {
-        Alert.alert("Fail to subscribe, Please try again");
-      });
+
+          setIsSubscribed(true);
+          setReload((prev) => !prev); // Reload subscription data
+        })
+        .catch((error) => {
+          console.error("Payment error:", error);
+          Alert.alert("Subscription failed", "Please try again");
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading spinner
+        });
+    } catch (error) {
+      console.error("Order creation or payment failed:", error);
+      Alert.alert(
+        "Error",
+        "Unable to initiate payment, please try again later."
+      );
+      setLoading(false); // Stop loading spinner
+    }
   };
 
   return (
@@ -183,7 +206,7 @@ const Subscription = ({
           <View style={styles.closeButtonContainer}>
             {isSubscribed?.isSubscribed ? (
               <View style={styles.alreadySubs}>
-                <Text style={styles.closeButtonText}>
+                <Text style={styles.btnTxt}>
                   Your {isSubscribed?.subscriptionDuration} plan will expire on{" "}
                   {isSubscribed.subscriptionExpiryDate} 🎉
                 </Text>
@@ -193,7 +216,7 @@ const Subscription = ({
                 onPress={handlePayment}
                 style={styles.closeButton}
               >
-                <Text style={styles.closeButtonText}>Go to payment</Text>
+                <Text style={styles.closeButtonText}>Go to Payment</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -229,24 +252,30 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   closeButton: {
-    backgroundColor: colors.baseColor,
-    width: "95%",
+    backgroundColor: colors.primary,
+    width: "100%",
     alignItems: "center",
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 2,
     elevation: 5,
   },
   closeButtonText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "white",
+    fontWeight: "600",
   },
   alreadySubs: {
     backgroundColor: "#4caf50",
-    width: "95%",
+    width: "100%",
     alignItems: "center",
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 2,
     elevation: 5,
+  },
+  btnTxt: {
+    fontSize: 15,
+    color: "white",
+    fontWeight: "400",
   },
 });
 
