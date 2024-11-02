@@ -1,22 +1,26 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
-  Modal,
+  ScrollView,
+  SafeAreaView,
   Linking,
+  Share,
 } from "react-native";
-import React, { useState } from "react";
-import { Feather, Entypo } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  Entypo,
+} from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Account from "../Modals/Account";
 import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
-import ShareApp from "../Modals/ShareApp";
 import Footer from "./Footer";
-import Notification from "../Modals/Notification/Notification";
 
-const Body = ({
+const Profile = ({
+  navigation,
   buildingAddress,
   locality,
   name,
@@ -33,81 +37,131 @@ const Body = ({
     useState(false);
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
     useState(false);
-  const [shareAppVisible, setShareAppVisible] = useState(false);
   const [logoutVisible, setLogoutVisible] = useState(false);
 
-  const renderRow = (title, subtitle, icon, stateSetter) => (
-    <TouchableOpacity
-      onPress={() => {
-        if (title === "Your Feedback") {
-          Linking.openURL(
-            "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor&pcampaignid=web_share"
-          );
-        } else {
-          stateSetter(true);
-        }
-      }}
-      style={styles.row}
-    >
-      <View style={styles.rowLeft}>
-        <View style={styles.iconWrapper}>
-          <Feather name={icon} size={20} color={colors.primary} />
-        </View>
-        <View style={styles.textWrapper}>
-          <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.subtitleText}>{subtitle}</Text>
-        </View>
-      </View>
-      <Entypo name="chevron-right" size={26} color="gray" />
-    </TouchableOpacity>
-  );
+  // Function to handle external linking
+  const openURL = (url) => Linking.openURL(url);
+
+  // Function to handle app sharing
+  const shareApp = async () => {
+    try {
+      await Share.share({
+        message:
+          "Check out DigiMazdoor App: https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor",
+      });
+    } catch (error) {
+      console.error("Error sharing the app:", error);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        {renderRow(
-          "My Account",
-          "View your account details",
-          "user",
-          setAccountModalVisible
-        )}
-        {renderRow(
-          "Edit Account",
-          "Edit your account details",
-          "edit",
-          setEditAccountModalVisible
-        )}
-        {renderRow(
-          "Notifications",
-          "View your notifications",
-          "bell",
-          setNotificationsModalVisible
-        )}
-        {renderRow(
-          "Subscription",
-          "View Subscription plan",
-          "dollar-sign",
-          setSubscriptionModalVisible
-        )}
-        {renderRow(
-          "Your Feedback",
-          "Share your feedback in playstore.",
-          "message-circle",
-          () => { } // No state setter needed for opening URL
-        )}
-        {renderRow(
-          "Share",
-          "Share this app with your friends.",
-          "share-2",
-          setShareAppVisible
-        )}
-        {renderRow(
-          "Logout",
-          "It you want to logout from this app.",
-          "share",
-          setLogoutVisible
-        )}
-      </View>
+    <SafeAreaView>
+      <ScrollView>
+        {/* Feature's Setting Section */}
+        <View style={{}}>
+          <SectionHeader title="Feature's Setting" />
+          {renderSettingOption(
+            "View Your Account",
+            "view-dashboard-outline",
+            MaterialCommunityIcons,
+            () => setAccountModalVisible(true)
+          )}
+          {renderSettingOption(
+            "Edit Profile Details",
+            "circle-edit-outline",
+            MaterialCommunityIcons,
+            () => setEditAccountModalVisible(true)
+          )}
+        </View>
+
+        {/* Support and Subscription Section */}
+        <View style={{ marginTop: 20 }}>
+          <SectionHeader title="Support and Subscription" />
+          {renderSettingOption(
+            "Subscribe & Unlock all feature's",
+            "currency-rupee",
+            MaterialIcons,
+            () => setSubscriptionModalVisible(true)
+          )}
+          {renderSettingOption(
+            "Feedback & Reports",
+            "message-alert-outline",
+            MaterialCommunityIcons,
+            () =>
+              openURL(
+                "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor"
+              )
+          )}
+          {renderSettingOption(
+            "Rate us on Playstore",
+            "star-outline",
+            MaterialIcons,
+            () =>
+              openURL(
+                "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor"
+              )
+          )}
+          {renderSettingOption(
+            "Share DigiMazdoor App",
+            "share-all-outline",
+            MaterialCommunityIcons,
+            shareApp
+          )}
+        </View>
+
+        {/* Contact Section */}
+        <View style={{ marginTop: 20 }}>
+          <SectionHeader title="Contact" />
+          {renderSettingOption("About Us", "info-outline", MaterialIcons, () =>
+            openURL("https://mazdoor-website.pages.dev/")
+          )}
+          {renderSettingOption(
+            "WhatsApp",
+            "whatsapp",
+            MaterialCommunityIcons,
+            () => openURL("https://wa.me/7272977850")
+          )}
+          {renderSettingOption(
+            "Instagram",
+            "instagram",
+            MaterialCommunityIcons,
+            () => openURL("https://www.instagram.com/digimazdoor.tech/")
+          )}
+        </View>
+
+        {/* Terms and Conditions Section */}
+        <View style={{ marginTop: 40 }}>
+          <SectionHeader title="Terms Conditions & Policy" />
+          {renderSettingOption(
+            "Terms & Conditions",
+            "newspaper-variant-multiple",
+            MaterialCommunityIcons,
+            () => openURL("https://mazdoor-website.pages.dev/term&condition")
+          )}
+          {renderSettingOption(
+            "Privacy Policy",
+            "security",
+            MaterialCommunityIcons,
+            () => openURL("https://mazdoor-website.pages.dev/policy")
+          )}
+        </View>
+
+        {/* Logout Section */}
+        <View style={{ marginTop: 0, marginBottom: 50 }}>
+          <SectionHeader />
+          {renderSettingOption("Logout", "logout", MaterialIcons, () =>
+            setLogoutVisible(true)
+          )}
+          {/* {renderSettingOption(
+            "Delete Account",
+            "delete-outline",
+            MaterialCommunityIcons,
+            () => setLogoutVisible(true)
+          )} */}
+        </View>
+      </ScrollView>
+
+      {/* Modals */}
       <Account
         accountModalVisible={accountModalVisible}
         setAccountModalVisible={setAccountModalVisible}
@@ -141,75 +195,51 @@ const Body = ({
         email={email}
         role={role}
       />
-      <ShareApp
-        shareAppVisible={shareAppVisible}
-        setShareAppVisible={setShareAppVisible}
-      />
       <Footer
         logoutVisible={logoutVisible}
         setLogoutVisible={setLogoutVisible}
       />
-      <Notification
-        notificationsModalVisible={notificationsModalVisible}
-        setNotificationsModalVisible={setNotificationsModalVisible}
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    marginTop: 40,
-  },
-  card: {
-    width: "90%",
-    padding: 16,
-    backgroundColor: "white",
-    borderRadius: 10,
-    elevation: 3,
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 30,
-  },
-  rowLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  iconWrapper: {
-    marginLeft: 2,
-    backgroundColor: "#673de71a",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderRadius: 50,
-  },
-  textWrapper: {
-    marginLeft: 15,
-  },
-  titleText: {
-    fontSize: 16,
-    color: "#505050",
-    fontWeight: "400",
-  },
-  subtitleText: {
-    fontSize: 12,
-    color: "gray",
-    fontWeight: "300",
-  },
-  modalView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  closeText: {
-    marginTop: 20,
-    color: colors.primary,
-  },
-});
+const SectionHeader = ({ title }) => (
+  <View style={{ paddingHorizontal: 20, marginBottom: 5 }}>
+    <Text style={{ color: colors.gray, fontSize: 13, marginBottom: 5 }}>
+      {title}
+    </Text>
+    <View style={{ height: 0.7, backgroundColor: "lightgray" }} />
+  </View>
+);
 
-export default Body;
+const renderSettingOption = (label, iconName, IconComponent, onPress) => (
+  <TouchableOpacity style={styles.optionContainer} onPress={onPress}>
+    <View style={styles.optionContent}>
+      <IconComponent name={iconName} size={22} color="#696969" />
+      <Text style={styles.optionText}>{label}</Text>
+    </View>
+    <Entypo name="chevron-right" size={22} color="#383838" />
+  </TouchableOpacity>
+);
+
+const styles = {
+  optionContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderBottomColor: "#e0e0e0",
+  },
+  optionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  optionText: {
+    paddingLeft: 10,
+    fontSize: 15,
+    color: "#383838",
+  },
+};
+
+export default Profile;
