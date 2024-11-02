@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import Header from "../../../Customer/Home/components/Header";
 import { useAuthStore } from "../../../../zustand/authStore";
@@ -11,7 +11,7 @@ const MazdoorHome = () => {
   const { name, locality, buildingAddress, role } = useAuthStore();
 
   return (
-    <View
+    <ScrollView
       style={{
         height: "100%",
         backgroundColor: colors.white,
@@ -25,7 +25,7 @@ const MazdoorHome = () => {
       <ViewSubscription />
       <Status />
       <Verification />
-    </View>
+    </ScrollView>
   );
 };
 

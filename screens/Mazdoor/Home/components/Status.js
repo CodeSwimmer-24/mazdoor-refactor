@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
-  StyleSheet,
   Text,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import colors from "../../../../constants/colors";
-import { useAuthStore } from "../../../../zustand/authStore";
 import { hostUrl } from "../../../../services";
+import { useServiceProviderStore } from "../../../../zustand/serviceProviderStore";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Status = () => {
   const [value, setValue] = useState(null);
@@ -19,6 +21,10 @@ const Status = () => {
   const [loading, setLoading] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(null);
   const [statusLoading, setStatusLoading] = useState(true);
+  const { serviceProvider } = useServiceProviderStore();
+  const navigation = useNavigation();
+
+  const [showAvailability, setshowAvailability] = useState(false);
 
   const { email } = useAuthStore();
 
@@ -28,25 +34,38 @@ const Status = () => {
   ];
 
   useEffect(() => {
-    const fetchStatus = async () => {
+    if (serviceProvider) {
+      setCurrentStatus(serviceProvider.availability);
+      setStatusLoading(false);
+    }
+  }, [serviceProvider]);
+
+  const handleRegisterPress = () => {
+    navigation.navigate("Shop");
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
           `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
         );
-        const result = await response.json();
+        const data = await response.json();
 
-        if (response.ok) {
-          setCurrentStatus(result.serviceProvider.availability);
-          setValue(result.serviceProvider.availability); // Initialize value with the fetched status
+        // Check if serviceProvider exists before accessing availability
+        if (data.serviceProvider) {
+          setshowAvailability(data.serviceProvider.availability);
+        } else {
+          console.warn("Service provider data not found.");
+          setshowAvailability(false); // or handle as needed, e.g., set to a default value
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching service provider details:", error);
       } finally {
-        setStatusLoading(false);
+        setLoading(false);
       }
     };
-
-    fetchStatus();
+    fetchData();
   }, [email]);
 
   const updateStatus = async () => {
@@ -59,49 +78,52 @@ const Status = () => {
 
     try {
       const response = await fetch(
-        `${hostUrl}/mazdoor/v1/updateServiceProvider/${email}`,
+        `${hostUrl}/mazdoor/v1/updateSPStatus?availability=${value}&emailId=${email}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            availability: value,
-          }),
         }
       );
 
       if (response.ok) {
         Alert.alert("Status Updated Successfully");
-        setCurrentStatus(value); // Update the current status
+        setCurrentStatus(value);
       } else {
-        const errorData = await response.json();
+        Alert.alert("Failed to update status.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      Alert.alert("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  if (!serviceProvider) {
+    return (
+      <View style={styles.registrationContainer}>
+        <Text style={styles.registrationTitle}>Service Registration</Text>
+        <Text style={styles.registrationText}>
+          कृपया अपनी दुकान/काम को DigiMazdoor पर रजिस्टर करें।
+        </Text>
+        <TouchableOpacity
+          onPress={handleRegisterPress}
+          style={styles.registerButton}
+        >
+          <Text style={styles.registerButtonText}>
+            Please Register your shop...
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.label}>Your Status</Text>
-        {statusLoading ? (
-          <ActivityIndicator size="small" color={colors.primary} />
-        ) : (
-          <Text
-            style={[
-              styles.currentStatusText,
-              {
-                color: currentStatus ? "#4caf50" : colors.danger,
-              },
-            ]}
-          >
-            {currentStatus ? "Available" : "Not Available"}
-          </Text>
-        )}
+        <Text style={styles.label}>Set Your Status</Text>
       </View>
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: colors.primary }]}
@@ -110,8 +132,8 @@ const Status = () => {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? "Select Status" : "..."}
-        value={value} // Bind directly to value for immediate display
+        placeholder={!isFocus ? "Select your status" : "..."}
+        value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
@@ -191,6 +213,35 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontWeight: "400",
+  },
+  registrationContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  registrationTitle: {
+    fontSize: 32,
+    fontWeight: "400",
+    color: colors.baseColor,
+    marginBottom: 10,
+  },
+  registrationText: {
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 10,
+    color: "gray",
+  },
+  registerButton: {
+    marginTop: 20,
+    backgroundColor: colors.primary,
+    width: "80%",
+    paddingVertical: 12,
+    borderRadius: 8,
+    elevation: 5,
+  },
+  registerButtonText: {
+    color: colors.white,
+    fontSize: 14,
+    textAlign: "center",
   },
 });
 

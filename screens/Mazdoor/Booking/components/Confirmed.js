@@ -46,7 +46,7 @@ const Confirmed = () => {
 
   const compleatedBooking = (bookingId) => {
     setCompleated(true);
-    Alert.alert("Booking Compleated", "Have you compleated the service?", [
+    Alert.alert("Booking Completed", "Have you completed the service?", [
       {
         text: "Cancel",
         onPress: () => setCompleated(false),
@@ -161,7 +161,7 @@ const Confirmed = () => {
                 {compleated ? (
                   <ActivityIndicator size="small" color="#4caf50" />
                 ) : (
-                  <Text style={styles.acceptText}>Compleated</Text>
+                  <Text style={styles.acceptText}>Completed</Text>
                 )}
               </TouchableOpacity>
             </View>

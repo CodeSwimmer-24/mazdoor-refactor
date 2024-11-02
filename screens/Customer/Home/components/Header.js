@@ -27,20 +27,22 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 <Text style={styles.userName}>{name}</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
-              <View style={styles.notificationIconContainer}>
-                <Feather
-                  name="bell"
-                  size={moderateScale(22)}
-                  color={colors.primary}
-                />
-                <View style={styles.notificationCountContainer}>
-                  <Text style={styles.notificationCountText}>
-                    {notificationCount}
-                  </Text>
+            {role === "customer" && (
+              <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
+                <View style={styles.notificationIconContainer}>
+                  <Feather
+                    name="bell"
+                    size={moderateScale(22)}
+                    color={colors.primary}
+                  />
+                  <View style={styles.notificationCountContainer}>
+                    <Text style={styles.notificationCountText}>
+                      {notificationCount}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.locationContainer}>
             <View

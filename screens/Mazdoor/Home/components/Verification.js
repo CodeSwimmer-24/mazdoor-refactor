@@ -40,18 +40,32 @@ const Verification = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.verifyButton} onPress={toggleModal}>
-        <View>
+      <View style={styles.verifyButton}>
+        <View style={{ width: "80%" }}>
           <Text style={styles.verifyTitle}>Verify yourself</Text>
           <Text style={styles.verifySubtitle}>
-            Get your verification badge to verify yourself.
+            आधार कार्ड से अपना वेरीफिकेशन बैज प्राप्त करें और अपनी पहचान पक्की
+            करें।
           </Text>
         </View>
         <MaterialIcons name="verified" size={30} color={colors.success} />
+      </View>
+      <TouchableOpacity
+        onPress={toggleModal}
+        style={{
+          backgroundColor: colors.success,
+          paddingHorizontal: 80,
+          paddingVertical: 10,
+          marginTop: 10,
+          borderRadius: 10,
+          elevation: 5,
+        }}
+      >
+        <Text style={{ color: "white", fontWeight: "600" }}>Please Verify</Text>
       </TouchableOpacity>
 
       <Modal
-        transparent={true}
+        transparent
         visible={isModalVisible}
         animationType="slide"
         onRequestClose={toggleModal}
@@ -60,8 +74,8 @@ const Verification = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Send Your Aadhar Card</Text>
             <Text style={styles.modalMessage}>
-              Please send your Aadhar card to the number below for verification.
-              With your name and email or phone number.
+              Please send your Aadhar card to the number below for verification,
+              along with your name and email or phone number.
             </Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
@@ -85,23 +99,26 @@ const Verification = () => {
   );
 };
 
+export default Verification;
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     marginTop: 20,
+    marginBottom: 100,
   },
   verifyButton: {
     width: "85%",
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#4caf502a",
+    // backgroundColor: "#4caf502a",
     alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 14,
     borderRadius: 5,
   },
   verifyTitle: {
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: "500",
     color: colors.success,
     paddingVertical: 4,
@@ -171,5 +188,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
-export default Verification;

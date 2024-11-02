@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginLeft: moderateScale(40),
     resizeMode: "cover",
-    marginBottom: moderateScale(100)
+    marginBottom: moderateScale(100),
   },
   buttonContainer: {
     justifyContent: "center",
@@ -37,11 +37,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: colors.primary,
+    elevation: 3,
   },
   mazdoorButton: {
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: colors.primary,
+    elevation: 0,
   },
   buttonText: {
     textAlign: "center",
