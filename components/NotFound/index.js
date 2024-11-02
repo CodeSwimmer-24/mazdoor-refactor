@@ -15,7 +15,7 @@ const NotFound = ({ info, image }) => {
         <Image source={noData} style={styles.noDataImage} />
       )}
       <Text style={styles.noDataTitle}>Oops!</Text>
-      {role === "mazdoor" && (
+      {/* {role === "mazdoor" && (
         <Text
           style={{
             textAlign: "center",
@@ -27,7 +27,7 @@ const NotFound = ({ info, image }) => {
           This service is not avalable in this location, please try some other
           location or survice to get the service provider.
         </Text>
-      )}
+      )} */}
       <Text style={styles.noDataSubtitle}>{info}</Text>
     </View>
   );

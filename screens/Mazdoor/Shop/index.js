@@ -21,7 +21,7 @@ import { useServiceProviderStore } from "../../../zustand/serviceProviderStore";
 
 const Shop = () => {
   const [loading, setLoading] = useState(true);
-  const [shopRegisterForm, setShopRegisterForm] = useState(false);
+  const [shopRegisterForm, setShopRegisterForm] = useState(false); 
   const [editForm, setEditForm] = useState(false);
   const [existingData, setExistingData] = useState(null);
   const [reload, setReload] = useState(false);

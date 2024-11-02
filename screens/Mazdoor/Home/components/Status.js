@@ -51,7 +51,14 @@ const Status = () => {
           `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
         );
         const data = await response.json();
-        setshowAvailability(data.serviceProvider.availability);
+
+        // Check if serviceProvider exists before accessing availability
+        if (data.serviceProvider) {
+          setshowAvailability(data.serviceProvider.availability);
+        } else {
+          console.warn("Service provider data not found.");
+          setshowAvailability(false); // or handle as needed, e.g., set to a default value
+        }
       } catch (error) {
         console.error("Error fetching service provider details:", error);
       } finally {
@@ -116,19 +123,7 @@ const Status = () => {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.label}>Your Status</Text>
-        {statusLoading ? (
-          <ActivityIndicator size="small" color={colors.primary} />
-        ) : (
-          <Text
-            style={[
-              styles.currentStatusText,
-              { color: showAvailability ? "#4caf50" : colors.danger },
-            ]}
-          >
-            {showAvailability ? "Available" : "Not Available"}
-          </Text>
-        )}
+        <Text style={styles.label}>Set Your Status</Text>
       </View>
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: colors.primary }]}
@@ -137,7 +132,7 @@ const Status = () => {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? "Select Status" : "..."}
+        placeholder={!isFocus ? "Select your status" : "..."}
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
