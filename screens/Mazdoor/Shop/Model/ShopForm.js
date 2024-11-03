@@ -165,7 +165,10 @@ const ShopForm = ({
       }
     } catch (error) {
       console.error("Error adding ServiceProvider:", error);
-      Alert.alert("Error", "An error occurred while adding the ServiceProvider");
+      Alert.alert(
+        "Error",
+        "An error occurred while adding the ServiceProvider"
+      );
     } finally {
       setLoading(false);
     }
@@ -268,16 +271,16 @@ const ShopForm = ({
                 iconName="paper-plane-outline"
                 placeholder="Enter Short Description"
                 value={formData.short_description}
-                onChangeText={(text) =>
-                  handleChange("short_description", text)
-                }
+                onChangeText={(text) => handleChange("short_description", text)}
               />
-              <Text style={styles.textLabel}>Enter Base Price</Text>
+              <Text style={styles.textLabel}>Enter Visiting Charge</Text>
               <CustomTextInput
                 iconType="MaterialIcons"
                 iconName="currency-rupee"
-                placeholder="Enter Base Price"
-                value={formData.basePrice.toString()}
+                placeholder="Enter Visiting Charge"
+                value={
+                  formData.basePrice === 0 ? "" : formData.basePrice.toString()
+                }
                 onChangeText={(text) => handleChange("basePrice", text)}
               />
             </View>
@@ -357,8 +360,7 @@ const styles = StyleSheet.create({
   },
   subCategoryText: {
     fontSize: 12,
-    color: colors.primary
-
+    color: colors.primary,
   },
   subCategorySelected: {
     backgroundColor: colors.primary,

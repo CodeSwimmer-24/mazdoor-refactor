@@ -77,11 +77,6 @@ const MazdoorRegister = () => {
       return;
     }
 
-    if (formData.aadharNo.length !== 12) {
-      Alert.alert("Error", "Aadhar number must be 12 digits");
-      return;
-    }
-
     if (formData.age.length !== 2) {
       Alert.alert("Error", "Age must be exactly 2 digits");
       return;
@@ -232,14 +227,14 @@ const MazdoorRegister = () => {
               onChangeText={(text) => handleChange("contact", text)}
               keyboardType="phone-pad"
             />
-            <CustomTextInput
+            {/* <CustomTextInput
               iconName="document-text-outline"
               iconType="Ionicons"
               placeholder="Aadhar Number"
               value={formData.aadharNo}
               onChangeText={(text) => handleChange("aadharNo", text)}
               keyboardType="phone-pad"
-            />
+            /> */}
             <CustomTextInput
               iconName="people"
               iconType="Ionicons"

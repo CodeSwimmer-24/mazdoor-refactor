@@ -50,7 +50,7 @@ const categories = [
   },
   {
     image: ac,
-    label: "Electronics",
+    label: "Electronics Repair",
     value: "Electronics Repair",
     subCategory: "All Categories, AC, Washing Machine, Fridge",
     backgroundColor: "#eff4f9",
@@ -81,14 +81,16 @@ const categories = [
     image: gutter,
     label: "Cleaning",
     value: "Cleaning",
-    subCategory: "All Categories, House Cleaning, Bathroom Cleaning, Sofa/Carpet Cleaning, Parking/Stairs Cleaning, Shop Cleaning",
+    subCategory:
+      "All Categories, House Cleaning, Bathroom Cleaning, Sofa/Carpet Cleaning, Parking/Stairs Cleaning, Shop Cleaning",
     backgroundColor: "#fef7e8",
   },
   {
     image: tile,
     label: "Mistiri",
     value: "Mistiri",
-    subCategory: "All Categories, Tile Mistri, Marble Mistri, Raj Mistri, Glass Mistri",
+    subCategory:
+      "All Categories, Tile Mistri, Marble Mistri, Raj Mistri, Glass Mistri",
     backgroundColor: "#edf9ed",
   },
   {
