@@ -49,12 +49,7 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
   };
 
   const handleSubmit = async () => {
-    const isValid = newField.every(
-      (field) =>
-        field.serviceName.trim() !== "" &&
-        field.description.trim() !== "" &&
-        field.price.trim() !== ""
-    );
+    const isValid = newField.every((field) => field.serviceName.trim() !== "");
 
     if (!isValid) {
       Alert.alert("Error", "Please enter all the required Information");

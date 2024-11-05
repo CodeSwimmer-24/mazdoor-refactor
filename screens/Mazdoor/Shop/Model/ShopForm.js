@@ -125,12 +125,7 @@ const ShopForm = ({
   };
 
   const addServiceProvider = async () => {
-    if (
-      formData.title.trim() === "" ||
-      formData.short_description.trim() === "" ||
-      formData.serviceType === "" ||
-      formData.basePrice <= 0
-    ) {
+    if (formData.title.trim() === "" || formData.serviceType === "") {
       Alert.alert("Error", "Please enter all the required information");
       return;
     }
@@ -380,6 +375,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginBottom: 50,
   },
   confirmButton: {
     backgroundColor: colors.primary,

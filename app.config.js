@@ -15,7 +15,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.mazdoor.digimazdoor",
-      buildNumber: "1.1.4",
+      buildNumber: "1.1.6",
     },
     android: {
       googleServicesFile: "./google-services.json",
@@ -24,7 +24,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.mazdoor.digimazdoor",
-      versionCode: 6,
+      versionCode: 8,
     },
     web: {
       favicon: "./assets/favicon.png",
