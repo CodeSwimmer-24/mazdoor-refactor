@@ -52,7 +52,8 @@ const categories = [
     image: ac,
     label: "Electronics Repair",
     value: "Electronics Repair",
-    subCategory: "All Categories, AC, Washing Machine, Fridge",
+    subCategory:
+      "All Categories, AC, Washing Machine, Fridge, Microwave, Induction",
     backgroundColor: "#eff4f9",
   },
   {

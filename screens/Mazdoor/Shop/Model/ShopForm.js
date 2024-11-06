@@ -260,14 +260,14 @@ const ShopForm = ({
                 </View>
               )}
 
-              <Text style={styles.textLabel}>Enter Short Description</Text>
+              {/* <Text style={styles.textLabel}>Enter Short Description</Text>
               <CustomTextInput
                 iconType="Ionicons"
                 iconName="paper-plane-outline"
                 placeholder="Enter Short Description"
                 value={formData.short_description}
                 onChangeText={(text) => handleChange("short_description", text)}
-              />
+              /> */}
               <Text style={styles.textLabel}>Enter Visiting Charge</Text>
               <CustomTextInput
                 iconType="MaterialIcons"
