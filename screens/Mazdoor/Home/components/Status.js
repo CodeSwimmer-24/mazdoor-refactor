@@ -22,8 +22,8 @@ const Status = ({ serviceProviderData, reloadData }) => {
   const { email } = useAuthStore();
   const navigation = useNavigation();
   const data = [
-    { label: "Available", value: true },
-    { label: "Not Available", value: false },
+    { label: "Online", value: true },
+    { label: "Offline", value: false },
   ];
 
   const handleRegisterPress = () => {
@@ -99,11 +99,11 @@ const Status = ({ serviceProviderData, reloadData }) => {
             <Text style={styles.label}>Set Your Status</Text>
             {status ? (
               <Text style={{ fontWeight: "600", color: "#49cc90" }}>
-                Available
+                Online
               </Text>
             ) : (
               <Text style={{ fontWeight: "600", color: colors.danger }}>
-                Un Available
+                Offline
               </Text>
             )}
           </View>

@@ -16,6 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuthStore } from "../../../../zustand/authStore";
 import axios from "axios";
 import { hostUrl } from "../../../../services";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
   const [rating, setRating] = useState(0);
@@ -28,28 +29,28 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
 
   const feedbackEmoji = [
     {
-      name: "emoticon-cry-outline",
-      solidName: "emoticon-cry",
+      name: "star-outline",
+      solidName: "star",
       value: 1,
     },
     {
-      name: "emoticon-sad-outline",
-      solidName: "emoticon-sad",
+      name: "star-outline",
+      solidName: "star",
       value: 2,
     },
     {
-      name: "emoticon-neutral-outline",
-      solidName: "emoticon-neutral",
+      name: "star-outline",
+      solidName: "star",
       value: 3,
     },
     {
-      name: "emoticon-happy-outline",
-      solidName: "emoticon-happy",
+      name: "star-outline",
+      solidName: "star",
       value: 4,
     },
     {
-      name: "medal-outline",
-      solidName: "medal",
+      name: "star-outline",
+      solidName: "star",
       value: 5,
     },
   ];
@@ -121,7 +122,7 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
                           : emoji.name
                       }
                       size={34}
-                      color={colors.primary}
+                      color="green"
                     />
                   </TouchableOpacity>
                 ))}
@@ -233,6 +234,7 @@ const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 10,
     elevation: 5,
+    marginBottom: 100,
   },
   submitButtonText: {
     textAlign: "center",

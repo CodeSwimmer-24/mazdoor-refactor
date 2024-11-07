@@ -44,7 +44,9 @@ const LoginUi = ({ onGoogleButtonPress }) => {
                 size={moderateScale(18)}
                 color="#fff"
               />
-              <Text style={styles.buttonText}>SignIn with User Account</Text>
+              <Text style={styles.buttonText}>
+                SignIn with Customer Account
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>

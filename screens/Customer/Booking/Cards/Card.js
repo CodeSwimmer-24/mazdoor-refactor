@@ -116,37 +116,38 @@ const Card = ({
             </View>
           </View>
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.footerLeft}>
-              <Text style={[styles.statusText, getStatusColor()]}>
-                {status.toUpperCase()}
-              </Text>
-            </TouchableOpacity>
             {status.toLowerCase() === "completed" ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setIsVisible(true);
-                }}
-                style={[
-                  styles.footerRight,
-                  {
-                    backgroundColor: "#4782da1a",
-                  },
-                ]}
-              >
-                <Entypo name="star" size={16} color="#4782da" />
-                <Text
+              <View>
+                <Text style={{ color: "green", fontWeight: "600" }}>
+                  Completed
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsVisible(true);
+                  }}
                   style={[
-                    styles.cancelText,
+                    styles.footerRight,
                     {
-                      color: "#4782da",
+                      backgroundColor: "#4782da1a",
                     },
                   ]}
                 >
-                  Feedback
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              status.toLowerCase() !== "rejected" && (
+                  <Entypo name="star" size={16} color="#4782da" />
+                  <Text
+                    style={[
+                      styles.cancelText,
+                      {
+                        color: "#4782da",
+                      },
+                    ]}
+                  >
+                    Feedback
+                  </Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity
                   onPress={() => {
                     setCancelVisible(true);
@@ -156,7 +157,7 @@ const Card = ({
                   <Entypo name="cross" size={16} color={colors.danger} />
                   <Text style={styles.cancelText}>CANCEL</Text>
                 </TouchableOpacity>
-              )
+              </View>
             )}
           </View>
         </View>
@@ -165,6 +166,7 @@ const Card = ({
           setIsVisible={setIsVisible}
           isVisible={isVisible}
           serviceType={profession}
+          bookingId={bookingId}
         />
       </TouchableOpacity>
       <Cancel
