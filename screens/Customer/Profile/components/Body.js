@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,9 @@ import Account from "../Modals/Account";
 import EditProfile from "../Modals/EditProfile";
 import Subscription from "../Modals/Subscription";
 import Footer from "./Footer";
+import axios from "axios";
+import { hostUrl } from "../../../../services";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Profile = ({
   navigation,
@@ -33,16 +36,51 @@ const Profile = ({
 }) => {
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [editAccountModalVisible, setEditAccountModalVisible] = useState(false);
+  const [appData, setAppData] = useState(null);
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false);
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
     useState(false);
   const [logoutVisible, setLogoutVisible] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state added
 
-  // Function to handle external linking
-  const openURL = (url) => Linking.openURL(url);
+  const [whatsAppNumber, setWhatsAppNumber] = useState(null);
+  const [youtubeVideo, setYoutubeVideo] = useState("");
 
-  // Function to handle app sharing
+  useEffect(() => {
+    const fetchAppData = async () => {
+      try {
+        const response = await axios.get(`${hostUrl}/mazdoor/v1/getAppData`);
+        const data = response.data;
+
+        if (data.length > 0) {
+          if (data[0].whatsAppNumber) {
+            console.log("WhatsApp Number:", data[0].whatsAppNumber);
+            setWhatsAppNumber(data[0].whatsAppNumber);
+          }
+
+          if (data[0].youtubeVideoLink) {
+            console.log("YouTube Video Link:", data[0].youtubeVideoLink);
+            setYoutubeVideo(data[0].youtubeVideoLink);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching app data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppData();
+  }, []);
+  const openURL = (url) => {
+    if (url && url.trim() !== "") {
+      Linking.openURL(url);
+    } else {
+      console.warn("Invalid URL: cannot be empty");
+    }
+  };
+  // Share App Functionality
   const shareApp = async () => {
     try {
       await Share.share({
@@ -58,7 +96,7 @@ const Profile = ({
     <SafeAreaView>
       <ScrollView>
         {/* Feature's Setting Section */}
-        <View style={{}}>
+        <View>
           <SectionHeader title="Feature's Setting" />
           {renderSettingOption(
             "View Your Account",
@@ -83,6 +121,13 @@ const Profile = ({
             MaterialIcons,
             () => setSubscriptionModalVisible(true)
           )}
+          {role === "mazdoor" &&
+            renderSettingOption(
+              "Youtube Demo Video",
+              "youtube",
+              MaterialCommunityIcons,
+              () => openURL(youtubeVideo)
+            )}
           {renderSettingOption(
             "Feedback & Reports",
             "message-alert-outline",
@@ -119,7 +164,7 @@ const Profile = ({
             "WhatsApp",
             "whatsapp",
             MaterialCommunityIcons,
-            () => openURL("https://wa.me/7272977850")
+            () => openURL(`https://wa.me/+91 ${whatsAppNumber}`)
           )}
           {renderSettingOption(
             "Instagram",
@@ -152,12 +197,6 @@ const Profile = ({
           {renderSettingOption("Logout", "logout", MaterialIcons, () =>
             setLogoutVisible(true)
           )}
-          {/* {renderSettingOption(
-            "Delete Account",
-            "delete-outline",
-            MaterialCommunityIcons,
-            () => setLogoutVisible(true)
-          )} */}
         </View>
       </ScrollView>
 
@@ -203,6 +242,7 @@ const Profile = ({
   );
 };
 
+// Section Header Component
 const SectionHeader = ({ title }) => (
   <View style={{ paddingHorizontal: 20, marginBottom: 5 }}>
     <Text style={{ color: colors.gray, fontSize: 13, marginBottom: 5 }}>
@@ -212,6 +252,7 @@ const SectionHeader = ({ title }) => (
   </View>
 );
 
+// Render Setting Option Component
 const renderSettingOption = (label, iconName, IconComponent, onPress) => (
   <TouchableOpacity style={styles.optionContainer} onPress={onPress}>
     <View style={styles.optionContent}>

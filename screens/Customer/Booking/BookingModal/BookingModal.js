@@ -171,7 +171,7 @@ const BookingModal = ({
                   </View>
                 </View>
                 <View style={styles.detailsContainer}>
-                  <View style={styles.detailBox}>
+                  {/* <View style={styles.detailBox}>
                     <View style={{ flexDirection: "row" }}>
                       <Ionicons name="call-outline" size={20} color="gray" />
                       {subscribe ? (
@@ -185,7 +185,7 @@ const BookingModal = ({
                     <TouchableOpacity onPress={copyToClipboard}>
                       <FontAwesome6 name="copy" size={18} color="gray" />
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                   {subscribe && (
                     <View style={styles.detailBox2}>
                       <View style={styles.detailRow}>
@@ -212,7 +212,7 @@ const BookingModal = ({
                 </View>
               </View>
 
-              {subscribe && (
+              {/* {subscribe && (
                 <View
                   style={[
                     styles.buttonContainer,
@@ -258,7 +258,7 @@ const BookingModal = ({
                     </Text>
                   </TouchableOpacity>
                 </View>
-              )}
+              )} */}
               {subscribe === false && (
                 <View style={styles.oppsContainer}>
                   <View
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.68,
+    height: height * 0.6,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

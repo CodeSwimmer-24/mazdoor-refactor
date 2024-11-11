@@ -34,7 +34,7 @@ const EditService = ({
   }, [serviceDetails]);
 
   const handleUpdateService = async () => {
-    if (!serviceName || !serviceDescription || !price || isNaN(price)) {
+    if (!serviceName) {
       Alert.alert(
         "Validation Error",
         "Please fill in all fields with valid values."
@@ -102,15 +102,15 @@ const EditService = ({
             onChangeText={setServiceName}
           />
 
-          <Text style={styles.label}>Service Description</Text>
+          {/* <Text style={styles.label}>Service Description</Text>
           <TextInput
             style={styles.input}
             placeholder="Service Description"
             value={serviceDescription}
             onChangeText={setServiceDescription}
-          />
+          /> */}
 
-          <Text style={styles.label}>Service Price</Text>
+          {/* <Text style={styles.label}>Service Price</Text>
           <TextInput
             style={styles.input}
             placeholder="Price"
@@ -121,7 +121,7 @@ const EditService = ({
               }
             }}
             keyboardType="numeric"
-          />
+          /> */}
 
           <TouchableOpacity
             style={styles.button}

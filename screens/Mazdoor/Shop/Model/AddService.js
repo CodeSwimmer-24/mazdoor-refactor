@@ -49,12 +49,7 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
   };
 
   const handleSubmit = async () => {
-    const isValid = newField.every(
-      (field) =>
-        field.serviceName.trim() !== "" &&
-        field.description.trim() !== "" &&
-        field.price.trim() !== ""
-    );
+    const isValid = newField.every((field) => field.serviceName.trim() !== "");
 
     if (!isValid) {
       Alert.alert("Error", "Please enter all the required Information");
@@ -104,31 +99,12 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
                 <View key={field.id} style={styles.field}>
                   <View style={styles.row}>
                     <TextInput
-                      placeholder="Name"
+                      placeholder="Service Name"
                       value={field.serviceName}
                       onChangeText={(text) =>
                         handleFieldChange(field.id, "serviceName", text)
                       }
                       style={styles.input}
-                    />
-                    <TextInput
-                      placeholder="Price"
-                      value={field.price}
-                      onChangeText={(text) =>
-                        handleFieldChange(field.id, "price", text)
-                      }
-                      style={styles.input}
-                      keyboardType="numeric"
-                    />
-                  </View>
-                  <View style={styles.descriptionRow}>
-                    <TextInput
-                      placeholder="Description"
-                      value={field.description}
-                      onChangeText={(text) =>
-                        handleFieldChange(field.id, "description", text)
-                      }
-                      style={[styles.input, { width: "80%" }]}
                     />
                     {newField.length > 1 && (
                       <TouchableOpacity
@@ -142,6 +118,25 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
                         />
                       </TouchableOpacity>
                     )}
+                    {/* <TextInput
+                      placeholder="Price"
+                      value={field.price}
+                      onChangeText={(text) =>
+                        handleFieldChange(field.id, "price", text)
+                      }
+                      style={styles.input}
+                      keyboardType="numeric"
+                    /> */}
+                  </View>
+                  <View style={styles.descriptionRow}>
+                    {/* <TextInput
+                      placeholder="Description"
+                      value={field.description}
+                      onChangeText={(text) =>
+                        handleFieldChange(field.id, "description", text)
+                      }
+                      style={[styles.input, { width: "80%" }]}
+                    /> */}
                   </View>
                 </View>
               ))}
@@ -220,7 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    width: "48%",
+    width: "90%",
   },
   removeButton: {
     paddingHorizontal: 10,

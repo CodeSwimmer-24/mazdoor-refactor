@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { Entypo, FontAwesome6 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import { useAuthStore } from "../../../../zustand/authStore";
 import CustomTextInput from "../../../../components/TextInput";
 import { hostUrl } from "../../../../services";
-import { Dropdown } from "react-native-element-dropdown";
 
 const EditShopDetails = ({
   editForm,
@@ -22,45 +21,31 @@ const EditShopDetails = ({
   setReload,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [services, setServices] = useState([]);
   const { email } = useAuthStore((state) => ({ email: state.email }));
 
-  const initialFormData = {
+  // Initial state with only two fields: title and basePrice
+  const [formData, setFormData] = useState({
     title: "",
-    short_description: "",
-    serviceType: "",
     basePrice: 0,
-    availability: true,
-  };
+  });
 
-  const [formData, setFormData] = useState(initialFormData);
-
+  // Populate form data with existing data when available
   useEffect(() => {
     if (existingData) {
-      setFormData(existingData);
+      setFormData({
+        title: existingData.title || "",
+        basePrice: existingData.basePrice || 0,
+      });
     }
   }, [existingData]);
 
-  useEffect(() => {
-    fetchServices();
-  }, []);
-
-  const fetchServices = async () => {
-    try {
-      const response = await fetch(`${hostUrl}/mazdoor/v1/getAllServices`);
-      const data = await response.json();
-      setServices(data);
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
-  };
-
+  // Handler to update form data
   const handleChange = (name, value) => {
     if (name === "basePrice") {
       const parsedValue = parseFloat(value);
       setFormData({
         ...formData,
-        [name]: isNaN(parsedValue) ? value : parsedValue,
+        [name]: isNaN(parsedValue) ? 0 : parsedValue,
       });
     } else {
       setFormData({
@@ -70,7 +55,8 @@ const EditShopDetails = ({
     }
   };
 
-  const addServiceProvider = async () => {
+  // Function to update service provider details
+  const updateServiceProvider = async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -80,20 +66,19 @@ const EditShopDetails = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...formData,
-            availability: true,
-          }),
+          body: JSON.stringify(formData),
         }
       );
+
       if (response.ok) {
         setEditForm(false);
         setReload((prev) => !prev);
       } else {
-        console.error("Failed to update ServiceProvider");
+        const errorText = await response.text();
+        console.error("Failed to update ServiceProvider:", errorText);
       }
     } catch (error) {
-      console.error("Error updating ServiceProvider:", error);
+      console.error("Error updating ServiceProvider:", error.message);
     } finally {
       setLoading(false);
     }
@@ -107,51 +92,41 @@ const EditShopDetails = ({
           onPress={() => setEditForm(false)}
         />
         <ScrollView style={styles.modalContent}>
-          <View>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Enter Shop Details</Text>
-              <TouchableOpacity
-                onPress={() => setEditForm(false)}
-                style={styles.closeButton}
-              >
-                <Entypo name="cross" size={20} color={colors.danger} />
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
-              <Text style={styles.textLabel}>Enter Shop Details</Text>
-              <CustomTextInput
-                iconName="store"
-                placeholder="Enter Shop Name"
-                value={formData.title}
-                onChangeText={(text) => handleChange("title", text)}
-              />
-              <Text style={styles.textLabel}>Enter Shop Discription</Text>
-              <CustomTextInput
-                iconType="Ionicons"
-                iconName="paper-plane-outline"
-                placeholder="Enter Short Description"
-                value={formData.short_description}
-                onChangeText={(text) => handleChange("short_description", text)}
-              />
-              <Text style={styles.textLabel}>Enter Base Price</Text>
-              <CustomTextInput
-                iconType="MaterialIcons"
-                iconName="currency-rupee"
-                placeholder="Enter Base Price"
-                value={formData.basePrice.toString()}
-                onChangeText={(text) => handleChange("basePrice", text)}
-                keyboardType="numeric"
-              />
-            </View>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Edit Shop Details</Text>
+            <TouchableOpacity
+              onPress={() => setEditForm(false)}
+              style={styles.closeButton}
+            >
+              <Entypo name="cross" size={20} color={colors.danger} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
+            <Text style={styles.textLabel}>Enter Shop Name</Text>
+            <CustomTextInput
+              iconName="store"
+              placeholder="Enter Shop Name"
+              value={formData.title}
+              onChangeText={(text) => handleChange("title", text)}
+            />
+            <Text style={styles.textLabel}>Enter Base Price</Text>
+            <CustomTextInput
+              iconType="MaterialIcons"
+              iconName="currency-rupee"
+              placeholder="Enter Base Price"
+              value={formData.basePrice.toString()}
+              onChangeText={(text) => handleChange("basePrice", text)}
+              keyboardType="numeric"
+            />
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={addServiceProvider}
+              onPress={updateServiceProvider}
               style={[styles.button, styles.confirmButton]}
               disabled={loading}
             >
               <Text style={styles.buttonText}>
-                {loading ? "Registering..." : "Edit Details"}
+                {loading ? "Updating..." : "Edit Details"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -178,45 +153,40 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    overflow: "hidden",
     borderTopWidth: 0.5,
     borderTopColor: "lightgray",
   },
   header: {
-    padding: 10,
-    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
   },
   headerText: {
     fontSize: 18,
     color: "gray",
-  },
-  textLabel: {
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    fontSize: 13,
-    fontWeight: "500",
-    color: colors.primary,
   },
   closeButton: {
     backgroundColor: colors.dangerBackground,
     padding: 5,
     borderRadius: 50,
   },
+  textLabel: {
+    paddingVertical: 5,
+    fontSize: 13,
+    fontWeight: "500",
+    color: colors.primary,
+  },
   buttonContainer: {
     alignItems: "center",
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   button: {
     width: "100%",
-    alignItems: "center",
     paddingVertical: 12,
     borderRadius: 10,
-    flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
   },
   confirmButton: {
     backgroundColor: colors.primary,
@@ -225,18 +195,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "400",
-  },
-  dropdownButton: {
-    borderWidth: 1,
-    borderColor: "#D0D0D0",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
-  icon: {
-    marginRight: 10,
   },
 });
 

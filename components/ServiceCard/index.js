@@ -1,7 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import colors from "../../constants/colors";
-import { MaterialCommunityIcons, Fontisto, MaterialIcons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Fontisto,
+  MaterialIcons,
+} from "@expo/vector-icons";
 
 const ServiceCard = ({
   id,
@@ -13,15 +17,23 @@ const ServiceCard = ({
   onPress,
   availability,
 }) => {
+  // Split the rating into integer and fractional parts
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
+
   return (
     <TouchableOpacity onPress={onPress} key={id} style={styles.item}>
       <View>
-        <View style={{
-          flexDirection: "row",
-          alignItems: "center"
-        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <Text style={styles.name}>{name}</Text>
-          {verified && <MaterialIcons name="verified" size={20} color={colors.primary} />}
+          {verified && (
+            <MaterialIcons name="verified" size={20} color={colors.primary} />
+          )}
         </View>
         <View style={styles.locationContainer}>
           <MaterialCommunityIcons
@@ -48,11 +60,13 @@ const ServiceCard = ({
               {availability ? "Available" : "Not Available"}
             </Text>
           </View>
-          <Text style={{ marginLeft: 10, fontWeight: "600", color: colors.primary }}>
-            {rating}
+          <Text
+            style={{ marginLeft: 10, fontWeight: "600", color: colors.primary }}
+          >
+            {rating.toFixed(1)}
           </Text>
           <View style={styles.ratingContainer}>
-            {[...Array(rating)].map((_, index) => (
+            {[...Array(fullStars)].map((_, index) => (
               <Fontisto
                 key={index}
                 name="star"
@@ -61,17 +75,24 @@ const ServiceCard = ({
                 style={styles.starIcon}
               />
             ))}
+            {hasHalfStar && (
+              <Fontisto
+                name="star-half" // Use "star-half" or any other half-star icon name provided by your icon library
+                size={13}
+                color="#673de7"
+                style={styles.starIcon}
+              />
+            )}
           </View>
         </View>
       </View>
       <View style={styles.priceContainer}>
         <Text style={styles.priceText}>₹ {price}</Text>
-        <Text style={styles.basePriceText}>Base price</Text>
+        <Text style={styles.basePriceText}>Visiting Charge</Text>
       </View>
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#FFF",

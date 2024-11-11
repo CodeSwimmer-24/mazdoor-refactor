@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,68 +8,30 @@ import {
   StyleSheet,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import colors from "../../../../constants/colors";
-import { hostUrl } from "../../../../services";
-import { useServiceProviderStore } from "../../../../zustand/serviceProviderStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import colors from "../../../../constants/colors";
+import { useNavigation } from "@react-navigation/native";
+import { hostUrl } from "../../../../services";
 import { useAuthStore } from "../../../../zustand/authStore";
+import { useStatusStore } from "../../../../zustand/statusStore";
 
-const Status = () => {
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+const Status = ({ serviceProviderData, reloadData }) => {
+  const { status, setStatus } = useStatusStore(); // Use Zustand store
   const [loading, setLoading] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState(null);
-  const [statusLoading, setStatusLoading] = useState(true);
-  const { serviceProvider } = useServiceProviderStore();
-  const navigation = useNavigation();
-
-  const [showAvailability, setshowAvailability] = useState(false);
 
   const { email } = useAuthStore();
-
+  const navigation = useNavigation();
   const data = [
-    { label: "Available", value: true },
-    { label: "Not Available", value: false },
+    { label: "Online", value: true },
+    { label: "Offline", value: false },
   ];
-
-  useEffect(() => {
-    if (serviceProvider) {
-      setCurrentStatus(serviceProvider.availability);
-      setStatusLoading(false);
-    }
-  }, [serviceProvider]);
 
   const handleRegisterPress = () => {
     navigation.navigate("Shop");
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${hostUrl}/mazdoor/v1/getServiceProviderDetails?emailId=${email}`
-        );
-        const data = await response.json();
-
-        // Check if serviceProvider exists before accessing availability
-        if (data.serviceProvider) {
-          setshowAvailability(data.serviceProvider.availability);
-        } else {
-          console.warn("Service provider data not found.");
-          setshowAvailability(false); // or handle as needed, e.g., set to a default value
-        }
-      } catch (error) {
-        console.error("Error fetching service provider details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [email]);
-
   const updateStatus = async () => {
-    if (value === null) {
+    if (status === null) {
       Alert.alert("Please select a status before updating.");
       return;
     }
@@ -78,7 +40,7 @@ const Status = () => {
 
     try {
       const response = await fetch(
-        `${hostUrl}/mazdoor/v1/updateSPStatus?availability=${value}&emailId=${email}`,
+        `${hostUrl}/mazdoor/v1/updateSPStatus?availability=${status}&emailId=${email}`,
         {
           method: "PUT",
           headers: {
@@ -87,79 +49,96 @@ const Status = () => {
         }
       );
 
+      const result = await response.json();
       if (response.ok) {
         Alert.alert("Status Updated Successfully");
-        setCurrentStatus(value);
+        reloadData(); // Refresh data in parent component
       } else {
-        Alert.alert("Failed to update status.");
+        Alert.alert("Failed to update status.", result?.message || "");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error updating status:", error);
       Alert.alert("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!serviceProvider) {
-    return (
-      <View style={styles.registrationContainer}>
-        <Text style={styles.registrationTitle}>Service Registration</Text>
-        <Text style={styles.registrationText}>
-          कृपया अपनी दुकान/काम को DigiMazdoor पर रजिस्टर करें।
-        </Text>
-        <TouchableOpacity
-          onPress={handleRegisterPress}
-          style={styles.registerButton}
-        >
-          <Text style={styles.registerButtonText}>
-            Please Register your shop...
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  useEffect(() => {
+    // Initialize status from data if not already set
+    if (status === null && serviceProviderData?.availability !== undefined) {
+      setStatus(serviceProviderData.availability);
+    }
+  }, [serviceProviderData, status, setStatus]);
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.label}>Set Your Status</Text>
-      </View>
-      <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: colors.primary }]}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        data={data}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? "Select your status" : "..."}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={(item) => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
-        renderLeftIcon={() => (
-          <MaterialIcons
-            style={styles.icon}
-            color={isFocus ? colors.primary : colors.primary}
-            name="assignment"
-            size={20}
+      {serviceProviderData === null ? (
+        <View style={styles.registrationContainer}>
+          <Text style={styles.registrationTitle}>Service Registration</Text>
+          <Text style={styles.registrationText}>
+            कृपया अपनी दुकान/काम को DigiMazdoor पर रजिस्टर करें।
+          </Text>
+          <TouchableOpacity
+            onPress={handleRegisterPress}
+            style={styles.registerButton}
+          >
+            <Text style={styles.registerButtonText}>
+              Please Register your shop...
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.label}>Set Your Status</Text>
+            {status ? (
+              <Text style={{ fontWeight: "600", color: "#49cc90" }}>
+                Online
+              </Text>
+            ) : (
+              <Text style={{ fontWeight: "600", color: colors.danger }}>
+                Offline
+              </Text>
+            )}
+          </View>
+          <Dropdown
+            style={[styles.dropdown, { borderColor: colors.primary }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            data={data}
+            labelField="label"
+            valueField="value"
+            placeholder="Select your status"
+            value={status}
+            onChange={(item) => setStatus(item.value)} // Use Zustand setter
+            renderLeftIcon={() => (
+              <MaterialIcons
+                style={styles.icon}
+                color={colors.primary}
+                name="assignment"
+                size={20}
+              />
+            )}
           />
-        )}
-      />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={updateStatus}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator size="small" color={colors.white} />
-        ) : (
-          <Text style={styles.buttonText}>Update</Text>
-        )}
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={updateStatus}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color={colors.white} />
+            ) : (
+              <Text style={styles.buttonText}>Update</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -174,12 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: colors.baseColor,
-  },
-  currentStatusText: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    fontSize: 14,
-    fontWeight: "600",
+    marginRight: 10,
   },
   dropdown: {
     height: 50,

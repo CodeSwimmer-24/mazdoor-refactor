@@ -125,12 +125,7 @@ const ShopForm = ({
   };
 
   const addServiceProvider = async () => {
-    if (
-      formData.title.trim() === "" ||
-      formData.short_description.trim() === "" ||
-      formData.serviceType === "" ||
-      formData.basePrice <= 0
-    ) {
+    if (formData.title.trim() === "" || formData.serviceType === "") {
       Alert.alert("Error", "Please enter all the required information");
       return;
     }
@@ -165,7 +160,10 @@ const ShopForm = ({
       }
     } catch (error) {
       console.error("Error adding ServiceProvider:", error);
-      Alert.alert("Error", "An error occurred while adding the ServiceProvider");
+      Alert.alert(
+        "Error",
+        "An error occurred while adding the ServiceProvider"
+      );
     } finally {
       setLoading(false);
     }
@@ -262,22 +260,22 @@ const ShopForm = ({
                 </View>
               )}
 
-              <Text style={styles.textLabel}>Enter Short Description</Text>
+              {/* <Text style={styles.textLabel}>Enter Short Description</Text>
               <CustomTextInput
                 iconType="Ionicons"
                 iconName="paper-plane-outline"
                 placeholder="Enter Short Description"
                 value={formData.short_description}
-                onChangeText={(text) =>
-                  handleChange("short_description", text)
-                }
-              />
-              <Text style={styles.textLabel}>Enter Base Price</Text>
+                onChangeText={(text) => handleChange("short_description", text)}
+              /> */}
+              <Text style={styles.textLabel}>Enter Visiting Charge</Text>
               <CustomTextInput
                 iconType="MaterialIcons"
                 iconName="currency-rupee"
-                placeholder="Enter Base Price"
-                value={formData.basePrice.toString()}
+                placeholder="Enter Visiting Charge"
+                value={
+                  formData.basePrice === 0 ? "" : formData.basePrice.toString()
+                }
                 onChangeText={(text) => handleChange("basePrice", text)}
               />
             </View>
@@ -357,8 +355,7 @@ const styles = StyleSheet.create({
   },
   subCategoryText: {
     fontSize: 12,
-    color: colors.primary
-
+    color: colors.primary,
   },
   subCategorySelected: {
     backgroundColor: colors.primary,
@@ -378,6 +375,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginBottom: 50,
   },
   confirmButton: {
     backgroundColor: colors.primary,

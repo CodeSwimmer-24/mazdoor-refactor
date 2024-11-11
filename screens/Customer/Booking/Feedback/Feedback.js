@@ -16,8 +16,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuthStore } from "../../../../zustand/authStore";
 import axios from "axios";
 import { hostUrl } from "../../../../services";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 
-const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
+const Feedback = ({
+  isVisible,
+  setIsVisible,
+  email,
+  serviceType,
+  bookingId,
+  setReload,
+}) => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1);
@@ -28,40 +36,35 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
 
   const feedbackEmoji = [
     {
-      name: "emoticon-cry-outline",
-      solidName: "emoticon-cry",
+      name: "star-outline",
+      solidName: "star",
       value: 1,
     },
     {
-      name: "emoticon-sad-outline",
-      solidName: "emoticon-sad",
+      name: "star-outline",
+      solidName: "star",
       value: 2,
     },
     {
-      name: "emoticon-neutral-outline",
-      solidName: "emoticon-neutral",
+      name: "star-outline",
+      solidName: "star",
       value: 3,
     },
     {
-      name: "emoticon-happy-outline",
-      solidName: "emoticon-happy",
+      name: "star-outline",
+      solidName: "star",
       value: 4,
     },
     {
-      name: "medal-outline",
-      solidName: "medal",
+      name: "star-outline",
+      solidName: "star",
       value: 5,
     },
   ];
 
   const handleRating = (index) => {
-    if (selectedEmojiIndex === index) {
-      setSelectedEmojiIndex(-1);
-      setRating(0);
-    } else {
-      setSelectedEmojiIndex(index);
-      setRating(index + 1);
-    }
+    setSelectedEmojiIndex(index);
+    setRating(index + 1);
   };
 
   const handleSubmit = async () => {
@@ -76,10 +79,10 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
 
     try {
       const response = await axios.post(
-        `${hostUrl}/mazdoor/v1/addSPFeedback`,
+        `${hostUrl}/mazdoor/v1/addSPFeedback/${bookingId}`,
         feedbackData
       );
-
+      setReload(true);
       setSuccessMessage("Feedback submitted successfully!");
       setLoading(false);
       setIsVisible(false);
@@ -116,12 +119,12 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
                   >
                     <MaterialCommunityIcons
                       name={
-                        selectedEmojiIndex === index
+                        index <= selectedEmojiIndex
                           ? emoji.solidName
                           : emoji.name
                       }
                       size={34}
-                      color={colors.primary}
+                      color="green"
                     />
                   </TouchableOpacity>
                 ))}
@@ -233,6 +236,7 @@ const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 10,
     elevation: 5,
+    marginBottom: 100,
   },
   submitButtonText: {
     textAlign: "center",

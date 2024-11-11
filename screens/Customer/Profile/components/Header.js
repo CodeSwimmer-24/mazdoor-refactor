@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,29 +12,32 @@ import axios from "axios";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
 import { hostUrl } from "../../../../services";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Header = ({ name, email }) => {
   const profileImageUri = useProfileImage();
   const [subscriptionData, setSubscriptionData] = useState(null); // Store subscription data
   const [loading, setLoading] = useState(true); // Track loading state
 
-  useEffect(() => {
-    const fetchUserSubscription = async () => {
-      setLoading(true); // Set loading to true before fetching
-      try {
-        const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
-        );
-        setSubscriptionData(response.data); // Store the subscription data
-      } catch (error) {
-        console.error("Error fetching user subscription:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching
-      }
-    };
+  const fetchUserSubscription = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
+      );
+      setSubscriptionData(response.data);
+    } catch (error) {
+      console.error("Error fetching user subscription:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUserSubscription();
-  }, [email]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserSubscription(); // Fetch data when the screen is focused
+    }, [email])
+  );
 
   return (
     <SafeAreaView style={styles.container}>

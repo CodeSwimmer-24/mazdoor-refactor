@@ -11,7 +11,7 @@ import colors from "../../../../../../constants/colors";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 const Section = ({ services, feedbackList, shortProfile, serviceProvider }) => {
-  const [activeTab, setActiveTab] = useState("services");
+  const [activeTab, setActiveTab] = useState("profile");
 
   const renderScreen = () => {
     switch (activeTab) {
@@ -36,6 +36,12 @@ const Section = ({ services, feedbackList, shortProfile, serviceProvider }) => {
     <View style={styles.container}>
       <View style={styles.tabsContainer}>
         <TouchableOpacity
+          style={[styles.tab, activeTab === "profile" && styles.activeTab]}
+          onPress={() => setActiveTab("profile")}
+        >
+          <Text style={styles.tabText}>Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[styles.tab, activeTab === "services" && styles.activeTab]}
           onPress={() => setActiveTab("services")}
         >
@@ -46,12 +52,6 @@ const Section = ({ services, feedbackList, shortProfile, serviceProvider }) => {
           onPress={() => setActiveTab("rating")}
         >
           <Text style={styles.tabText}>Rating</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === "profile" && styles.activeTab]}
-          onPress={() => setActiveTab("profile")}
-        >
-          <Text style={styles.tabText}>Profile</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.contentContainer}>{renderScreen()}</View>
@@ -65,14 +65,24 @@ const ServicesScreen = ({ services }) => (
       services.map((item, index) => {
         return (
           <View key={index} style={styles.subContainer}>
-            <View style={{ width: "80%" }}>
-              <Text style={styles.serviceName}>{item.serviceName}</Text>
-              <Text style={styles.serviceDescription}>
-                {item.serviceDescription}
+            <View style={{ width: "80%", flexDirection: "row" }}>
+              <Text
+                style={{
+                  marginRight: 10,
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: colors.primary,
+                }}
+              >
+                {index + 1}.)
               </Text>
+              <Text style={styles.serviceName}>{item.serviceName}</Text>
+              {/* <Text style={styles.serviceDescription}>
+                {item.serviceDescription}
+              </Text> */}
               <Text style={styles.workingHours}>{item.workingHours}</Text>
             </View>
-            <Text style={styles.price}>₹ {item.price}</Text>
+            {/* <Text style={styles.price}>₹ {item.price}</Text> */}
           </View>
         );
       })
@@ -127,14 +137,14 @@ const ProfileScreen = ({ shortProfile, serviceProvider }) => (
     <View style={styles.locationContainer}>
       <MaterialIcons name="location-pin" size={30} color="#c8c8c8" />
       <Text style={styles.locationText}>
-        {shortProfile.address.buildingAddress},{" "}
-        {shortProfile.address.exactLocation}, {shortProfile.address.locality},{" "}
-        {shortProfile.address.area} {shortProfile.address.region} Delhi
+        {shortProfile.address?.buildingAddress},{" "}
+        {shortProfile.address?.exactLocation}, {shortProfile.address?.locality},{" "}
+        {shortProfile.address?.area} {shortProfile.address?.region} Delhi
       </Text>
     </View>
     <View style={styles.profileDesc}>
-      <Text style={styles.aboutMe}>About Me</Text>
-      <Text style={styles.aboutInfo}>{serviceProvider.short_description}</Text>
+      {/* <Text style={styles.aboutMe}>About Me</Text> */}
+      {/* <Text style={styles.aboutInfo}>{serviceProvider.short_description}</Text> */}
     </View>
   </ScrollView>
 );

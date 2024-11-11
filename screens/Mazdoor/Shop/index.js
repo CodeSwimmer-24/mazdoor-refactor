@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
+  ScrollView,
 } from "react-native";
 import colors from "../../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +22,7 @@ import { useServiceProviderStore } from "../../../zustand/serviceProviderStore";
 
 const Shop = () => {
   const [loading, setLoading] = useState(true);
-  const [shopRegisterForm, setShopRegisterForm] = useState(false); 
+  const [shopRegisterForm, setShopRegisterForm] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [existingData, setExistingData] = useState(null);
   const [reload, setReload] = useState(false);
@@ -73,27 +74,34 @@ const Shop = () => {
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.container}>
         {serviceProvider === null ? (
-          <>
-            <View style={styles.imageContainer}>
-              <Image source={shop} style={styles.shopImage} />
+          <ScrollView>
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <View style={styles.imageContainer}>
+                <Image source={shop} style={styles.shopImage} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.titleText}>
+                  Register your Shop/Store in DigiMazdoor
+                </Text>
+                <Text style={styles.subtitleText}>
+                  Properly fill all the details while registering your app so
+                  that customers can book your service easily. Please fill the
+                  details!
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setShopRegisterForm(true)}
+                  style={styles.addButton}
+                >
+                  <AntDesign name="plus" size={24} color={colors.primary} />
+                  <Text style={styles.addButtonText}>Add Store</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.titleText}>
-                Register your Shop/Store in DigiMazdoor
-              </Text>
-              <Text style={styles.subtitleText}>
-                Properly fill all the details while registering your app so that
-                customers can book your service easily. Please fill the details!
-              </Text>
-              <TouchableOpacity
-                onPress={() => setShopRegisterForm(true)}
-                style={styles.addButton}
-              >
-                <AntDesign name="plus" size={24} color={colors.primary} />
-                <Text style={styles.addButtonText}>Add Store</Text>
-              </TouchableOpacity>
-            </View>
-          </>
+          </ScrollView>
         ) : (
           <>
             <View style={styles.shopCard}>
@@ -116,9 +124,9 @@ const Shop = () => {
                     {serviceProvider.basePrice}/-
                   </Text>
                 </Text>
-                <Text style={styles.availability}>
+                {/* <Text style={styles.availability}>
                   {serviceProvider.availability ? "Available" : "Not Available"}
-                </Text>
+                </Text> */}
               </View>
               <View style={styles.editIconContainer}>
                 <TouchableOpacity
@@ -192,6 +200,7 @@ const styles = {
     paddingVertical: 10,
     justifyContent: "center",
     borderRadius: 10,
+    marginBottom: 100,
   },
   addButtonText: {
     textAlign: "center",
