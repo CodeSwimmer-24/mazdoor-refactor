@@ -3,7 +3,7 @@ export default {
     name: "Digimazdoor",
     slug: "Digimazdoor-App",
     plugins: ["@react-native-google-signin/google-signin"],
-    version: "1.1.4",
+    version: "1.1.8",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -15,7 +15,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.mazdoor.digimazdoor",
-      buildNumber: "1.1.6",
+      buildNumber: "1.1.8",
     },
     android: {
       googleServicesFile: "./google-services.json",
@@ -24,7 +24,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.mazdoor.digimazdoor",
-      versionCode: 8,
+      versionCode: 10,
     },
     web: {
       favicon: "./assets/favicon.png",

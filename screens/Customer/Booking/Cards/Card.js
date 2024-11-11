@@ -8,7 +8,13 @@ import {
   Linking,
   Alert,
 } from "react-native";
-import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  Entypo,
+  FontAwesome5,
+  Ionicons,
+  FontAwesome,
+} from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
 import Feedback from "../Feedback/Feedback";
 import Cancel from "../Cancel";
@@ -96,7 +102,7 @@ const Card = ({
                 <Text style={styles.bodySubtitle}>{date}</Text>
               </View>
             </View>
-            <View style={styles.bodyRight}>
+            {/* <View style={styles.bodyRight}>
               <TouchableOpacity onPress={() => handleCall(contactNo)}>
                 <MaterialIcons
                   name="call"
@@ -111,9 +117,52 @@ const Card = ({
                   size={24}
                   color="#075e54"
                   style={styles.whatsappIcon}
-                />
+              />
               </TouchableOpacity>
-            </View>
+            </View> */}
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => makeCall(shortProfile.contactNo)}
+              style={[
+                styles.button,
+                styles.callButton,
+                {
+                  width: "30%",
+                  borderRadius: 10,
+                  elevation: 0,
+                },
+              ]}
+            >
+              <Ionicons name="call-outline" size={16} color="#4782da" />
+              <Text
+                style={[styles.buttonText, { color: "#4782da", fontSize: 14 }]}
+              >
+                Audio Call
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => openWhatsApp(shortProfile.contactNo)}
+              style={[
+                styles.button,
+                styles.whatsappButton,
+                { width: "30%", borderRadius: 10, elevation: 0 },
+              ]}
+            >
+              <FontAwesome name="whatsapp" size={20} color="#4caf50" />
+              <Text
+                style={[styles.buttonText, { color: "#4caf50", fontSize: 14 }]}
+              >
+                WhatsApp
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.footer}>
             {status.toLowerCase() === "completed" ? (
@@ -123,7 +172,13 @@ const Card = ({
                 </Text>
               </View>
             ) : (
-              <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     setIsVisible(true);
@@ -167,6 +222,7 @@ const Card = ({
           isVisible={isVisible}
           serviceType={profession}
           bookingId={bookingId}
+          setReload={setReload}
         />
       </TouchableOpacity>
       <Cancel
@@ -314,6 +370,29 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.danger,
     marginLeft: 5,
+  },
+  button: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  callButton: {
+    backgroundColor: "#4782da1a",
+  },
+  whatsappButton: {
+    backgroundColor: "#4caf501a",
+  },
+  confirmButton: {
+    backgroundColor: colors.primary,
+    elevation: 5,
+  },
+  buttonText: {
+    fontSize: 12,
+    fontWeight: "400",
+    marginLeft: 8,
   },
 });
 

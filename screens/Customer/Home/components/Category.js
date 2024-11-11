@@ -17,39 +17,39 @@ const CategoryItem = ({
   setIsVisible,
   subCategory,
 }) => {
-  if (label === "View More") {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setIsVisible(true);
-        }}
-        style={styles.categoryItem}
-      >
-        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
-          <Image source={imageSource} style={styles.categoryIcon} />
-        </View>
-        <Text style={styles.categoryLabel}>{label}</Text>
-      </TouchableOpacity>
-    );
-  } else {
-    return (
-      <TouchableOpacity
-        style={styles.categoryItem}
-        onPress={() =>
-          navigation.push("CategoryDetail", {
-            label,
-            subCategory: subCategory,
-          })
-        }
-      >
-        <View style={[styles.categoryIconContainer, { backgroundColor }]}>
-          <Image source={imageSource} style={styles.categoryIcon} />
-        </View>
-        <Text style={styles.categoryLabel}>{label}</Text>
-      </TouchableOpacity>
-    );
-  }
+  // if (label === "View More") {
+  //   return (
+  //     <TouchableOpacity
+  //       onPress={() => {
+  //         setIsVisible(true);
+  //       }}
+  //       style={styles.categoryItem}
+  //     >
+  //       <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+  //         <Image source={imageSource} style={styles.categoryIcon} />
+  //       </View>
+  //       <Text style={styles.categoryLabel}>{label}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // } else {
+  return (
+    <TouchableOpacity
+      style={styles.categoryItem}
+      onPress={() =>
+        navigation.push("CategoryDetail", {
+          label,
+          subCategory: subCategory,
+        })
+      }
+    >
+      <View style={[styles.categoryIconContainer, { backgroundColor }]}>
+        <Image source={imageSource} style={styles.categoryIcon} />
+      </View>
+      <Text style={styles.categoryLabel}>{label}</Text>
+    </TouchableOpacity>
+  );
 };
+
 const Category = ({ navigation }) => {
   const { isVisible, setIsVisible } = useModalStore();
 

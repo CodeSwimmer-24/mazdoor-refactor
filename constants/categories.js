@@ -8,9 +8,14 @@ import truck from "../assets/assets/truck.png";
 import ac from "../assets/assets/elec.png";
 import washing from "../assets/assets/washing.png";
 import welder from "../assets/assets/welder.png";
-import gutter from "../assets/assets/cleaning.png";
+import cleaning from "../assets/assets/cleaning.png";
+import gutter from "../assets/assets/gutter.png";
 import tile from "../assets/assets/tile.png";
+import makeup from "../assets/assets/makeup.png";
 import more from "../assets/assets/more.png";
+import pani from "../assets/assets/pani.png";
+import kabadi from "../assets/assets/kabadi.png";
+import glass from "../assets/assets/glass.png";
 
 const categories = [
   {
@@ -61,7 +66,7 @@ const categories = [
     label: "Room Shifting",
     value: "Room Shifting",
     subCategory:
-      "All Categories, 407 Pickup, Chota Hathi, Thela, Battery Rickshaw",
+      "All Categories, Bolaro Pickup, Tata Ace, Eicher Tempo, Thela, Battery Rickshaw",
     backgroundColor: "#fef9e8",
   },
   {
@@ -79,12 +84,20 @@ const categories = [
     backgroundColor: "#ede8f2",
   },
   {
-    image: gutter,
+    image: cleaning,
     label: "Cleaning",
     value: "Cleaning",
     subCategory:
-      "All Categories, House Cleaning, Bathroom Cleaning, Sofa/Carpet Cleaning, Parking/Stairs Cleaning, Shop Cleaning",
+      "All Categories, Malba Pickup, House, Bathroom, Sofa/Carpet, Parking/Stairs, Shop",
     backgroundColor: "#fef7e8",
+  },
+
+  {
+    image: makeup,
+    label: "Women's Parlour",
+    value: "Women's Parlour",
+    subCategory: "All Categories, Hair Cutting, Facial, Massage, Mehandi",
+    backgroundColor: "#FFE9EC",
   },
   {
     image: tile,
@@ -95,10 +108,33 @@ const categories = [
     backgroundColor: "#edf9ed",
   },
   {
-    image: more,
-    label: "View More",
-    value: "More",
-    backgroundColor: "#673de72a",
+    image: gutter,
+    label: "Gutter Cleaner",
+    value: "Gutter Cleaner",
+    subCategory: "All categories",
+    backgroundColor: "#fef7e8",
+  },
+
+  {
+    image: pani,
+    label: "Pani Wala",
+    value: "Pani Wala",
+    subCategory: "All Categories",
+    backgroundColor: "#ADD8E61a",
+  },
+  {
+    image: kabadi,
+    label: "Kabadi Wala",
+    value: "Kabadi Wala",
+    subCategory: "All Categories",
+    backgroundColor: "#A52A2A1a",
+  },
+  {
+    image: glass,
+    label: "Glass Work",
+    value: "Glass Work",
+    subCategory: "All Categories",
+    backgroundColor: "#673de71a",
   },
 ];
 

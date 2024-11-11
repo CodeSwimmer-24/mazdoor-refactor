@@ -18,7 +18,14 @@ import axios from "axios";
 import { hostUrl } from "../../../../services";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 
-const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
+const Feedback = ({
+  isVisible,
+  setIsVisible,
+  email,
+  serviceType,
+  bookingId,
+  setReload,
+}) => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1);
@@ -56,13 +63,8 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
   ];
 
   const handleRating = (index) => {
-    if (selectedEmojiIndex === index) {
-      setSelectedEmojiIndex(-1);
-      setRating(0);
-    } else {
-      setSelectedEmojiIndex(index);
-      setRating(index + 1);
-    }
+    setSelectedEmojiIndex(index);
+    setRating(index + 1);
   };
 
   const handleSubmit = async () => {
@@ -77,10 +79,10 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
 
     try {
       const response = await axios.post(
-        `${hostUrl}/mazdoor/v1/addSPFeedback`,
+        `${hostUrl}/mazdoor/v1/addSPFeedback/${bookingId}`,
         feedbackData
       );
-
+      setReload(true);
       setSuccessMessage("Feedback submitted successfully!");
       setLoading(false);
       setIsVisible(false);
@@ -117,7 +119,7 @@ const Feedback = ({ isVisible, setIsVisible, email, serviceType }) => {
                   >
                     <MaterialCommunityIcons
                       name={
-                        selectedEmojiIndex === index
+                        index <= selectedEmojiIndex
                           ? emoji.solidName
                           : emoji.name
                       }

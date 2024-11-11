@@ -54,6 +54,10 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
     }
   };
 
+  // Split the rating into integer and fractional parts
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -86,7 +90,7 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
       </View>
       <View style={styles.ratingContainer}>
         <View style={styles.ratingStars}>
-          {[...Array(rating)].map((_, index) => (
+          {[...Array(fullStars)].map((_, index) => (
             <FontAwesome
               key={index}
               name="star"

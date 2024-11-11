@@ -27,7 +27,7 @@ const Completed = () => {
   useEffect(() => {
     axios
       .get(
-        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=Completed`
+        `${hostUrl}/mazdoor/v1/getActiveSPBookings?emailId=${email}&status=Pending`
       )
       .then((response) => {
         setData(response.data);
