@@ -89,9 +89,9 @@ const Booking = ({ navigation }) => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>My Bookings</Text>
+        <Text style={styles.headerText}>View History</Text>
         <Text style={styles.subHeaderText}>
-          You can view your top ten bookings.
+          You can view your top resent visited profile details.
         </Text>
       </View>
       <ScrollView style={styles.scrollView}>

@@ -72,9 +72,10 @@ const ServicesScreen = ({ services }) => (
                   fontSize: 14,
                   fontWeight: "600",
                   color: colors.primary,
+                  marginBottom: 20,
                 }}
               >
-                {index + 1}.)
+                {index + 1}.
               </Text>
               <Text style={styles.serviceName}>{item.serviceName}</Text>
               {/* <Text style={styles.serviceDescription}>
@@ -143,8 +144,13 @@ const ProfileScreen = ({ shortProfile, serviceProvider }) => (
       </Text>
     </View>
     <View style={styles.profileDesc}>
-      {/* <Text style={styles.aboutMe}>About Me</Text> */}
-      {/* <Text style={styles.aboutInfo}>{serviceProvider.short_description}</Text> */}
+      <Text style={styles.aboutMe}>Note:</Text>
+      <Text style={styles.aboutInfo}>
+        The rates for different types of work may vary between services and
+        service providers. It is essential to discuss and negotiate these rates
+        directly with the service provider to ensure they are set according to
+        our convenience and agreement.
+      </Text>
     </View>
   </ScrollView>
 );
@@ -296,8 +302,11 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   aboutInfo: {
-    fontSize: 14,
-    color: "#505050",
+    fontSize: 13,
+    color: "#376fd0",
+    paddingRight: 10,
+    lineHeight: 18,
+    fontWeight: "300",
   },
   noDataText: {
     textAlign: "center",

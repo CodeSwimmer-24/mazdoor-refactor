@@ -51,6 +51,7 @@ const Like = ({ navigation }) => {
                 name={sp.serviceProvider.title}
                 category={sp.serviceProvider.serviceType}
                 rating={sp.serviceProvider.rating}
+                availability={sp.serviceProvider.availability}
                 location={wordSlice(sp.serviceProvider.short_description)}
                 price="200"
               />
