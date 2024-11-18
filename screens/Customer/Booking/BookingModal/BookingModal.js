@@ -40,7 +40,7 @@ const BookingModal = ({
   };
 
   const openWhatsApp = (number) => {
-    Linking.openURL(`whatsapp://send?phone=${number}`).catch(() =>
+    Linking.openURL(`whatsapp://send?phone=+91${number}`).catch(() =>
       Alert.alert("Error", "WhatsApp is not installed on your device.")
     );
   };
@@ -84,7 +84,7 @@ const BookingModal = ({
                 </View>
               </View>
               <View style={styles.detailsContainer}>
-                <View style={styles.detailBox}>
+                {/* <View style={styles.detailBox}>
                   <View style={styles.detailRow}>
                     <Ionicons name="call-outline" size={20} color="gray" />
                     {isSubscribed ? (
@@ -98,6 +98,24 @@ const BookingModal = ({
                   <TouchableOpacity onPress={copyToClipboard}>
                     <FontAwesome6 name="copy" size={18} color="gray" />
                   </TouchableOpacity>
+                </View> */}
+                <View style={{
+                  paddingHorizontal: 10,
+                  paddingVertical: 20,
+                }}>
+                  <Text style={{
+                    textAlign: "left",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    color: "#505050"
+                  }}>Note:</Text>
+                  <Text style={{
+                    paddingVertical: 10,
+                    color: "gray",
+                    lineHeight: 20
+                  }}>
+                    Service charge may vary for each service provider. The customer is solely responsible to discuss the service charge with the service provider. DigiMazdoor has no role in it.
+                  </Text>
                 </View>
                 {isSubscribed && (
                   <View style={styles.detailBox2}>
@@ -193,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    height: height * 0.75,
+    height: height * 0.85,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -234,7 +252,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     alignItems: "center",
-    marginTop: 20,
+    // marginTop: 20,
   },
   detailBox: {
     width: "95%",
@@ -244,7 +262,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 0,
   },
   detailRow: {
     flexDirection: "row",
@@ -255,6 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fafafa",
     padding: 10,
     borderRadius: 7,
+    marginBottom: 0
   },
   detailText: {
     marginLeft: 5,
@@ -267,15 +286,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 12,
-    borderRadius: 4,
+    borderRadius: 5,
     marginHorizontal: 5,
   },
   whatsappButton: {
-    backgroundColor: "#128c7e",
+    backgroundColor: "#25d366",
     flexDirection: "row",
     justifyContent: "center",
     elevation: 5,
-    marginBottom: 40, // Added marginBottom to make it at the bottom
+    marginBottom: 50, // Added marginBottom to make it at the bottom
   },
   confirmButton: {
     backgroundColor: colors.primary,

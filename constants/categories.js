@@ -50,7 +50,7 @@ const categories = [
     image: mechanicCar,
     label: "Mechanic",
     value: "Mechanic",
-    subCategory: "All Categories, Car Mechanic, Bike Mechanic, Cycle Mechanic",
+    subCategory: "All Categories, Car, Bike, Cycle",
     backgroundColor: "#e3e4ef",
   },
   {
@@ -58,7 +58,7 @@ const categories = [
     label: "Electronics Repair",
     value: "Electronics Repair",
     subCategory:
-      "All Categories, AC, Washing Machine, Fridge, Microwave, Induction",
+      "All Categories, AC,TV, Washing Machine, Fridge, Microwave, Induction",
     backgroundColor: "#eff4f9",
   },
   {
@@ -85,8 +85,8 @@ const categories = [
   },
   {
     image: cleaning,
-    label: "Cleaning",
-    value: "Cleaning",
+    label: "Cleaner",
+    value: "Cleaner",
     subCategory:
       "All Categories, Malba Pickup, House, Bathroom, Sofa/Carpet, Parking/Stairs, Shop",
     backgroundColor: "#fef7e8",
@@ -104,7 +104,7 @@ const categories = [
     label: "Mistiri",
     value: "Mistiri",
     subCategory:
-      "All Categories, Tile Mistri, Marble Mistri, Raj Mistri, Glass Mistri",
+      "All Categories, Tile Mistri, Marble Mistri, Raj Mistri",
     backgroundColor: "#edf9ed",
   },
   {

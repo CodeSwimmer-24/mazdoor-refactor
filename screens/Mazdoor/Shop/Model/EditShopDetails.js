@@ -109,11 +109,11 @@ const EditShopDetails = ({
               value={formData.title}
               onChangeText={(text) => handleChange("title", text)}
             />
-            <Text style={styles.textLabel}>Enter Base Price</Text>
+            <Text style={styles.textLabel}>Enter Visiting Price</Text>
             <CustomTextInput
               iconType="MaterialIcons"
               iconName="currency-rupee"
-              placeholder="Enter Base Price"
+              placeholder="Enter Visiting Price"
               value={formData.basePrice.toString()}
               onChangeText={(text) => handleChange("basePrice", text)}
               keyboardType="numeric"

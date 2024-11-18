@@ -14,7 +14,7 @@ const NotFound = ({ info, image }) => {
       ) : (
         <Image source={noData} style={styles.noDataImage} />
       )}
-      <Text style={styles.noDataTitle}>Oops!</Text>
+      <Text style={styles.noDataTitle}>Coming Soon!</Text>
       {/* {role === "mazdoor" && (
         <Text
           style={{
@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.baseColor,
     textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   noDataSubtitle: {
     marginTop: 5,

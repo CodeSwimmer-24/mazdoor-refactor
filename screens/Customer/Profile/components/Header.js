@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -13,21 +13,35 @@ import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
 import { hostUrl } from "../../../../services";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Header = ({ name, email }) => {
   const profileImageUri = useProfileImage();
-  const [subscriptionData, setSubscriptionData] = useState(null); // Store subscription data
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [subscriptionData, setSubscriptionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // State for capturing error messages
+  const { role } = useAuthStore();
 
   const fetchUserSubscription = async () => {
     setLoading(true);
+    setError(null); // Reset error state before fetching data
     try {
+      // Determine the appropriate parameter based on the role
+      const emailParam = role === "customer" ? "userEmailId" : "spEmailId";
       const response = await axios.get(
-        `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
+        `${hostUrl}/mazdoor/v1/getUserSubscription?role=${role}&${emailParam}=${email}`
       );
       setSubscriptionData(response.data);
     } catch (error) {
       console.error("Error fetching user subscription:", error);
+      // Display more details about the error, including server response data if available
+      setError(
+        error.response
+          ? `${error.response.status} - ${
+              error.response.data?.error || "Server Error"
+            }`
+          : "Network Error"
+      );
     } finally {
       setLoading(false);
     }
@@ -35,7 +49,7 @@ const Header = ({ name, email }) => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchUserSubscription(); // Fetch data when the screen is focused
+      fetchUserSubscription();
     }, [email])
   );
 
@@ -57,15 +71,13 @@ const Header = ({ name, email }) => {
             <Text style={styles.subscribedText}>
               Loading subscription status...
             </Text>
+          ) : error ? (
+            <Text style={styles.errorText}>{`Error: ${error}`}</Text>
           ) : subscriptionData ? (
             <>
               <Text style={styles.subscribedText}>
                 Subscribed Validity
-                <Text
-                  style={{
-                    fontWeight: "600",
-                  }}
-                >
+                <Text style={{ fontWeight: "600" }}>
                   {" "}
                   {subscriptionData.subscriptionExpiryDate}{" "}
                 </Text>
@@ -129,6 +141,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.gray,
     fontSize: 14,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    paddingTop: 4,
   },
 });
 

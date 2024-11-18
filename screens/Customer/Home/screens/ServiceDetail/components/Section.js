@@ -144,13 +144,13 @@ const ProfileScreen = ({ shortProfile, serviceProvider }) => (
       </Text>
     </View>
     <View style={styles.profileDesc}>
-      <Text style={styles.aboutMe}>Note:</Text>
-      <Text style={styles.aboutInfo}>
+      {/* <Text style={styles.aboutMe}>Note:</Text> */}
+      {/* <Text style={styles.aboutInfo}>
         The rates for different types of work may vary between services and
         service providers. It is essential to discuss and negotiate these rates
         directly with the service provider to ensure they are set according to
         our convenience and agreement.
-      </Text>
+      </Text> */}
     </View>
   </ScrollView>
 );

@@ -129,7 +129,7 @@ const Services = () => {
                   <Text style={styles.serviceDescription}>
                     {service.serviceDescription}
                   </Text>
-                  <Text style={styles.servicePrice}>₹ {service.price}/-</Text>
+                  {/* <Text style={styles.servicePrice}>₹ {service.price}/-</Text> */}
                 </View>
                 <View style={styles.serviceActions}>
                   <TouchableOpacity
