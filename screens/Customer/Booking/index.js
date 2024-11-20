@@ -124,19 +124,11 @@ const Booking = ({ navigation }) => {
         </View>
         {noData && (
           <>
-            <NotFound info="No current booking found for you" />
-            <View style={styles.noDataTextContainer}>
-              <View style={styles.bookServiceButton}>
-                <Entypo name="plus" size={20} color={colors.primary} />
-                <Text style={styles.bookServiceButtonText}>
-                  Book your service
-                </Text>
-              </View>
-            </View>
+            <NotFound info="No current data present in view history" text="No History Found!" />
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

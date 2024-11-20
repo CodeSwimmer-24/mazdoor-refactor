@@ -22,7 +22,7 @@ const categories = [
     image: electrician,
     label: "Electrician",
     value: "Electrician",
-    subCategory: "All categories",
+    subCategory: "All categories, Microwave, Induction, Motor",
     backgroundColor: "rgb(237, 247, 237)",
   },
   {
@@ -58,7 +58,7 @@ const categories = [
     label: "Electronics Repair",
     value: "Electronics Repair",
     subCategory:
-      "All Categories, AC,TV, Washing Machine, Fridge, Microwave, Induction",
+      "All Categories, AC,TV, Washing Machine, Fridge, Microwave, Induction, Motor",
     backgroundColor: "#eff4f9",
   },
   {

@@ -37,9 +37,8 @@ const Header = ({ name, email }) => {
       // Display more details about the error, including server response data if available
       setError(
         error.response
-          ? `${error.response.status} - ${
-              error.response.data?.error || "Server Error"
-            }`
+          ? `${error.response.status} - ${error.response.data?.error || "Server Error"
+          }`
           : "Network Error"
       );
     } finally {
@@ -66,34 +65,41 @@ const Header = ({ name, email }) => {
           <Image source={profileImageUri} style={styles.profileImage} />
           <Text style={styles.profileName}>{name}</Text>
 
-          {/* Display Subscription Information */}
-          {loading ? (
-            <Text style={styles.subscribedText}>
-              Loading subscription status...
-            </Text>
-          ) : error ? (
-            <Text style={styles.errorText}>{`Error: ${error}`}</Text>
-          ) : subscriptionData ? (
-            <>
-              <Text style={styles.subscribedText}>
-                Subscribed Validity
-                <Text style={{ fontWeight: "600" }}>
-                  {" "}
-                  {subscriptionData.subscriptionExpiryDate}{" "}
-                </Text>
-              </Text>
-              <Text style={styles.subscriptionStatus}>
-                {subscriptionData.subscriptionExpiryDate
-                  ? "Subscribed"
-                  : "Please Subscribe"}
-              </Text>
-            </>
+          {role === "customer" ? (
+            <Text>FREE</Text>
           ) : (
-            <Text style={styles.subscribedText}>
-              No subscription data available
-            </Text>
+            // Display Subscription Information
+            <View>
+              {loading && (
+                <Text style={styles.subscribedText}>Loading subscription status...</Text>
+              )}
+              {error && (
+                <Text style={styles.errorText}>{`Error: ${error}`}</Text>
+              )}
+              {!loading && !error && subscriptionData ? (
+                <>
+                  <Text style={styles.subscribedText}>
+                    Subscribed Validity:{" "}
+                    <Text style={{ fontWeight: "600" }}>
+                      {subscriptionData.subscriptionExpiryDate}
+                    </Text>
+                  </Text>
+                  <Text style={styles.subscriptionStatus}>
+                    {subscriptionData.subscriptionExpiryDate
+                      ? "Subscribed"
+                      : "Please Subscribe"}
+                  </Text>
+                </>
+              ) : null}
+              {!loading && !error && !subscriptionData && (
+                <Text style={styles.subscribedText}>
+                  No subscription data available
+                </Text>
+              )}
+            </View>
           )}
         </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -141,6 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.gray,
     fontSize: 14,
+    textAlign: "center"
   },
   errorText: {
     color: "red",
