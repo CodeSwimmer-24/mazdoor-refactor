@@ -63,7 +63,6 @@ const RegisterForm = () => {
     if (
       !formData.name ||
       !formData.contact ||
-      !formData.buildingAddress ||
       !formData.locality
     ) {
       Alert.alert("Error", "Please fill all the fields");
@@ -226,21 +225,21 @@ const RegisterForm = () => {
               onChangeText={(text) => handleChange("locality", text)}
             />
 
-            <DropdownTextInput
+            {/* <DropdownTextInput
               iconName="map"
               list={locations[formData.locality]}
               iconType="Ionicons"
               placeholder="Exact Location"
               value={formData.exactLocation}
               onChangeText={(text) => handleChange("exactLocation", text)}
-            />
-            <CustomTextInput
+            /> */}
+            {/* <CustomTextInput
               iconName="location-outline"
               iconType="Ionicons"
               placeholder="Building Address"
               value={formData.buildingAddress}
               onChangeText={(text) => handleChange("buildingAddress", text)}
-            />
+            /> */}
 
             <TouchableOpacity
               style={styles.googleButton}

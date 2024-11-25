@@ -6,7 +6,7 @@ import chef from "../assets/assets/chef.png";
 import mechanicCar from "../assets/assets/mechanicCar.png";
 import truck from "../assets/assets/truck.png";
 import ac from "../assets/assets/elec.png";
-import washing from "../assets/assets/washing.png";
+import newspaper from "../assets/assets/newspaper.png";
 import welder from "../assets/assets/welder.png";
 import cleaning from "../assets/assets/cleaning.png";
 import gutter from "../assets/assets/gutter.png";
@@ -22,7 +22,7 @@ const categories = [
     image: electrician,
     label: "Electrician",
     value: "Electrician",
-    subCategory: "All categories, Microwave, Induction, Motor",
+    subCategory: "All Categories, General Services, Washing Machine, Microwave, Induction, Motor",
     backgroundColor: "rgb(237, 247, 237)",
   },
   {
@@ -77,9 +77,9 @@ const categories = [
     backgroundColor: "#cfd7e6",
   },
   {
-    image: washing,
-    label: "Laundry",
-    value: "Laundry",
+    image: newspaper,
+    label: "News Paper Ads",
+    value: "News Paper Ads",
     subCategory: "All categories",
     backgroundColor: "#ede8f2",
   },
