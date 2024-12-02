@@ -16,10 +16,11 @@ import AllBanners from "../Modal/AllBanners";
 import banner1 from "../../../../assets/Post/banner1.png";
 import banner2 from "../../../../assets/Post/banner2.png";
 import banner3 from "../../../../assets/Post/banner3.png";
+import banner4 from "../../../../assets/Post/banner4.png";
 
 const { width } = Dimensions.get("window");
 
-const images = [banner1, banner2, banner3];
+const images = [banner1, banner2, banner3, banner4];
 
 const Banner = () => {
   const [isVisible, setIsVisible] = useState(false);

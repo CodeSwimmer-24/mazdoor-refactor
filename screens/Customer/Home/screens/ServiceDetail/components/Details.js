@@ -63,11 +63,11 @@ const Details = ({ serviceProvider, shortProfile, rating }) => {
       <View style={styles.headerContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.shopTitle}>{serviceProvider.title}</Text>
-          <Text style={styles.shopDescription}>
+          {/* <Text style={styles.shopDescription}>
             {serviceProvider.short_description
               ? `${serviceProvider.short_description.slice(0, 50)}...`
               : "NO Description found..."}
-          </Text>
+          </Text> */}
         </View>
         <TouchableOpacity style={styles.favButton} onPress={addToFavourites}>
           {isFav ? (

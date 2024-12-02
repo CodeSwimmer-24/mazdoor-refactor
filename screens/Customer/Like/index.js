@@ -51,6 +51,7 @@ const Like = ({ navigation }) => {
                 name={sp.serviceProvider.title}
                 category={sp.serviceProvider.serviceType}
                 rating={sp.serviceProvider.rating}
+                availability={sp.serviceProvider.availability}
                 location={wordSlice(sp.serviceProvider.short_description)}
                 price="200"
               />
@@ -60,7 +61,8 @@ const Like = ({ navigation }) => {
           <>
             <NotFound
               image="nolike"
-              info="You dont have any favorate service"
+              info="You dont have any favorite service provider"
+              text="No Favorite List"
             />
           </>
         )}

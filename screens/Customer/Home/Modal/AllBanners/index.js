@@ -22,7 +22,7 @@ const AllBanners = ({ isVisible, setIsVisible }) => {
   ];
 
   // Example contact number, replace with actual data
-  const contactNumber = "+91 7272977850";
+  const contactNumber = "+91 8987609322";
 
   // Function to make a phone call
   const makeCall = (phoneNumber) => {

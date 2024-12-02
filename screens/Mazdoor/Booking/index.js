@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../../constants/colors";
 import Completed from "./components/Completed"; // Only import Completed
+import Feedback from "./Page/Feedback";
 
 const Booking = () => {
   const [loading, setLoading] = useState(false);
@@ -26,14 +27,12 @@ const Booking = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>My Bookings</Text>
-        <Text style={styles.subHeaderText}>
-          List of people who booked your service.
-        </Text>
+        <Text style={styles.headerText}>Your Feedbacks</Text>
+        <Text style={styles.subHeaderText}></Text>
       </View>
       <ScrollView style={styles.scrollView}>
         {/* Only render the Completed component */}
-        <Completed />
+        <Feedback />
       </ScrollView>
     </SafeAreaView>
   );

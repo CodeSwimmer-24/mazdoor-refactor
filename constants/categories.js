@@ -6,7 +6,7 @@ import chef from "../assets/assets/chef.png";
 import mechanicCar from "../assets/assets/mechanicCar.png";
 import truck from "../assets/assets/truck.png";
 import ac from "../assets/assets/elec.png";
-import washing from "../assets/assets/washing.png";
+import newspaper from "../assets/assets/newspaper.png";
 import welder from "../assets/assets/welder.png";
 import cleaning from "../assets/assets/cleaning.png";
 import gutter from "../assets/assets/gutter.png";
@@ -22,7 +22,7 @@ const categories = [
     image: electrician,
     label: "Electrician",
     value: "Electrician",
-    subCategory: "All categories",
+    subCategory: "All Categories, General Services, Washing Machine, Microwave, Induction, Motor",
     backgroundColor: "rgb(237, 247, 237)",
   },
   {
@@ -50,7 +50,7 @@ const categories = [
     image: mechanicCar,
     label: "Mechanic",
     value: "Mechanic",
-    subCategory: "All Categories, Car Mechanic, Bike Mechanic, Cycle Mechanic",
+    subCategory: "All Categories, Car, Bike, Cycle",
     backgroundColor: "#e3e4ef",
   },
   {
@@ -58,7 +58,7 @@ const categories = [
     label: "Electronics Repair",
     value: "Electronics Repair",
     subCategory:
-      "All Categories, AC, Washing Machine, Fridge, Microwave, Induction",
+      "All Categories, AC,TV, Washing Machine, Fridge, Microwave, Induction, Motor",
     backgroundColor: "#eff4f9",
   },
   {
@@ -77,16 +77,16 @@ const categories = [
     backgroundColor: "#cfd7e6",
   },
   {
-    image: washing,
-    label: "Laundry",
-    value: "Laundry",
+    image: newspaper,
+    label: "News Paper Ads",
+    value: "News Paper Ads",
     subCategory: "All categories",
     backgroundColor: "#ede8f2",
   },
   {
     image: cleaning,
-    label: "Cleaning",
-    value: "Cleaning",
+    label: "Cleaner",
+    value: "Cleaner",
     subCategory:
       "All Categories, Malba Pickup, House, Bathroom, Sofa/Carpet, Parking/Stairs, Shop",
     backgroundColor: "#fef7e8",
@@ -104,7 +104,7 @@ const categories = [
     label: "Mistiri",
     value: "Mistiri",
     subCategory:
-      "All Categories, Tile Mistri, Marble Mistri, Raj Mistri, Glass Mistri",
+      "All Categories, Tile Mistri, Marble Mistri, Raj Mistri",
     backgroundColor: "#edf9ed",
   },
   {

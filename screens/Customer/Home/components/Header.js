@@ -59,7 +59,6 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 color="gray"
               />
               <Text style={styles.locationText}>
-                {exactLocation ? `${exactLocation}, ` : "CurrentLocation"}
                 {locality ? locality : "Area"}
               </Text>
             </View>

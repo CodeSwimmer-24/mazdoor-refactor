@@ -29,28 +29,40 @@ const Customer = () => {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          ...getTabBarOptions(),
+          ...getTabBarOptions(), // Keeps your custom styles
         })}
       >
         <Tab.Screen
           name="Home"
-          options={{ headerShown: false }}
           component={Home}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Home", // Custom label for this tab
+          }}
         />
         <Tab.Screen
           name="Booking"
-          options={{ headerShown: false }}
           component={Booking}
+          options={{
+            headerShown: false,
+            tabBarLabel: "View History", // Custom label for this tab
+          }}
         />
         <Tab.Screen
           name="Like"
-          options={{ headerShown: false }}
           component={Like}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Favorites", // Custom label for this tab
+          }}
         />
         <Tab.Screen
           name="Profile"
-          options={{ headerShown: false }}
           component={Profile}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Profile", // Custom label for this tab
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>

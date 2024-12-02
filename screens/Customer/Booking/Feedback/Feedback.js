@@ -3,27 +3,23 @@ import {
   View,
   Text,
   Modal,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../../constants/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuthStore } from "../../../../zustand/authStore";
 import axios from "axios";
 import { hostUrl } from "../../../../services";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 const Feedback = ({
   isVisible,
   setIsVisible,
   email,
   serviceType,
-  bookingId,
   setReload,
 }) => {
   const [rating, setRating] = useState(0);
@@ -35,31 +31,11 @@ const Feedback = ({
   const { name } = useAuthStore();
 
   const feedbackEmoji = [
-    {
-      name: "star-outline",
-      solidName: "star",
-      value: 1,
-    },
-    {
-      name: "star-outline",
-      solidName: "star",
-      value: 2,
-    },
-    {
-      name: "star-outline",
-      solidName: "star",
-      value: 3,
-    },
-    {
-      name: "star-outline",
-      solidName: "star",
-      value: 4,
-    },
-    {
-      name: "star-outline",
-      solidName: "star",
-      value: 5,
-    },
+    { name: "star-outline", solidName: "star", value: 1 },
+    { name: "star-outline", solidName: "star", value: 2 },
+    { name: "star-outline", solidName: "star", value: 3 },
+    { name: "star-outline", solidName: "star", value: 4 },
+    { name: "star-outline", solidName: "star", value: 5 },
   ];
 
   const handleRating = (index) => {
@@ -68,10 +44,15 @@ const Feedback = ({
   };
 
   const handleSubmit = async () => {
+    if (rating === 0 || feedback.trim() === "") {
+      alert("Please provide a rating and feedback before submitting.");
+      return;
+    }
+
     setLoading(true);
     const feedbackData = {
       emailId: email,
-      feedback: feedback,
+      feedback: feedback.trim(),
       rating: rating,
       serviceType: serviceType,
       userName: name,
@@ -79,13 +60,21 @@ const Feedback = ({
 
     try {
       const response = await axios.post(
-        `${hostUrl}/mazdoor/v1/addSPFeedback/${bookingId}`,
+        `${hostUrl}/mazdoor/v1/addSPFeedback`,
         feedbackData
       );
-      setReload(true);
       setSuccessMessage("Feedback submitted successfully!");
       setLoading(false);
-      setIsVisible(false);
+      if (typeof setReload === "function") {
+        setReload(true);
+      }
+      setTimeout(() => {
+        setIsVisible(false);
+        setSuccessMessage("");
+        setFeedback("");
+        setRating(0);
+        setSelectedEmojiIndex(-1);
+      }, 500);
     } catch (error) {
       console.error("Error submitting feedback:", error);
       setLoading(false);
@@ -93,71 +82,65 @@ const Feedback = ({
   };
 
   return (
-    <>
-      <Modal visible={isVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            onPress={() => setIsVisible(false)}
-          />
-          <View style={styles.modalContent}>
-            <View>
-              <View style={styles.header}>
-                <Text style={styles.headerText}>Feedback</Text>
-                <TouchableOpacity
-                  onPress={() => setIsVisible(false)}
-                  style={styles.closeButton}
-                >
-                  <Entypo name="cross" size={20} color={colors.danger} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.emojiContainer}>
-                {feedbackEmoji.map((emoji, index) => (
-                  <TouchableOpacity
-                    onPress={() => handleRating(index)}
-                    key={emoji.value}
-                  >
-                    <MaterialCommunityIcons
-                      name={
-                        index <= selectedEmojiIndex
-                          ? emoji.solidName
-                          : emoji.name
-                      }
-                      size={34}
-                      color="green"
-                    />
-                  </TouchableOpacity>
-                ))}
-              </View>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  placeholder="Please fill your feedback..."
-                  multiline
-                  value={feedback}
-                  onChangeText={setFeedback}
-                  style={styles.textInput}
+    <Modal visible={isVisible} transparent={true} animationType="slide">
+      <View style={styles.modalContainer}>
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={() => setIsVisible(false)}
+        />
+        <View style={styles.modalContent}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Feedback</Text>
+            <TouchableOpacity
+              onPress={() => setIsVisible(false)}
+              style={styles.closeButton}
+            >
+              <Entypo name="cross" size={20} color={colors.danger} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.emojiContainer}>
+            {feedbackEmoji.map((emoji, index) => (
+              <TouchableOpacity
+                key={emoji.value}
+                onPress={() => handleRating(index)}
+              >
+                <MaterialCommunityIcons
+                  name={
+                    index <= selectedEmojiIndex ? emoji.solidName : emoji.name
+                  }
+                  size={34}
+                  color="green"
                 />
-              </View>
-              <View style={styles.submitContainer}>
-                {loading ? (
-                  <ActivityIndicator size="large" color={colors.primary} />
-                ) : (
-                  <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={handleSubmit}
-                  >
-                    <Text style={styles.submitButtonText}>Submit</Text>
-                  </TouchableOpacity>
-                )}
-                {successMessage ? (
-                  <Text style={styles.successMessage}>{successMessage}</Text>
-                ) : null}
-              </View>
-            </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Please fill your feedback..."
+              multiline
+              value={feedback}
+              onChangeText={setFeedback}
+              style={styles.textInput}
+            />
+          </View>
+          <View style={styles.submitContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color={colors.primary} />
+            ) : (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.submitButtonText}>Submit</Text>
+              </TouchableOpacity>
+            )}
+            {successMessage ? (
+              <Text style={styles.successMessage}>{successMessage}</Text>
+            ) : null}
           </View>
         </View>
-      </Modal>
-    </>
+      </View>
+    </Modal>
   );
 };
 
@@ -186,20 +169,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 10,
-    paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 20,
     color: "#505050",
   },
   closeButton: {
-    backgroundColor: colors.dangerBackground,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    padding: 5,
     borderRadius: 50,
   },
   emojiContainer: {
-    marginHorizontal: 0,
     flexDirection: "row",
     justifyContent: "space-around",
     marginVertical: 20,
@@ -208,12 +187,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderWidth: 0.7,
     borderColor: "lightgray",
-    marginBottom: 20,
+    borderRadius: 5,
     paddingHorizontal: 5,
     paddingVertical: 5,
-    borderRadius: 5,
-    backgroundColor: "white",
-    marginVertical: 20,
     marginHorizontal: 10,
   },
   textInput: {
@@ -236,7 +212,7 @@ const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 10,
     elevation: 5,
-    marginBottom: 100,
+    marginBottom: 20,
   },
   submitButtonText: {
     textAlign: "center",

@@ -20,7 +20,7 @@ const Verification = () => {
   };
 
   const openWhatsApp = () => {
-    const phoneNumber = "7272977850";
+    const phoneNumber = "8987609322";
     const message = "I would like to send my Aadhar card for verification.";
     const url = `whatsapp://send?phone=91${phoneNumber}&text=${message}`;
 
