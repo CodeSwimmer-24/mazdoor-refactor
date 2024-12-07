@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.primary,
     paddingVertical: moderateScale(15),
-    borderRadius: 5,
+    borderRadius: 2,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "center",
     color: "white",
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(13),
     marginLeft: moderateScale(12),
     fontWeight: "500",
   },

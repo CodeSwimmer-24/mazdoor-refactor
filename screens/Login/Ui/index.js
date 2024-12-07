@@ -45,22 +45,7 @@ const LoginUi = ({ onGoogleButtonPress }) => {
                 color="#fff"
               />
               <Text style={styles.buttonText}>
-                SignIn with Customer Account
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.googleButton, styles.mazdoorButton]}
-              onPress={() => handleGoogleButtonPress("mazdoor")}
-            >
-              <FontAwesome
-                name="google"
-                size={moderateScale(18)}
-                color={colors.primary}
-              />
-              <Text style={[styles.buttonText, styles.mazdoorButtonText]}>
-                SignIn with Service Account
+                Continue with Google Account
               </Text>
             </TouchableOpacity>
           </View>
