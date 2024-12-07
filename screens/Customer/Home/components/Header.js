@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SimpleLineIcons, Feather, Foundation } from "@expo/vector-icons";
+import { SimpleLineIcons, Feather, Entypo } from "@expo/vector-icons";
 import { moderateScale } from "react-native-size-matters";
 import colors from "../../../../constants/colors";
 import useProfileImage from "../../../../constants/profileImage";
@@ -25,8 +25,22 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
               <View>
                 <Text style={styles.welcomeText}>Hey, Welcome 👋</Text>
                 <Text style={styles.userName}>{name}</Text>
+                <View style={{
+                  flexDirection: "row",
+                  marginLeft: -5,
+                  marginTop: 4,
+                  alignItems: "center"
+                }}><Entypo
+                    name="location-pin"
+                    size={moderateScale(16)}
+                    color={colors.primary}
+                  /><Text style={{
+                    fontSize: 12,
+                    color: colors.baseColor
+                  }}>{locality ? locality : "Area"}, New Delhi</Text></View>
               </View>
             </View>
+
             {role === "customer" && (
               <TouchableOpacity onPress={() => setIsDrawerVisible(true)}>
                 <View style={styles.notificationIconContainer}>
@@ -43,8 +57,10 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 </View>
               </TouchableOpacity>
             )}
+
           </View>
-          <View style={styles.locationContainer}>
+
+          {/* <View style={styles.locationContainer}>
             <View
               style={[
                 styles.locationContent,
@@ -74,7 +90,7 @@ const Header = ({ name, locality, setIsDrawerVisible }) => {
                 />
               </TouchableOpacity>
             )}
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

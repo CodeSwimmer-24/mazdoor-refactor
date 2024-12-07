@@ -78,9 +78,9 @@ const categories = [
   },
   {
     image: newspaper,
-    label: "News Paper Ads",
-    value: "News Paper Ads",
-    subCategory: "All categories",
+    label: "Interior Decorator",
+    value: "Interior Decorator",
+    subCategory: "All Categories, Modular Kitchen, Furniture, False Ceiling, Floor",
     backgroundColor: "#ede8f2",
   },
   {
