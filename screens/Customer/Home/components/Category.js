@@ -56,7 +56,7 @@ const Category = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Categories</Text>
+        <Text style={styles.headerTitle}>#Categories</Text>
         <TouchableOpacity
           onPress={() => {
             setIsVisible(true);
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
     marginVertical: hp("1.25%"),
   },
   categoryIconContainer: {
-    paddingVertical: hp("1.2%"),
-    paddingHorizontal: wp("2.6%"),
+    paddingVertical: hp("1.5%"),
+    paddingHorizontal: wp("2.9%"),
     borderRadius: 50,
   },
   categoryIcon: {

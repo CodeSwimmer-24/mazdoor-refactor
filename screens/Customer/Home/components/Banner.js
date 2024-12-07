@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: hp("20%"),
     resizeMode: "cover",
-    borderRadius: 10,
+    borderRadius: 5,
   },
   headerTitle: {
     fontSize: hp("2%"),
