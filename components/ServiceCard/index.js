@@ -32,17 +32,17 @@ const ServiceCard = ({
         >
           <Text style={styles.name}>{name}</Text>
           {verified && (
-            <MaterialIcons name="verified" size={20} color={colors.primary} />
+            <MaterialIcons name="verified" size={24} color="#4caf50" />
           )}
         </View>
         <View style={styles.locationContainer}>
-          <MaterialCommunityIcons
-            name="account-details"
+          <MaterialIcons
+            name="location-on"
             size={20}
             color="#A9A9A9"
             style={styles.icon}
           />
-          <Text style={styles.locationText}>{location.slice(0, 40)}...</Text>
+          <Text style={styles.locationText}>{location ? location : "Area Name"}</Text>
         </View>
         <View style={styles.detailsContainer}>
           <View
@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     marginVertical: 4,
     width: "80%",
   },
   icon: {
-    marginRight: 5,
+    marginRight: 4,
   },
   locationText: {
     color: "#A9A9A9",

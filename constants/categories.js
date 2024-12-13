@@ -93,13 +93,6 @@ const categories = [
   },
 
   {
-    image: makeup,
-    label: "Women's Parlour",
-    value: "Women's Parlour",
-    subCategory: "All Categories, Hair Cutting, Facial, Massage, Mehandi",
-    backgroundColor: "#FFE9EC",
-  },
-  {
     image: tile,
     label: "Mistiri",
     value: "Mistiri",
@@ -115,6 +108,13 @@ const categories = [
     backgroundColor: "#fef7e8",
   },
 
+  {
+    image: makeup,
+    label: "Women's Parlour",
+    value: "Women's Parlour",
+    subCategory: "All Categories, Hair Cutting, Facial, Massage, Mehandi",
+    backgroundColor: "#FFE9EC",
+  },
   {
     image: pani,
     label: "Pani Wala",

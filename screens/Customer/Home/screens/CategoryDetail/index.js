@@ -72,6 +72,7 @@ const CategoryDetail = ({ route, navigation }) => {
     return null;
   }
 
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.primary} />
@@ -148,7 +149,7 @@ const CategoryDetail = ({ route, navigation }) => {
                       category={label}
                       rating={item.rating}
                       verified={item.verified}
-                      location={item.short_description}
+                      location={item.area}
                       availability={item.availability}
                       price={item.basePrice}
                       onPress={() =>

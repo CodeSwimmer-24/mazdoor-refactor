@@ -23,6 +23,8 @@ const ServiceDetail = ({ route, navigation }) => {
   const [bookingIsVisible, setBookingVisible] = useState(false);
   const [shortProfile, setShortProfile] = useState({});
   const [isSubscribed, setIsSubscribed] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
+  const [visitingCharge, setVisitingCharge] = useState(0)
 
   const { email } = useAuthStore();
 
@@ -36,12 +38,15 @@ const ServiceDetail = ({ route, navigation }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log(data)
 
         setFeedbackList(data.feedbackList || []);
         setRating(data.rating || 0);
+        setIsVerified(data.serviceProvider.verified || false);
         setServiceProvider(data.serviceProvider || {});
         setServices(data.services || []);
         setShortProfile(data.shortProfile || {});
+        setVisitingCharge(data.serviceProvider.basePrice || 0)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -49,20 +54,6 @@ const ServiceDetail = ({ route, navigation }) => {
 
     fetchData();
   }, [emailId]);
-
-  const handleViewBooking = async () => {
-    try {
-      const response = await fetch(
-        `${hostUrl}/mazdoor/v1/getUserSubscription?role=customer&spEmailId=${emailId}&userEmailId=${email}`
-      );
-      const data = await response.json(); // Parse the response as JSON
-
-      // Update the state with the isSubscribed value
-      setIsSubscribed(data.isSubscribed);
-    } catch (error) {
-      console.error("Error fetching data:", error); // Handle any errors
-    }
-  };
 
   useEffect(() => {
     const parent = navigation.getParent();
@@ -98,6 +89,8 @@ const ServiceDetail = ({ route, navigation }) => {
         rating={rating}
         serviceProvider={serviceProvider}
         shortProfile={shortProfile}
+        verified={isVerified}
+        visitingCharge={visitingCharge}
       />
       <Section
         services={services}
@@ -109,7 +102,6 @@ const ServiceDetail = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             setBookingVisible(true);
-            handleViewBooking();
           }}
           style={[styles.button, styles.bookButton]}
         >
@@ -125,6 +117,7 @@ const ServiceDetail = ({ route, navigation }) => {
         serviceProvider={serviceProvider}
         navigation={navigation}
         isSubscribed={isSubscribed}
+        emailId={emailId}
       />
     </View>
   );
@@ -148,7 +141,7 @@ const styles = StyleSheet.create({
   button: {
     width: "95%",
     backgroundColor: colors.secondary,
-    borderRadius: 10,
+    borderRadius: 3,
     alignItems: "center",
   },
   bookButton: {
@@ -157,8 +150,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    paddingVertical: 14,
-    fontSize: 14,
+    paddingVertical: 16,
+    fontSize: 16,
     color: colors.primary,
     fontWeight: "600",
   },

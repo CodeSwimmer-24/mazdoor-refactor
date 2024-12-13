@@ -26,7 +26,7 @@ const ViewSubscription = () => {
     const fetchUserSubscription = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getUserSubscription?role=${role}&spEmailId=${email}`
+          `${hostUrl}/mazdoor/v1/getUserSubscription?role=mazdoor&spEmailId=${email}`
         );
         setSubscriptionData(response.data);
       } catch (error) {
