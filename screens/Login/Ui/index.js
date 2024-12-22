@@ -16,11 +16,10 @@ import colors from "../../../constants/colors";
 import bg from "../../../assets/Post/bg.png"; // Ensure the path is correct
 
 const LoginUi = ({ onGoogleButtonPress }) => {
-  const { setRole } = useAuthStore();
 
-  const handleGoogleButtonPress = (role) => {
-    onGoogleButtonPress(role);
-    setRole(role);
+
+  const handleGoogleButtonPress = () => {
+    onGoogleButtonPress();
   };
 
   const openLink = (url) => {

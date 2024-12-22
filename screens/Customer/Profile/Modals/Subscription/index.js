@@ -67,8 +67,7 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${
-            role === "customer" ? true : false
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false
           }`
         );
         const subscriptionData = response.data.map((item) => ({

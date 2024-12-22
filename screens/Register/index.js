@@ -23,23 +23,16 @@ import colors from "../../constants/colors";
 import styles from "./styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Customer from "../Customer";
+import MazdoorHome from "../Mazdoor/Home/screens";
+import Mazdoor from "../Mazdoor";
 
-const RegisterForm = () => {
-  const {
-    email,
-    setName,
-    setContact,
-    setGender,
-    setBuildingAddress,
-    setLocality,
-    setExactLocation,
-    setIsNewUser,
-    setRole
-  } = useAuthStore();
-
+const RegisterForm = ({ email }) => {
   const { locations } = useSystemStore();
 
-  // Initial form state
+  const { setEmail, setRole, setName, setAge, setContact, setGender, setLocality, setExactLocation, setBuildingAddress } = useAuthStore();
+
+  // Initial form state with role set to "customer" by default
   const initialFormData = {
     name: "",
     contact: "",
@@ -47,12 +40,13 @@ const RegisterForm = () => {
     locality: "",
     gender: "M",
     exactLocation: "",
-    role: "customer",
+    role: "customer", // Default role is "customer"
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [selectedGender, setSelectedGender] = useState("M");
+  const [pageNavigate, setPageNavigate] = useState("");
 
   // Handle input changes
   const handleChange = (name, value) => {
@@ -64,13 +58,13 @@ const RegisterForm = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    if (!formData.name || !formData.contact || !formData.locality) {
+    if (!formData.name || !formData.contact || !formData.locality || !formData.role) {
       Alert.alert("Error", "Please fill all the fields");
       return;
     }
 
-    if (formData.contact.length !== 10) {
-      Alert.alert("Error", "Contact number must be 10 digits");
+    if (formData.contact.length !== 10 || !/^[0-9]+$/.test(formData.contact)) {
+      Alert.alert("Error", "Contact number must be 10 digits and numeric");
       return;
     }
 
@@ -99,25 +93,34 @@ const RegisterForm = () => {
       });
 
       if (response.ok) {
+        setFormData(initialFormData);
+        setEmail(email);
         setName(formData.name);
         setContact(formData.contact);
-        setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
-        setRole(formData.role)
-        setExactLocation(formData.exactLocation);
+        setRole(formData.role);
+        setAge(formData.age);
         setGender(formData.gender);
-        setFormData(initialFormData);
-        setIsNewUser(false);
+        setBuildingAddress(formData.buildingAddress);
+        setExactLocation(formData.exactLocation)
+        setPageNavigate(formData.role === "customer" ? "customer" : "mazdoor");
       } else {
-        Alert.alert("Error", "Registration failed");
+        const errorData = await response.json();
+        Alert.alert("Error", `Registration failed: ${errorData.message || "Unknown error"}`);
       }
     } catch (error) {
-      Alert.alert("Error", "Error during registration");
+      Alert.alert("Error", "Registration failed: Network error");
       console.error("Error during registration", error);
     } finally {
       setLoading(false);
     }
   };
+
+  if (pageNavigate === "customer") {
+    return <Customer />;
+  } else if (pageNavigate === "mazdoor") {
+    return <Mazdoor />;
+  }
 
   // Handle gender selection
   const selectGender = (gender) => {
@@ -201,10 +204,16 @@ const RegisterForm = () => {
                   formData.role === "customer" && styles.selectedRoleButton,
                 ]}
                 onPress={() => {
-                  toggleRole("customer")
+                  toggleRole("customer");
                 }}
               >
-                <AntDesign name="user" size={20} color={formData.role === "mazdoor" ? colors.primary : colors.white} />
+                <AntDesign
+                  name="user"
+                  size={20}
+                  color={
+                    formData.role === "mazdoor" ? colors.primary : colors.white
+                  }
+                />
                 <Text
                   style={[
                     styles.roleText,
@@ -216,15 +225,20 @@ const RegisterForm = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  toggleRole("mazdoor")
+                  toggleRole("mazdoor");
                 }}
                 style={[
                   styles.roleButton,
                   formData.role === "mazdoor" && styles.selectedRoleButton,
                 ]}
-
               >
-                <Ionicons name="hammer-outline" size={20} color={formData.role === "customer" ? colors.primary : colors.white} />
+                <Ionicons
+                  name="hammer-outline"
+                  size={20}
+                  color={
+                    formData.role === "customer" ? colors.primary : colors.white
+                  }
+                />
                 <Text
                   style={[
                     styles.roleText,
@@ -235,6 +249,7 @@ const RegisterForm = () => {
                 </Text>
               </TouchableOpacity>
             </View>
+
             {formData.role === "mazdoor" && (
               <View>
                 <CustomTextInput
@@ -247,7 +262,7 @@ const RegisterForm = () => {
                 />
                 <DropdownTextInput
                   iconName="map"
-                  list={locations[formData.locality]}
+                  list={locations[formData.locality] || []}
                   iconType="Ionicons"
                   placeholder="Exact Location"
                   value={formData.exactLocation}
@@ -262,6 +277,7 @@ const RegisterForm = () => {
                 />
               </View>
             )}
+
             {/* Submit Button */}
             <TouchableOpacity
               style={styles.googleButton}

@@ -18,7 +18,7 @@ const ViewSubscription = () => {
   const [loading, setLoading] = useState(true); // Optional: Loading state
   const [reload, setReload] = useState(false); // State to trigger reload after subscription purchase
 
-  const { email, name, role } = useAuthStore();
+  const { email, name } = useAuthStore();
   const [subscriptionModalVisible, setSubscriptionModalVisible] =
     useState(false);
 
