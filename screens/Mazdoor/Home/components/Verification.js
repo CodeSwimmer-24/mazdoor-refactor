@@ -11,6 +11,7 @@ import {
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import colors from "../../../../constants/colors";
+import { useAuthStore } from "../../../../zustand/authStore";
 
 const Verification = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -19,9 +20,11 @@ const Verification = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const { email } = useAuthStore();
+
   const openWhatsApp = () => {
     const phoneNumber = "8987609322";
-    const message = "I would like to send my Aadhar card for verification.";
+    const message = `Mai apna Aadhar Card aur photo verification ke liye bhej raha hun. Mera emailId hai ${email}`;
     const url = `whatsapp://send?phone=91${phoneNumber}&text=${message}`;
 
     Linking.canOpenURL(url)
@@ -54,10 +57,10 @@ const Verification = () => {
         onPress={toggleModal}
         style={{
           backgroundColor: colors.success,
-          paddingHorizontal: 80,
-          paddingVertical: 10,
+          paddingHorizontal: 120,
+          paddingVertical: 15,
           marginTop: 10,
-          borderRadius: 10,
+          borderRadius: 2,
           elevation: 5,
         }}
       >

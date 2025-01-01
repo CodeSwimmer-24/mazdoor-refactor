@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const hostUrl = "https://digimazdoor.tech";
+// export const hostUrl = "http://192.168.1.21:8080"
 
 export const getLocations = async () => {
   const result = await axios.get(`${hostUrl}/mazdoor/v1/getLocationData/false`);

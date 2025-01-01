@@ -155,7 +155,7 @@ const AddService = ({ isFormVisible, setIsFormVisible, setReload }) => {
               onPress={handleSubmit}
               style={styles.submitButton}
             >
-              <Text style={styles.submitButtonText}>Submit Services</Text>
+              <Text style={styles.submitButtonText}>Submitt Services</Text>
             </TouchableOpacity>
           )}
         </ScrollView>
@@ -258,6 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     elevation: 5,
     marginTop: 10,
+    marginBottom: 50
   },
   submitButtonText: {
     fontSize: 16,

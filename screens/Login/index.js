@@ -29,12 +29,10 @@ const Login = () => {
     const unsubscribe = auth().onAuthStateChanged(async (currentUser) => {
       if (currentUser) {
         try {
-          const { displayName, email } = currentUser;
+          const { email } = currentUser;
 
           const response = await axios.post(`${hostUrl}/mazdoor/v1/login`, {
             emailId: email,
-            name: displayName,
-            role: "customer"
           });
           setNewEmail(email);
 

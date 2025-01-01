@@ -51,14 +51,8 @@ const Services = () => {
       "Confirm Delete",
       "Are you sure you want to delete this service?",
       [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => deleteService(id),
-        },
+        { text: "Cancel", style: "cancel" },
+        { text: "OK", onPress: () => deleteService(id) },
       ]
     );
   };
@@ -67,9 +61,7 @@ const Services = () => {
     try {
       const response = await fetch(
         `${hostUrl}/mazdoor/v1/deleteService/${email}/${serviceId}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
 
       if (response.ok) {
@@ -106,7 +98,7 @@ const Services = () => {
   }
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Your Services</Text>
         <TouchableOpacity style={styles.addService} onPress={handleAddService}>
@@ -115,8 +107,12 @@ const Services = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView>
-        <View style={{ alignItems: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 20 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <ScrollView>
           {services.length === 0 ? (
             <View style={styles.noDataContainer}>
               <Text style={styles.noDataText}>No Data found</Text>
@@ -129,7 +125,6 @@ const Services = () => {
                   <Text style={styles.serviceDescription}>
                     {service.serviceDescription}
                   </Text>
-                  {/* <Text style={styles.servicePrice}>₹ {service.price}/-</Text> */}
                 </View>
                 <View style={styles.serviceActions}>
                   <TouchableOpacity
@@ -156,7 +151,7 @@ const Services = () => {
               </View>
             ))
           )}
-        </View>
+        </ScrollView>
       </ScrollView>
 
       {isFormVisible && (
@@ -201,17 +196,6 @@ const styles = {
     fontWeight: "600",
     color: colors.primary,
   },
-  iconContainer: {
-    flexDirection: "row",
-  },
-  iconButton: {
-    padding: 8,
-    borderRadius: 50,
-    marginRight: 10,
-  },
-  serviceContainer: {
-    alignItems: "center",
-  },
   serviceItem: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -229,12 +213,6 @@ const styles = {
     fontSize: 12,
     color: "#505050",
     fontWeight: "300",
-  },
-  servicePrice: {
-    marginTop: 10,
-    fontSize: 16,
-    color: colors.primary,
-    fontWeight: "600",
   },
   serviceActions: {
     alignItems: "center",

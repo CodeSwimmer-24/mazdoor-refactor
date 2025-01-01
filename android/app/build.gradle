@@ -114,8 +114,8 @@ android {
         applicationId 'com.mazdoor.digimazdoor'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.1.12"
+        versionCode 15
+        versionName "1.1.15"
     }
     signingConfigs {
         debug {
