@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import LoginUi from './Ui';
-import Mazdoor from '../Mazdoor';
-import RegisterForm from '../Register';
-import Customer from '../Customer';
-import axios from 'axios';
-import { hostUrl } from '../../services';
-import { useAuthStore } from '../../zustand/authStore';
+import React, { useState, useEffect } from "react";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import LoginUi from "./Ui";
+import Mazdoor from "../Mazdoor";
+import RegisterForm from "../Register";
+import Customer from "../Customer";
+import axios from "axios";
+import { hostUrl } from "../../services";
+import { useAuthStore } from "../../zustand/authStore";
+import colors from "../../constants/colors";
 
 const Login = () => {
   const [loading, setLoading] = useState(true); // For initial loading
@@ -16,13 +17,25 @@ const Login = () => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [checkRole, setCheckRole] = useState("");
+  const [delayedRoleCheck, setDelayedRoleCheck] = useState(false); // To handle delay for role check
 
-  const { setEmail, setRole, setName, setAge, setContact, setGender, setLocality, setExactLocation, setBuildingAddress } = useAuthStore();
+  const {
+    setEmail,
+    setRole,
+    setName,
+    setAge,
+    setContact,
+    setGender,
+    setLocality,
+    setExactLocation,
+    setBuildingAddress,
+  } = useAuthStore();
 
   useEffect(() => {
     // Set up Google Sign-In configuration
     GoogleSignin.configure({
-      webClientId: "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
+      webClientId:
+        "659599005965-4fl00tl7ouiea7rgmn888ice2g8m63b3.apps.googleusercontent.com",
     });
 
     // Check if the user is already logged in
@@ -42,7 +55,8 @@ const Login = () => {
             // Fetch user profile if not new
             const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
             const profileResponse = await axios.get(profileApiUrl);
-            const { name, role, emailId, contactNo, gender, address } = profileResponse.data;
+            const { name, role, emailId, contactNo, gender, address } =
+              profileResponse.data;
 
             setName(name);
             setRole(role);
@@ -50,9 +64,10 @@ const Login = () => {
             setLocality(address.locality);
             setContact(contactNo);
             setGender(gender);
+            setCheckRole(role); // Set role here
           }
         } catch (error) {
-          console.error('Error checking user status:', error);
+          console.error("Error checking user status:", error);
         }
       }
       setUser(currentUser);
@@ -61,6 +76,17 @@ const Login = () => {
 
     return unsubscribe; // Cleanup the listener on component unmount
   }, []);
+
+  // Delay rendering based on `checkRole`
+  useEffect(() => {
+    if (checkRole) {
+      const timer = setTimeout(() => {
+        setDelayedRoleCheck(true); // Set to true after 3 seconds
+      }, 3000);
+
+      return () => clearTimeout(timer); // Cleanup timer on unmount
+    }
+  }, [checkRole]);
 
   const onGoogleButtonPress = async () => {
     setLoading(true); // Set loading to true when starting login process
@@ -85,8 +111,9 @@ const Login = () => {
       if (response.data.isNewUser === false) {
         const profileApiUrl = `${hostUrl}/mazdoor/v1/getProfile?emailId=${email}`;
         const profileResponse = await axios.get(profileApiUrl);
-        const { name, role, emailId, contactNo, gender, address, age } = profileResponse.data;
-        setCheckRole(role)
+        const { name, role, emailId, contactNo, gender, address, age } =
+          profileResponse.data;
+        setCheckRole(role);
         setName(name);
         setRole(role);
         setEmail(emailId);
@@ -95,10 +122,10 @@ const Login = () => {
         setGender(gender);
         setAge(age);
         setExactLocation(address.exactLocation);
-        setBuildingAddress(address.buildingAddress)
+        setBuildingAddress(address.buildingAddress);
       }
     } catch (error) {
-      console.error('Google Sign-In Error:', error);
+      console.error("Google Sign-In Error:", error);
     } finally {
       setLoading(false); // Stop loading after login process
     }
@@ -116,9 +143,19 @@ const Login = () => {
   if (user) {
     if (isNewUser) {
       return <RegisterForm email={newEmail} />;
-    } else {
-      return checkRole === "customer" ? <Customer /> : <Mazdoor />;
     }
+
+    if (!delayedRoleCheck) {
+      // Show loader while waiting for the delay
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size={50} color={colors.primary} />
+        </View>
+      );
+    }
+
+    // Render based on the updated `checkRole`
+    return checkRole === "customer" ? <Customer /> : <Mazdoor />;
   }
 
   // If user is not logged in, show the Login page
@@ -127,10 +164,10 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-})
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Login;

@@ -3,7 +3,7 @@ export default {
     name: "Digimazdoor",
     slug: "Digimazdoor-App",
     plugins: ["@react-native-google-signin/google-signin"],
-    version: "1.1.15",
+    version: "1.1.16",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -24,7 +24,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.mazdoor.digimazdoor",
-      versionCode: 15,
+      versionCode: 16,
       updates: {
         enabled: true, // Updates enabled for Android
       },
