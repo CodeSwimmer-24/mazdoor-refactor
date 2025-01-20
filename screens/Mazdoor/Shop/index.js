@@ -118,12 +118,12 @@ const Shop = () => {
                   </View>
                   <Text style={styles.rating}>🌟 {serviceProvider.rating}</Text>
                 </View>
-                <Text style={styles.basePrice}>
-                  Base Price{" "}
+                {/* <Text style={styles.basePrice}>
+                  Visiting Price
                   <Text style={styles.basePriceValue}>
                     {serviceProvider.basePrice}/-
                   </Text>
-                </Text>
+                </Text> */}
                 {/* <Text style={styles.availability}>
                   {serviceProvider.availability ? "Available" : "Not Available"}
                 </Text> */}

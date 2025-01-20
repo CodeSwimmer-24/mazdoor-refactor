@@ -21,23 +21,18 @@ import { useSystemStore } from "../../zustand/systemStore";
 import { hostUrl } from "../../services";
 import colors from "../../constants/colors";
 import styles from "./styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Customer from "../Customer";
+import MazdoorHome from "../Mazdoor/Home/screens";
+import Mazdoor from "../Mazdoor";
 
-const RegisterForm = () => {
-  const {
-    email,
-    role,
-    picture,
-    setName,
-    setContact,
-    setGender,
-    setBuildingAddress,
-    setLocality,
-    setExactLocation,
-    setIsNewUser,
-  } = useAuthStore();
-
+const RegisterForm = ({ email }) => {
   const { locations } = useSystemStore();
 
+  const { setEmail, setRole, setName, setAge, setContact, setGender, setLocality, setExactLocation, setBuildingAddress } = useAuthStore();
+
+  // Initial form state with role set to "customer" by default
   const initialFormData = {
     name: "",
     contact: "",
@@ -45,12 +40,15 @@ const RegisterForm = () => {
     locality: "",
     gender: "M",
     exactLocation: "",
+    role: "customer", // Default role is "customer"
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [selectedGender, setSelectedGender] = useState("M");
+  const [pageNavigate, setPageNavigate] = useState("");
 
+  // Handle input changes
   const handleChange = (name, value) => {
     setFormData({
       ...formData,
@@ -58,21 +56,15 @@ const RegisterForm = () => {
     });
   };
 
+  // Handle form submission
   const handleSubmit = async () => {
-    // Check if any field is empty
-    if (
-      !formData.name ||
-      !formData.contact ||
-      !formData.buildingAddress ||
-      !formData.locality
-    ) {
+    if (!formData.name || !formData.contact || !formData.locality || !formData.role) {
       Alert.alert("Error", "Please fill all the fields");
       return;
     }
 
-    // Check if the contact number is 10 digits
-    if (formData.contact.length !== 10) {
-      Alert.alert("Error", "Contact number must be 10 digits");
+    if (formData.contact.length !== 10 || !/^[0-9]+$/.test(formData.contact)) {
+      Alert.alert("Error", "Contact number must be 10 digits and numeric");
       return;
     }
 
@@ -87,7 +79,7 @@ const RegisterForm = () => {
       contactNo: formData.contact,
       emailId: email,
       name: formData.name,
-      role: "customer",
+      role: formData.role,
       gender: formData.gender,
     };
 
@@ -101,31 +93,44 @@ const RegisterForm = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        Alert.alert("Success", "Registration successful");
+        setFormData(initialFormData);
+        setEmail(email);
         setName(formData.name);
         setContact(formData.contact);
-        setBuildingAddress(formData.buildingAddress);
         setLocality(formData.locality);
-        setExactLocation(formData.exactLocation);
+        setRole(formData.role);
+        setAge(formData.age);
         setGender(formData.gender);
-        setFormData(initialFormData);
-        setIsNewUser(false);
+        setBuildingAddress(formData.buildingAddress);
+        setExactLocation(formData.exactLocation)
+        setPageNavigate(formData.role === "customer" ? "customer" : "mazdoor");
       } else {
-        Alert.alert("Error", "Registration failed");
+        const errorData = await response.json();
+        Alert.alert("Error", `Registration failed: ${errorData.message || "Unknown error"}`);
       }
     } catch (error) {
-      Alert.alert("Error", "Error during registration");
+      Alert.alert("Error", "Registration failed: Network error");
       console.error("Error during registration", error);
     } finally {
       setLoading(false);
     }
   };
 
+  if (pageNavigate === "customer") {
+    return <Customer />;
+  } else if (pageNavigate === "mazdoor") {
+    return <Mazdoor />;
+  }
+
+  // Handle gender selection
   const selectGender = (gender) => {
     setSelectedGender(gender);
-    setFormData({ ...formData, gender });
-    setGender(gender); // Update gender in Zustand state
+    handleChange("gender", gender);
+  };
+
+  // Handle role toggle
+  const toggleRole = (role) => {
+    handleChange("role", role);
   };
 
   return (
@@ -134,73 +139,39 @@ const RegisterForm = () => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {/* Header */}
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}>Register Account</Text>
               <Text style={styles.subHeaderText}>
                 Please provide all the necessary information.
               </Text>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-evenly",
-              }}
-            >
+
+            {/* Gender Selection */}
+            <View style={styles.genderSelectionContainer}>
               <TouchableOpacity
                 style={[
                   styles.picture,
-                  {
-                    borderWidth: 0.5,
-                    borderRadius: 15,
-                    borderColor:
-                      selectedGender === "M" ? "#D0D0D0" : "transparent",
-                    borderWidth: selectedGender === "M" ? 1 : 0,
-                  },
+                  selectedGender === "M" && styles.selectedPicture,
                 ]}
                 onPress={() => selectGender("M")}
               >
                 <Image source={mail} style={styles.pictureImage} />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#505050",
-                  }}
-                >
-                  Male
-                </Text>
+                <Text style={styles.genderText}>Male</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   styles.picture,
-                  {
-                    borderWidth: 0.5,
-                    borderRadius: 10,
-                    borderColor:
-                      selectedGender === "F" ? "#D0D0D0" : "transparent",
-                    borderWidth: selectedGender === "F" ? 1 : 0,
-                  },
+                  selectedGender === "F" && styles.selectedPicture,
                 ]}
                 onPress={() => selectGender("F")}
               >
                 <Image source={femail} style={styles.pictureImage} />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#505050",
-                  }}
-                >
-                  Female
-                </Text>
+                <Text style={styles.genderText}>Female</Text>
               </TouchableOpacity>
             </View>
-            <CustomTextInput
-              iconName="mark-email-read"
-              iconType="mark-email-read"
-              placeholder={email}
-              value={email}
-              editable={false} // Make sure to use `false` as a boolean
-            />
+
+            {/* Input Fields */}
             <CustomTextInput
               iconName="person-outline"
               iconType="Ionicons"
@@ -216,7 +187,6 @@ const RegisterForm = () => {
               onChangeText={(text) => handleChange("contact", text)}
               keyboardType="phone-pad"
             />
-
             <DropdownTextInput
               iconName="map"
               list={Object.keys(locations)}
@@ -226,22 +196,89 @@ const RegisterForm = () => {
               onChangeText={(text) => handleChange("locality", text)}
             />
 
-            <DropdownTextInput
-              iconName="map"
-              list={locations[formData.locality]}
-              iconType="Ionicons"
-              placeholder="Exact Location"
-              value={formData.exactLocation}
-              onChangeText={(text) => handleChange("exactLocation", text)}
-            />
-            <CustomTextInput
-              iconName="location-outline"
-              iconType="Ionicons"
-              placeholder="Building Address"
-              value={formData.buildingAddress}
-              onChangeText={(text) => handleChange("buildingAddress", text)}
-            />
+            {/* Role Selection */}
+            <View style={styles.roleToggleContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.roleButton,
+                  formData.role === "customer" && styles.selectedRoleButton,
+                ]}
+                onPress={() => {
+                  toggleRole("customer");
+                }}
+              >
+                <AntDesign
+                  name="user"
+                  size={20}
+                  color={
+                    formData.role === "mazdoor" ? colors.primary : colors.white
+                  }
+                />
+                <Text
+                  style={[
+                    styles.roleText,
+                    formData.role === "customer" && styles.selectedRoleText,
+                  ]}
+                >
+                  Customer
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  toggleRole("mazdoor");
+                }}
+                style={[
+                  styles.roleButton,
+                  formData.role === "mazdoor" && styles.selectedRoleButton,
+                ]}
+              >
+                <Ionicons
+                  name="hammer-outline"
+                  size={20}
+                  color={
+                    formData.role === "customer" ? colors.primary : colors.white
+                  }
+                />
+                <Text
+                  style={[
+                    styles.roleText,
+                    formData.role === "mazdoor" && styles.selectedRoleText,
+                  ]}
+                >
+                  Mazdoor (कारीगर)
+                </Text>
+              </TouchableOpacity>
+            </View>
 
+            {formData.role === "mazdoor" && (
+              <View>
+                <CustomTextInput
+                  iconName="man"
+                  iconType="Ionicons"
+                  placeholder="Age"
+                  value={formData.age}
+                  onChangeText={(text) => handleChange("age", text)}
+                  keyboardType="phone-pad"
+                />
+                <DropdownTextInput
+                  iconName="map"
+                  list={locations[formData.locality] || []}
+                  iconType="Ionicons"
+                  placeholder="Exact Location"
+                  value={formData.exactLocation}
+                  onChangeText={(text) => handleChange("exactLocation", text)}
+                />
+                <CustomTextInput
+                  iconName="location-outline"
+                  iconType="Ionicons"
+                  placeholder="Building Address"
+                  value={formData.buildingAddress}
+                  onChangeText={(text) => handleChange("buildingAddress", text)}
+                />
+              </View>
+            )}
+
+            {/* Submit Button */}
             <TouchableOpacity
               style={styles.googleButton}
               onPress={handleSubmit}

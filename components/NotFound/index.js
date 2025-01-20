@@ -5,7 +5,7 @@ import nolike from "../../assets/assets/nolike.png";
 import colors from "../../constants/colors";
 import { useAuthStore } from "../../zustand/authStore";
 
-const NotFound = ({ info, image }) => {
+const NotFound = ({ info, image, text = "Coming Soon!" }) => {
   const { role } = useAuthStore();
   return (
     <View style={styles.noDataContainer}>
@@ -14,7 +14,7 @@ const NotFound = ({ info, image }) => {
       ) : (
         <Image source={noData} style={styles.noDataImage} />
       )}
-      <Text style={styles.noDataTitle}>Oops!</Text>
+      <Text style={styles.noDataTitle}>{text}</Text>
       {/* {role === "mazdoor" && (
         <Text
           style={{
@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.baseColor,
     textAlign: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
   },
   noDataSubtitle: {
     marginTop: 5,

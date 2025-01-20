@@ -102,13 +102,15 @@ const Profile = ({
             "View Your Account",
             "view-dashboard-outline",
             MaterialCommunityIcons,
-            () => setAccountModalVisible(true)
+            () => setAccountModalVisible(true),
+            role
           )}
           {renderSettingOption(
             "Edit Profile Details",
             "circle-edit-outline",
             MaterialCommunityIcons,
-            () => setEditAccountModalVisible(true)
+            () => setEditAccountModalVisible(true),
+            role
           )}
         </View>
 
@@ -119,14 +121,16 @@ const Profile = ({
             "Subscribe & Unlock all feature's",
             "currency-rupee",
             MaterialIcons,
-            () => setSubscriptionModalVisible(true)
+            role === "mazdoor" ? () => setSubscriptionModalVisible(true) : null,
+            role
           )}
           {role === "mazdoor" &&
             renderSettingOption(
               "Youtube Demo Video",
               "youtube",
               MaterialCommunityIcons,
-              () => openURL(youtubeVideo)
+              () => openURL(youtubeVideo),
+              role
             )}
           {renderSettingOption(
             "Feedback & Reports",
@@ -135,7 +139,8 @@ const Profile = ({
             () =>
               openURL(
                 "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor"
-              )
+              ),
+            role
           )}
           {renderSettingOption(
             "Rate us on Playstore",
@@ -144,7 +149,8 @@ const Profile = ({
             () =>
               openURL(
                 "https://play.google.com/store/apps/details?id=com.mazdoor.digimazdoor"
-              )
+              ),
+            role
           )}
           {renderSettingOption(
             "Share DigiMazdoor App",
@@ -253,14 +259,23 @@ const SectionHeader = ({ title }) => (
 );
 
 // Render Setting Option Component
-const renderSettingOption = (label, iconName, IconComponent, onPress) => (
+const renderSettingOption = (label, iconName, IconComponent, onPress, role) => (
   <TouchableOpacity style={styles.optionContainer} onPress={onPress}>
     <View style={styles.optionContent}>
       <IconComponent name={iconName} size={22} color="#696969" />
-      <Text style={styles.optionText}>{label}</Text>
+      <Text
+        style={[
+          styles.optionText,
+          label === "Subscribe & Unlock all feature's" && role === "customer" && { textDecorationLine: 'line-through' }
+        ]}
+      >
+        {label}
+      </Text>
     </View>
     <Entypo name="chevron-right" size={22} color="#383838" />
   </TouchableOpacity>
+
+
 );
 
 const styles = {

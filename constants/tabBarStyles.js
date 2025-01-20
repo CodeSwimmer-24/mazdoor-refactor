@@ -2,12 +2,15 @@ import { Dimensions } from "react-native";
 import colors from "./colors";
 import { moderateScale } from "react-native-size-matters";
 
-const { width } = Dimensions.get("window");
-
 export const getTabBarOptions = () => ({
   tabBarActiveTintColor: colors.primary,
   tabBarInactiveTintColor: colors.tabColor,
-  tabBarShowLabel: false,
+  tabBarShowLabel: true,
+  tabBarLabelStyle: {
+    fontSize: moderateScale(10), // Adjust the font size
+    fontWeight: "300",
+    paddingBottom: 10,
+  },
   tabBarStyle: {
     position: "absolute",
     backgroundColor: "#fff",
@@ -15,7 +18,7 @@ export const getTabBarOptions = () => ({
     height: moderateScale(70),
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: moderateScale(-2) },
+    // shadowOffset: { width: 0, height: moderateScale(-2) },
     shadowRadius: moderateScale(10),
     elevation: 5,
     borderTopLeftRadius: moderateScale(0),

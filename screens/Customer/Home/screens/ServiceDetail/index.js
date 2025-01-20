@@ -12,6 +12,7 @@ import colors from "../../../../../constants/colors";
 import BannerImage from "./components/Image";
 import { hostUrl } from "../../../../../services";
 import BookingModal from "../../../Booking/BookingModal/BookingModal";
+import { useAuthStore } from "../../../../../zustand/authStore";
 
 const ServiceDetail = ({ route, navigation }) => {
   const { emailId } = route.params;
@@ -21,6 +22,11 @@ const ServiceDetail = ({ route, navigation }) => {
   const [services, setServices] = useState([]);
   const [bookingIsVisible, setBookingVisible] = useState(false);
   const [shortProfile, setShortProfile] = useState({});
+  const [isSubscribed, setIsSubscribed] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
+  const [visitingCharge, setVisitingCharge] = useState(0)
+
+  const { email } = useAuthStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,12 +38,15 @@ const ServiceDetail = ({ route, navigation }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log(data)
 
         setFeedbackList(data.feedbackList || []);
         setRating(data.rating || 0);
+        setIsVerified(data.serviceProvider.verified || false);
         setServiceProvider(data.serviceProvider || {});
         setServices(data.services || []);
         setShortProfile(data.shortProfile || {});
+        setVisitingCharge(data.serviceProvider.basePrice || 0)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -80,6 +89,8 @@ const ServiceDetail = ({ route, navigation }) => {
         rating={rating}
         serviceProvider={serviceProvider}
         shortProfile={shortProfile}
+        verified={isVerified}
+        visitingCharge={visitingCharge}
       />
       <Section
         services={services}
@@ -95,7 +106,7 @@ const ServiceDetail = ({ route, navigation }) => {
           style={[styles.button, styles.bookButton]}
         >
           <Text style={[styles.buttonText, styles.bookButtonText]}>
-            Book Now
+            Contact Service Provider
           </Text>
         </TouchableOpacity>
       </View>
@@ -105,6 +116,8 @@ const ServiceDetail = ({ route, navigation }) => {
         shortProfile={shortProfile}
         serviceProvider={serviceProvider}
         navigation={navigation}
+        isSubscribed={isSubscribed}
+        emailId={emailId}
       />
     </View>
   );
@@ -128,17 +141,17 @@ const styles = StyleSheet.create({
   button: {
     width: "95%",
     backgroundColor: colors.secondary,
-    borderRadius: 50,
+    borderRadius: 3,
     alignItems: "center",
   },
   bookButton: {
     backgroundColor: colors.primary,
-    elevation: 4,
+    elevation: 5,
   },
   buttonText: {
     textAlign: "center",
-    paddingVertical: 14,
-    fontSize: 14,
+    paddingVertical: 16,
+    fontSize: 16,
     color: colors.primary,
     fontWeight: "600",
   },

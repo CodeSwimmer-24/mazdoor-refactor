@@ -89,9 +89,9 @@ const Booking = ({ navigation }) => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor="#f9f9f9" />
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>My Bookings</Text>
+        <Text style={styles.headerText}>View History</Text>
         <Text style={styles.subHeaderText}>
-          You can view your top ten bookings.
+          You can view your top resent visited profile details.
         </Text>
       </View>
       <ScrollView style={styles.scrollView}>
@@ -107,7 +107,7 @@ const Booking = ({ navigation }) => {
                 profession={serviceProviders[index]?.serviceType || "N/A"}
                 shopName={serviceProviders[index]?.title || "N/A"}
                 date={`${booking.date} - ${booking.time}`}
-                contactNo={profiles[index]?.contactNo || "7272977850"}
+                contactNo={profiles[index]?.contactNo || "8987609322"}
                 bookingId={bookings[index]?.bookingId || "NoID"}
                 location={
                   `${profiles[index]?.address?.locality}, ${profiles[index]?.address?.city}` ||
@@ -124,19 +124,11 @@ const Booking = ({ navigation }) => {
         </View>
         {noData && (
           <>
-            <NotFound info="No current booking found for you" />
-            <View style={styles.noDataTextContainer}>
-              <View style={styles.bookServiceButton}>
-                <Entypo name="plus" size={20} color={colors.primary} />
-                <Text style={styles.bookServiceButtonText}>
-                  Book your service
-                </Text>
-              </View>
-            </View>
+            <NotFound info="No current data present in view history" text="No History Found!" />
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

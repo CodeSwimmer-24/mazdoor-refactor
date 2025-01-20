@@ -73,25 +73,20 @@ const Account = ({
                     </View>
                   </View>
                 )}
-                <View style={styles.detailBox2}>
-                  <View style={styles.detailRow}>
-                    <Ionicons name="location-outline" size={24} color="gray" />
-                    <Text style={styles.detailText}>
-                      {buildingAddress}, {exactLocation}
-                    </Text>
-                  </View>
-                  <View style={styles.detailRow}>
-                    <Text
-                      style={[
-                        styles.detailText,
-                        {
-                          marginLeft: 28,
-                        },
-                      ]}
-                    >
-                      {locality}, Jamia Nagar, New Delhi
-                    </Text>
-                  </View>
+                <View style={[styles.detailBox2, {
+                  flexDirection: "row",
+                  alignItems: "center"
+                }]}>
+                  <Ionicons name="location-outline" size={24} color="gray" />
+
+                  <Text
+                    style={[
+                      styles.detailText,
+                    ]}
+                  >
+                    {locality}, Jamia Nagar, New Delhi
+                  </Text>
+
                 </View>
               </View>
             </View>

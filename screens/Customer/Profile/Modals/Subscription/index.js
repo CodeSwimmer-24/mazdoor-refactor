@@ -39,13 +39,24 @@ const Subscription = ({
 
   useEffect(() => {
     const fetchUserSubscription = async () => {
-      try {
-        const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getUserSubscription?emailId=${email}`
-        );
-        setIsSubscribed(response.data);
-      } catch (error) {
-        console.error("Error fetching user subscription:", error);
+      if (role === "customer") {
+        try {
+          const response = await axios.get(
+            `${hostUrl}/mazdoor/v1/getUserSubscription?role=${role}&userEmailId=${email}`
+          );
+          setIsSubscribed(response.data);
+        } catch (error) {
+          console.error("Error fetching user subscription:", error);
+        }
+      } else {
+        try {
+          const response = await axios.get(
+            `${hostUrl}/mazdoor/v1/getUserSubscription?role=${role}&spEmailId=${email}`
+          );
+          setIsSubscribed(response.data);
+        } catch (error) {
+          console.error("Error fetching user subscription:", error);
+        }
       }
     };
 
@@ -56,8 +67,7 @@ const Subscription = ({
     const fetchAllSubscriptions = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/mazdoor/v1/getAllSubscription/${
-            role === "customer" ? true : false
+          `${hostUrl}/mazdoor/v1/getAllSubscription/${role === "customer" ? true : false
           }`
         );
         const subscriptionData = response.data.map((item) => ({

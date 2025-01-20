@@ -16,11 +16,10 @@ import colors from "../../../constants/colors";
 import bg from "../../../assets/Post/bg.png"; // Ensure the path is correct
 
 const LoginUi = ({ onGoogleButtonPress }) => {
-  const { setRole } = useAuthStore();
 
-  const handleGoogleButtonPress = (role) => {
-    onGoogleButtonPress(role);
-    setRole(role);
+
+  const handleGoogleButtonPress = () => {
+    onGoogleButtonPress();
   };
 
   const openLink = (url) => {
@@ -45,22 +44,7 @@ const LoginUi = ({ onGoogleButtonPress }) => {
                 color="#fff"
               />
               <Text style={styles.buttonText}>
-                SignIn with Customer Account
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.googleButton, styles.mazdoorButton]}
-              onPress={() => handleGoogleButtonPress("mazdoor")}
-            >
-              <FontAwesome
-                name="google"
-                size={moderateScale(18)}
-                color={colors.primary}
-              />
-              <Text style={[styles.buttonText, styles.mazdoorButtonText]}>
-                SignIn with Service Account
+                Continue with Google Account
               </Text>
             </TouchableOpacity>
           </View>

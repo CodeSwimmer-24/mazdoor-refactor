@@ -84,7 +84,7 @@ const Status = ({ serviceProviderData, reloadData }) => {
             style={styles.registerButton}
           >
             <Text style={styles.registerButtonText}>
-              Please Register your shop...
+              Please Register Your Shop
             </Text>
           </TouchableOpacity>
         </View>
@@ -205,11 +205,11 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   registerButton: {
-    marginTop: 20,
+    marginTop: 5,
     backgroundColor: colors.primary,
-    width: "80%",
-    paddingVertical: 12,
-    borderRadius: 8,
+    width: "90%",
+    paddingVertical: 15,
+    borderRadius: 2,
     elevation: 5,
   },
   registerButtonText: {

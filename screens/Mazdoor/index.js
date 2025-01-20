@@ -21,7 +21,7 @@ const Mazdoor = () => {
             if (route.name === "Home") {
               iconName = focused ? "home" : "home-outline";
             } else if (route.name === "Booking") {
-              iconName = focused ? "calendar" : "calendar-outline";
+              iconName = focused ? "star" : "star-outline";
             } else if (route.name === "Shop") {
               iconName = focused ? "storefront" : "storefront-outline";
             } else if (route.name === "Profile") {
@@ -39,12 +39,12 @@ const Mazdoor = () => {
         />
         <Tab.Screen
           name="Booking"
-          options={{ headerShown: false }}
+          options={{ headerShown: false, tabBarLabel: "Feedback" }}
           component={Booking}
         />
         <Tab.Screen
           name="Shop"
-          options={{ headerShown: false }}
+          options={{ headerShown: false, tabBarLabel: "Store Register" }}
           component={Shop}
         />
         <Tab.Screen
