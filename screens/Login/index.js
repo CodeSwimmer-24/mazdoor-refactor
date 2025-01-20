@@ -19,6 +19,8 @@ const Login = () => {
   const [checkRole, setCheckRole] = useState("");
   const [delayedRoleCheck, setDelayedRoleCheck] = useState(false); // To handle delay for role check
 
+  const { role } = useAuthStore();
+
   const {
     setEmail,
     setRole,
@@ -79,14 +81,14 @@ const Login = () => {
 
   // Delay rendering based on `checkRole`
   useEffect(() => {
-    if (checkRole) {
+    if (!delayedRoleCheck && role != "") {
       const timer = setTimeout(() => {
         setDelayedRoleCheck(true); // Set to true after 3 seconds
       }, 3000);
 
       return () => clearTimeout(timer); // Cleanup timer on unmount
     }
-  }, [checkRole]);
+  }, [delayedRoleCheck, role]);
 
   const onGoogleButtonPress = async () => {
     setLoading(true); // Set loading to true when starting login process
@@ -155,7 +157,8 @@ const Login = () => {
     }
 
     // Render based on the updated `checkRole`
-    return checkRole === "customer" ? <Customer /> : <Mazdoor />;
+    const userRole = role || checkRole;
+    return userRole === "mazdoor" ? <Mazdoor /> : <Customer />;
   }
 
   // If user is not logged in, show the Login page
